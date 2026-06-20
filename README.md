@@ -43,6 +43,7 @@
 | `node bin/cli.mjs doctor` | 내 컴퓨터 환경 점검 |
 | `node bin/cli.mjs install web-app-team` | 웹앱팀 설치 |
 | `node bin/cli.mjs custom` | 역할을 골라 나만의 팀 만들기(마법사) |
+| `node bin/cli.mjs roles` | 내 역할 만들기/고치기/지우기 |
 | `node bin/cli.mjs verify` | 설치 상태 + Claude Code에서 확인하는 법 보기 |
 | `node bin/cli.mjs rollback` | 되돌리기 |
 | `node bin/cli.mjs export web-app-team` | 팀을 파일로 내보내기(공유용) |
@@ -61,6 +62,8 @@
 | `web-app-team` | 웹앱 빌드팀 | planner · frontend-dev · backend-dev · reviewer |
 | `docs-team` | 문서/콘텐츠팀 | writer · editor · fact-checker |
 | `research-team` | 리서치팀 | researcher · analyst · critic |
+
+> **내 역할 직접 만들기:** `roles` 명령(또는 메뉴 "내 역할 관리")으로 나만의 역할(예: "SEO 전문가")을 만들 수 있어요. 쉬운 질문(이름·하는 일·권한)에 답하면 끝. 만든 역할은 **"나만의 팀 만들기"에서 기본 역할과 함께** 고를 수 있고, **홈 폴더에 저장돼 어느 프로젝트에서나 재사용**됩니다.
 
 ---
 

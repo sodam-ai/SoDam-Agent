@@ -43,6 +43,7 @@ When it finishes, you'll see guidance — **fully quit and reopen Claude Code**,
 | `node bin/cli.mjs doctor` | Check your environment |
 | `node bin/cli.mjs install web-app-team` | Install the web app team |
 | `node bin/cli.mjs custom` | Build your own team by picking roles |
+| `node bin/cli.mjs roles` | Create / edit / remove your own roles |
 | `node bin/cli.mjs verify` | Show install status + how to confirm in Claude Code |
 | `node bin/cli.mjs rollback` | Roll back |
 | `node bin/cli.mjs export web-app-team` | Export a team to a file (for sharing) |
@@ -61,6 +62,8 @@ Options: `--dir <folder>` target folder (default = current) · `--out <file>` ex
 | `web-app-team` | Web App Build Team | planner · frontend-dev · backend-dev · reviewer |
 | `docs-team` | Docs / Content Team | writer · editor · fact-checker |
 | `research-team` | Research Team | researcher · analyst · critic |
+
+> **Create your own roles:** Use the `roles` command (or the "Manage my roles" menu) to make your own role (e.g. "SEO expert") by answering simple questions (name, what it does, permissions). Your roles show up alongside the built-in ones in "Build your own team", and are **saved in your home folder for reuse across any project**.
 
 ---
 
