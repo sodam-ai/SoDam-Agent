@@ -43,6 +43,7 @@ When it finishes, you'll see guidance — **fully quit and reopen Claude Code**,
 | `node bin/cli.mjs doctor` | Check your environment |
 | `node bin/cli.mjs install web-app-team` | Install the web app team |
 | `node bin/cli.mjs custom` | Build your own team by picking roles |
+| `node bin/cli.mjs verify` | Show install status + how to confirm in Claude Code |
 | `node bin/cli.mjs rollback` | Roll back |
 | `node bin/cli.mjs export web-app-team` | Export a team to a file (for sharing) |
 | `node bin/cli.mjs import <file>` | Safely install a received team file |
@@ -80,6 +81,9 @@ Installing creates files inside the **current folder** (or the one given with `-
 **Newly installed agents only show up in a "freshly reopened" Claude Code window.**
 - **Fully quit** Claude Code and **reopen** it. (It must be a **blank new window** with no previous conversation.)
 - If you "closed and reopened" but the old conversation is still there → it's still in **resume mode**, so new agents won't appear. Open a truly new window.
+
+**How to confirm:** In the new window, type `/agents` or `Call the reviewer agent` → if the installed role names appear, success.
+If unsure about the install state, run `node bin/cli.mjs verify` to see installed agents and how to confirm again.
 
 ---
 

@@ -43,6 +43,7 @@
 | `node bin/cli.mjs doctor` | 내 컴퓨터 환경 점검 |
 | `node bin/cli.mjs install web-app-team` | 웹앱팀 설치 |
 | `node bin/cli.mjs custom` | 역할을 골라 나만의 팀 만들기(마법사) |
+| `node bin/cli.mjs verify` | 설치 상태 + Claude Code에서 확인하는 법 보기 |
 | `node bin/cli.mjs rollback` | 되돌리기 |
 | `node bin/cli.mjs export web-app-team` | 팀을 파일로 내보내기(공유용) |
 | `node bin/cli.mjs import <파일>` | 받은 팀 파일을 안전하게 설치 |
@@ -80,6 +81,9 @@
 **새로 깐 에이전트는 "완전히 새로 켠" Claude Code 창에서만 보입니다.**
 - Claude Code를 **완전히 종료**하고 **다시 켜세요.** (이전 대화가 안 보이는 **텅 빈 새 창**이어야 함)
 - "닫았다 다시 열기"인데 이전 대화가 그대로 보이면 → 아직 **이어하기 모드**라 새 직원이 안 보입니다. 완전히 새 창으로 켜세요.
+
+**확인 방법:** 새 창에서 `/agents` 또는 `reviewer 에이전트 불러줘` 입력 → 깐 역할 이름이 보이면 성공.
+설치 상태가 헷갈리면 `node bin/cli.mjs verify` 로 깔린 에이전트와 확인법을 다시 볼 수 있어요.
 
 ---
 
