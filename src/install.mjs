@@ -122,3 +122,25 @@ export function applyPlan(plan) {
   ensureGitignore(target.projectRoot);
   return { backup, record };
 }
+
+// 읽기 전용: 해당 폴더에 설치된 에이전트 목록을 frontmatter의 name 기준으로 읽는다.
+export function listInstalledAgents(target) {
+  if (!fs.existsSync(target.agentDir)) return [];
+  return fs
+    .readdirSync(target.agentDir)
+    .filter((f) => f.endsWith('.md'))
+    .map((f) => {
+      const txt = fs.readFileSync(path.join(target.agentDir, f), 'utf8');
+      const m = txt.match(/^name:\s*(.+)$/m);
+      return { file: f, name: m ? m[1].trim() : f.replace(/\.md$/, '') };
+    });
+}
+
+// 읽기 전용: 설치 확인용 요약 정보.
+export function verifyInfo(target) {
+  return {
+    projectRoot: target.projectRoot,
+    agents: listInstalledAgents(target),
+    hasMcp: fs.existsSync(target.mcpPath),
+  };
+}

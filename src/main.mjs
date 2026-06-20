@@ -3,7 +3,7 @@ import path from 'node:path';
 import { PRESETS, getPreset, getRoleLibrary, getToolLibrary } from './presets.mjs';
 import { toSafeName } from './validate.mjs';
 import { resolveTarget } from './paths.mjs';
-import { buildPlan, printPlan, applyPlan } from './install.mjs';
+import { buildPlan, printPlan, applyPlan, verifyInfo } from './install.mjs';
 import { listBackups, restoreBackup } from './backup.mjs';
 import { buildExport, writeExport, readImport } from './share.mjs';
 import { runDoctor } from './doctor.mjs';
@@ -25,6 +25,8 @@ export async function main(argv) {
       return cmdInstall({ ...opts, preset: arg2 });
     case 'custom':
       return cmdCustom(opts);
+    case 'verify':
+      return cmdVerify(opts);
     case 'rollback':
       return cmdRollback(opts);
     case 'export':
@@ -70,12 +72,13 @@ function printHelp() {
     agentroster list            프리셋(팀) 목록
     agentroster install <팀id>  팀 설치 (예: install web-app-team)
     agentroster custom          역할을 골라 나만의 팀 만들기(마법사)
+    agentroster verify          설치 상태 + Claude Code에서 확인하는 법 보기
     agentroster rollback        되돌리기(가장 최근 백업)
     agentroster export <팀id>   팀을 파일로 내보내기(공유용)
     agentroster import <파일>   받은 팀 파일을 설치
 
   옵션:
-    --dir <폴더>   설치/내보낼 프로젝트 폴더 (기본: 현재 폴더)
+    --dir <폴더>   설치/확인할 프로젝트 폴더 (기본: 현재 폴더)
     --out <파일>   내보내기 파일 경로 (기본: <팀id>.agentroster.json)
     --yes, -y      확인 질문 없이 진행
 `);
@@ -122,58 +125,51 @@ async function cmdInstall(opts) {
 
   const { backup } = applyPlan(plan);
   ui.success(`'${preset.name}' 설치 완료!`);
-  printAfterInstall(backup);
+  printAfterInstall(backup, target, preset.roles[0]?.name);
 }
 
-function printAfterInstall(backup) {
+// ⭐ 설치 후 "마지막 한 단계" 안내 — 오늘 테스트에서 비개발자가 가장 많이 막힌 지점이라 강하게 안내한다.
+function printAfterInstall(backup, target, sampleRole = 'reviewer') {
   line(color.gray(`   백업 위치: .agentroster/backups/${backup.id}  (되돌리기로 복구 가능)`));
   line('');
-  ui.warn('중요: 새로 깐 에이전트는 "완전히 새 창"에서만 보입니다.');
-  line('   → Claude Code를 완전히 종료하고 다시 켜세요(화면이 텅 빈 새 창이어야 함).');
-  line(`   → 그 다음 예: "${color.bold('reviewer 에이전트로 이 코드 검토해줘')}"`);
+  ui.warn('마지막 한 단계 — 이게 제일 중요합니다!');
+  line(`   새로 깐 에이전트는 ${color.bold('"완전히 새로 켠"')} Claude Code에서만 보입니다.`);
+  line('');
+  line(color.bold('   ✅ 이렇게 확인하세요:'));
+  line(`   1) 이 폴더에서 Claude Code를 켜세요 → ${color.cyan(target.projectRoot)}`);
+  line(color.gray('      (탐색기에서 이 폴더 → 주소창에 cmd 입력 → 검은 창에 claude 입력)'));
+  line(`   2) ${color.red('이전 대화가 그대로 보이면 "이어하기"라 안 보입니다!')} 텅 빈 새 창이어야 해요.`);
+  line(`   3) 새 창에서 ${color.bold('/agents')} 또는 ${color.bold(`"${sampleRole} 에이전트 불러줘"`)} 로 확인.`);
+  line('');
+  line(color.gray('   언제든 "agentroster verify" 로 설치 상태와 확인법을 다시 볼 수 있어요.'));
   line('');
 }
 
-async function cmdCustom(opts) {
+function cmdVerify(opts) {
   const target = resolveTarget(opts.dir);
+  const info = verifyInfo(target);
   banner();
-  line(color.bold('  🧩 커스텀 팀 만들기 — 역할을 골라 나만의 팀을 구성합니다.\n'));
+  line(color.bold(`  🔎 설치 확인 — 폴더: ${info.projectRoot}\n`));
 
-  // 1) 팀 이름(자유 입력 → 안전한 식별자로 정화)
-  const rawName = await ui.ask('새 팀 이름을 정해주세요 (예: 내 블로그팀): ');
-  const id = toSafeName(rawName) || 'custom-team';
-
-  // 2) 역할 고르기(작성 없이 목록에서 선택)
-  const lib = getRoleLibrary();
-  const pickedNames = await ui.selectMultiple(
-    '팀에 넣을 역할(AI 직원)을 고르세요',
-    lib.map((r) => ({ label: r.name, value: r.name, hint: r.description }))
-  );
-  const roles = lib.filter((r) => pickedNames.includes(r.name));
-
-  // 3) 추천 도구(MCP) 연결 여부(선택)
-  const tools = [];
-  const toolLib = getToolLibrary();
-  if (toolLib.length) {
-    const useMcp = await ui.confirm(`추천 도구(MCP: ${toolLib.map((t) => t.name).join(', ')})도 연결할까요?`, false);
-    if (useMcp) tools.push(...toolLib);
+  if (info.agents.length === 0) {
+    ui.info('이 폴더엔 설치된 에이전트(팀)가 없습니다.');
+    line(color.gray('   먼저 "agentroster install <팀id>" 또는 메뉴에서 설치하세요.'));
+    line(color.gray('   (혹시 다른 폴더에 깔았다면: agentroster verify --dir "그 폴더 경로")'));
+    return;
   }
 
-  const preset = { id, name: (rawName || '').trim() || id, description: '커스텀 팀', roles, tools };
-
-  // 4) 기존 안전 파이프라인으로 설치(미리보기 → 확인 → 백업)
-  const plan = buildPlan(preset, target);
-  printPlan(plan);
-  if (!opts.yes) {
-    const go = await ui.confirm('이 팀으로 설치할까요? (기존 설정은 먼저 백업됩니다)', false);
-    if (!go) {
-      ui.info('취소했습니다. 아무것도 바꾸지 않았습니다.');
-      return;
-    }
+  line(color.bold('  설치된 에이전트(직원):'));
+  for (const a of info.agents) {
+    line(`   • ${color.cyan(a.name)}   ${color.gray('(.claude/agents/' + a.file + ')')}`);
   }
-  const { backup } = applyPlan(plan);
-  ui.success(`커스텀 팀 '${preset.name}' 설치 완료! (역할 ${roles.length}개)`);
-  printAfterInstall(backup);
+  line(color.gray(`   MCP 설정(.mcp.json): ${info.hasMcp ? '있음' : '없음'}`));
+  line('');
+  line(color.bold('  ⭐ Claude Code에서 진짜 보이는지 확인하는 법:'));
+  line('   1) 이 폴더에서 Claude Code를 ' + color.bold('완전히 새로') + ' 켜세요.');
+  line(color.gray('      (탐색기에서 이 폴더 → 주소창에 cmd → claude)'));
+  line(`   2) ${color.red('이전 대화가 보이면 "이어하기"라 새 직원이 안 보입니다.')} 텅 빈 새 창이어야 함.`);
+  line(`   3) 새 창에서 ${color.bold('/agents')} 또는 ${color.bold(`"${info.agents[0].name} 에이전트 불러줘"`)} 로 위 이름이 보이는지 확인.`);
+  line('');
 }
 
 async function cmdRollback(opts) {
@@ -199,6 +195,44 @@ async function cmdRollback(opts) {
   restoreBackup(target, chosen.id);
   ui.success(`'${chosen.id}' 시점으로 되돌렸습니다.`);
   ui.warn('변경을 반영하려면 Claude Code를 완전히 종료 후 새 창으로 다시 켜세요.');
+}
+
+async function cmdCustom(opts) {
+  const target = resolveTarget(opts.dir);
+  banner();
+  line(color.bold('  🧩 커스텀 팀 만들기 — 역할을 골라 나만의 팀을 구성합니다.\n'));
+
+  const rawName = await ui.ask('새 팀 이름을 정해주세요 (예: 내 블로그팀): ');
+  const id = toSafeName(rawName) || 'custom-team';
+
+  const lib = getRoleLibrary();
+  const pickedNames = await ui.selectMultiple(
+    '팀에 넣을 역할(AI 직원)을 고르세요',
+    lib.map((r) => ({ label: r.name, value: r.name, hint: r.description }))
+  );
+  const roles = lib.filter((r) => pickedNames.includes(r.name));
+
+  const tools = [];
+  const toolLib = getToolLibrary();
+  if (toolLib.length) {
+    const useMcp = await ui.confirm(`추천 도구(MCP: ${toolLib.map((t) => t.name).join(', ')})도 연결할까요?`, false);
+    if (useMcp) tools.push(...toolLib);
+  }
+
+  const preset = { id, name: (rawName || '').trim() || id, description: '커스텀 팀', roles, tools };
+
+  const plan = buildPlan(preset, target);
+  printPlan(plan);
+  if (!opts.yes) {
+    const go = await ui.confirm('이 팀으로 설치할까요? (기존 설정은 먼저 백업됩니다)', false);
+    if (!go) {
+      ui.info('취소했습니다. 아무것도 바꾸지 않았습니다.');
+      return;
+    }
+  }
+  const { backup } = applyPlan(plan);
+  ui.success(`커스텀 팀 '${preset.name}' 설치 완료! (역할 ${roles.length}개)`);
+  printAfterInstall(backup, target, roles[0]?.name);
 }
 
 async function cmdExport(opts) {
@@ -245,7 +279,7 @@ async function cmdImport(opts) {
   }
   const { backup } = applyPlan(plan);
   ui.success(`'${preset.name}' 팀을 가져와 설치했습니다.`);
-  printAfterInstall(backup);
+  printAfterInstall(backup, target, preset.roles[0]?.name);
 }
 
 async function interactiveMenu(opts) {
@@ -255,6 +289,7 @@ async function interactiveMenu(opts) {
     const choice = await ui.selectFromList('무엇을 할까요?', [
       { label: '팀 설치하기', value: 'install', hint: '프리셋 팀을 골라 설치' },
       { label: '나만의 팀 만들기', value: 'custom', hint: '역할을 골라 커스텀 팀 구성' },
+      { label: '설치 확인하기', value: 'verify', hint: '깔린 에이전트 + Claude Code 확인법' },
       { label: '되돌리기', value: 'rollback', hint: '설치 전 상태로 복구' },
       { label: '팀 목록 보기', value: 'list', hint: '설치 가능한 팀' },
       { label: '팀 내보내기(파일로)', value: 'export', hint: '내 팀을 파일로 저장해 공유' },
@@ -268,6 +303,7 @@ async function interactiveMenu(opts) {
     }
     if (choice === 'install') await cmdInstall(opts);
     else if (choice === 'custom') await cmdCustom(opts);
+    else if (choice === 'verify') cmdVerify(opts);
     else if (choice === 'rollback') await cmdRollback(opts);
     else if (choice === 'list') cmdList();
     else if (choice === 'export') await cmdExport(opts);

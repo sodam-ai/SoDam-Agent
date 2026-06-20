@@ -5,7 +5,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { resolveTarget } from '../src/paths.mjs';
 import { getPreset, getRoleLibrary } from '../src/presets.mjs';
-import { buildPlan, applyPlan } from '../src/install.mjs';
+import { buildPlan, applyPlan, verifyInfo } from '../src/install.mjs';
 import { listBackups, restoreBackup } from '../src/backup.mjs';
 import { isSafeName, toSafeName } from '../src/validate.mjs';
 import { buildExport, writeExport, readImport } from '../src/share.mjs';
@@ -141,6 +141,16 @@ applyPlan(buildPlan(customTeam, cTarget));
 assert.ok(fs.existsSync(path.join(cTarget.agentDir, 'planner.md')), 'planner.md 설치');
 assert.ok(fs.existsSync(path.join(cTarget.agentDir, 'writer.md')), 'writer.md 설치');
 ok('커스텀: 역할 라이브러리에서 골라 조립 → 설치');
+
+// 10) 설치 확인(verify, 읽기 전용): 깔린 에이전트를 정확히 읽어오는가
+const vTarget = resolveTarget(path.join(root, 'verify-proj'));
+assert.equal(verifyInfo(vTarget).agents.length, 0, '설치 전: 0개');
+applyPlan(buildPlan(getPreset('web-app-team'), vTarget));
+const vinfo = verifyInfo(vTarget);
+const names = vinfo.agents.map((a) => a.name).sort();
+assert.deepEqual(names, ['backend-dev', 'frontend-dev', 'planner', 'reviewer'], 'verify가 이름 정확히 읽음');
+assert.equal(vinfo.hasMcp, true, 'verify가 .mcp.json 감지');
+ok('확인(verify): 설치된 에이전트 이름·MCP 정확히 읽음(읽기 전용)');
 
 console.log(`\n🎉 모든 검증 통과: ${pass}건`);
 fs.rmSync(root, { recursive: true, force: true });
