@@ -49,7 +49,9 @@ When it finishes, you'll see guidance — **fully quit and reopen Claude Code**,
 | `node bin/cli.mjs export web-app-team` | Export a team to a file (for sharing) |
 | `node bin/cli.mjs import <file>` | Safely install a received team file |
 
-Options: `--dir <folder>` target folder (default = current) · `--out <file>` export file path · `--yes` skip confirmation
+Options: `--global` (`-g`) **install for every folder** (install once, use anywhere) · `--dir <folder>` target folder (default = current) · `--out <file>` export file path · `--yes` skip confirmation
+
+> **This folder, or all folders?** The menu asks **"this folder only" (project-scoped, safest) vs "all folders" (global)**. On the CLI use `install ... --global`. Global appears in **every project right away**, but if a name already exists it is **overwritten (auto-backed-up first; restore with `rollback --global`)**. For safety, global install does **not** auto-configure MCP — it only shows the command.
 
 > **Sharing teams:** Give the `*.agentroster.json` file made by `export` to someone else, and they can install the same team with `import`. Shared files **never contain secret values** (key names only). When you `import` a received file, the **commands to be installed are shown for confirmation first**, and dangerous names / wrong formats / oversized files are auto-rejected.
 
