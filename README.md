@@ -42,6 +42,7 @@
 | `node bin/cli.mjs list` | 설치할 수 있는 팀 목록 |
 | `node bin/cli.mjs doctor` | 내 컴퓨터 환경 점검 |
 | `node bin/cli.mjs install web-app-team` | 웹앱팀 설치 |
+| `node bin/cli.mjs custom` | 역할을 골라 나만의 팀 만들기(마법사) |
 | `node bin/cli.mjs rollback` | 되돌리기 |
 | `node bin/cli.mjs export web-app-team` | 팀을 파일로 내보내기(공유용) |
 | `node bin/cli.mjs import <파일>` | 받은 팀 파일을 안전하게 설치 |

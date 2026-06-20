@@ -42,6 +42,7 @@ When it finishes, you'll see guidance — **fully quit and reopen Claude Code**,
 | `node bin/cli.mjs list` | List installable teams |
 | `node bin/cli.mjs doctor` | Check your environment |
 | `node bin/cli.mjs install web-app-team` | Install the web app team |
+| `node bin/cli.mjs custom` | Build your own team by picking roles |
 | `node bin/cli.mjs rollback` | Roll back |
 | `node bin/cli.mjs export web-app-team` | Export a team to a file (for sharing) |
 | `node bin/cli.mjs import <file>` | Safely install a received team file |
