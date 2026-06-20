@@ -6,10 +6,18 @@ import { resolveTarget } from './paths.mjs';
 import { buildPlan, printPlan, applyPlan, verifyInfo } from './install.mjs';
 import { listBackups, restoreBackup } from './backup.mjs';
 import { buildExport, writeExport, readImport } from './share.mjs';
+import { listPersonalRoles, saveRole, removeRole, rolesDir } from './roles.mjs';
 import { runDoctor } from './doctor.mjs';
 import * as ui from './ui.mjs';
 
 const { color, line } = ui;
+
+// 비개발자용 권한 묶음 — "Read/Bash" 같은 용어 대신 쉬운 3택으로.
+const TOOL_PRESETS = [
+  { label: '읽기만 (가장 안전 — 검토·기획에 추천)', value: ['Read', 'Grep', 'Glob'] },
+  { label: '만들기 가능 (파일 수정·실행 — 개발에 추천)', value: ['Read', 'Edit', 'Write', 'Bash'] },
+  { label: '전체 (모든 기본 도구 상속)', value: [] },
+];
 
 export async function main(argv) {
   const { cmd, arg2, opts } = parseArgs(argv);
@@ -25,6 +33,8 @@ export async function main(argv) {
       return cmdInstall({ ...opts, preset: arg2 });
     case 'custom':
       return cmdCustom(opts);
+    case 'roles':
+      return arg2 === 'list' ? roleList() : cmdRoles(opts);
     case 'verify':
       return cmdVerify(opts);
     case 'rollback':
@@ -72,6 +82,7 @@ function printHelp() {
     agentroster list            프리셋(팀) 목록
     agentroster install <팀id>  팀 설치 (예: install web-app-team)
     agentroster custom          역할을 골라 나만의 팀 만들기(마법사)
+    agentroster roles           내 역할 만들기/고치기/지우기
     agentroster verify          설치 상태 + Claude Code에서 확인하는 법 보기
     agentroster rollback        되돌리기(가장 최근 백업)
     agentroster export <팀id>   팀을 파일로 내보내기(공유용)
@@ -103,6 +114,13 @@ async function pickPreset(promptText) {
   return getPreset(id);
 }
 
+// 기본 역할 + 내가 만든 역할을 합친다(같은 이름이면 내 역할 우선).
+function fullRoleLibrary() {
+  const personal = listPersonalRoles();
+  const seen = new Set(personal.map((r) => r.name));
+  return [...personal, ...getRoleLibrary().filter((r) => !seen.has(r.name))];
+}
+
 async function cmdInstall(opts) {
   const target = resolveTarget(opts.dir);
   let preset = opts.preset ? getPreset(opts.preset) : null;
@@ -128,7 +146,7 @@ async function cmdInstall(opts) {
   printAfterInstall(backup, target, preset.roles[0]?.name);
 }
 
-// ⭐ 설치 후 "마지막 한 단계" 안내 — 오늘 테스트에서 비개발자가 가장 많이 막힌 지점이라 강하게 안내한다.
+// ⭐ 설치 후 "마지막 한 단계" 안내 — 비개발자가 가장 많이 막히는 지점이라 강하게 안내한다.
 function printAfterInstall(backup, target, sampleRole = 'reviewer') {
   line(color.gray(`   백업 위치: .agentroster/backups/${backup.id}  (되돌리기로 복구 가능)`));
   line('');
@@ -205,10 +223,14 @@ async function cmdCustom(opts) {
   const rawName = await ui.ask('새 팀 이름을 정해주세요 (예: 내 블로그팀): ');
   const id = toSafeName(rawName) || 'custom-team';
 
-  const lib = getRoleLibrary();
+  const lib = fullRoleLibrary();
   const pickedNames = await ui.selectMultiple(
     '팀에 넣을 역할(AI 직원)을 고르세요',
-    lib.map((r) => ({ label: r.name, value: r.name, hint: r.description }))
+    lib.map((r) => ({
+      label: r.name + (r._personal ? color.gray(' (내 역할)') : ''),
+      value: r.name,
+      hint: r.description,
+    }))
   );
   const roles = lib.filter((r) => pickedNames.includes(r.name));
 
@@ -233,6 +255,110 @@ async function cmdCustom(opts) {
   const { backup } = applyPlan(plan);
   ui.success(`커스텀 팀 '${preset.name}' 설치 완료! (역할 ${roles.length}개)`);
   printAfterInstall(backup, target, roles[0]?.name);
+}
+
+// ── 내 역할(에이전트) 관리 ─────────────────────────────────────────────
+async function cmdRoles(opts) {
+  while (true) {
+    const choice = await ui.selectFromList('🧑‍🔧 내 역할 관리 — 무엇을 할까요?', [
+      { label: '새 역할 만들기', value: 'add' },
+      { label: '역할 고치기', value: 'edit' },
+      { label: '역할 지우기', value: 'remove' },
+      { label: '내 역할 목록', value: 'list' },
+      { label: '뒤로', value: 'back' },
+    ]);
+    if (choice === 'back') return;
+    if (choice === 'add') await roleAdd();
+    else if (choice === 'edit') await roleEdit();
+    else if (choice === 'remove') await roleRemove();
+    else if (choice === 'list') roleList();
+  }
+}
+
+async function roleAdd(existing) {
+  banner();
+  line(color.bold(existing ? `  ✏️ 역할 고치기: ${existing.name}\n` : '  ➕ 새 역할 만들기\n'));
+
+  let name;
+  if (existing) {
+    name = existing.name;
+    line(color.gray(`   이름: ${name} (고치기에선 이름은 그대로 둡니다)`));
+  } else {
+    const raw = await ui.ask('   역할 이름을 정하세요 (예: SEO 전문가): ');
+    name = toSafeName(raw) || 'my-role';
+    if (name !== (raw || '').trim()) line(color.gray(`   → 저장용 이름: ${name}`));
+  }
+
+  line('\n   이 역할을 언제 부르나요? (예: 검색 최적화를 점검할 때)');
+  const description = await ui.ask('   설명: ', existing?.description || '');
+  line('\n   이 직원이 무슨 일을, 어떻게 하길 원하나요? (한 문단으로)');
+  const systemPrompt = await ui.ask('   지시문: ', existing?.systemPrompt || '');
+
+  if (!description || !systemPrompt) {
+    ui.warn('설명과 지시문은 비울 수 없어요. 처음부터 다시 시도해 주세요.');
+    return;
+  }
+
+  const allowedTools = await ui.selectFromList('   이 역할의 권한은?', TOOL_PRESETS);
+
+  try {
+    const file = saveRole({ name, description, systemPrompt, allowedTools, model: 'inherit' });
+    ui.success(`역할 '${name}' 저장 완료!`);
+    line(color.gray(`   파일: ${file}`));
+    line('   이제 "나만의 팀 만들기"에서 이 역할을 고를 수 있어요.');
+  } catch (e) {
+    ui.danger('저장 실패: ' + (e?.message || e));
+  }
+}
+
+function roleList() {
+  banner();
+  const roles = listPersonalRoles();
+  if (!roles.length) {
+    ui.info('아직 내가 만든 역할이 없습니다. "새 역할 만들기"로 추가해 보세요.');
+    return;
+  }
+  line(color.bold('  내가 만든 역할:'));
+  for (const r of roles) {
+    line(`   • ${color.cyan(r.name)}  ${color.gray('— ' + (r.description || ''))}`);
+  }
+  line(color.gray(`\n   저장 위치: ${rolesDir()}`));
+}
+
+async function roleEdit() {
+  const roles = listPersonalRoles();
+  if (!roles.length) {
+    ui.info('고칠 내 역할이 없습니다. 먼저 "새 역할 만들기"로 추가하세요.');
+    return;
+  }
+  const name = await ui.selectFromList(
+    '어떤 역할을 고칠까요?',
+    roles.map((r) => ({ label: r.name, value: r.name, hint: r.description }))
+  );
+  await roleAdd(roles.find((r) => r.name === name));
+}
+
+async function roleRemove() {
+  const roles = listPersonalRoles();
+  if (!roles.length) {
+    ui.info('지울 내 역할이 없습니다.');
+    return;
+  }
+  const name = await ui.selectFromList(
+    '어떤 역할을 지울까요?',
+    roles.map((r) => ({ label: r.name, value: r.name, hint: r.description }))
+  );
+  const go = await ui.confirm(`'${name}' 역할을 정말 지울까요?`, false);
+  if (!go) {
+    ui.info('취소했습니다.');
+    return;
+  }
+  try {
+    removeRole(name);
+    ui.success(`역할 '${name}' 삭제됨.`);
+  } catch (e) {
+    ui.danger('삭제 실패: ' + (e?.message || e));
+  }
 }
 
 async function cmdExport(opts) {
@@ -289,6 +415,7 @@ async function interactiveMenu(opts) {
     const choice = await ui.selectFromList('무엇을 할까요?', [
       { label: '팀 설치하기', value: 'install', hint: '프리셋 팀을 골라 설치' },
       { label: '나만의 팀 만들기', value: 'custom', hint: '역할을 골라 커스텀 팀 구성' },
+      { label: '내 역할 관리', value: 'roles', hint: '역할 만들기/고치기/지우기' },
       { label: '설치 확인하기', value: 'verify', hint: '깔린 에이전트 + Claude Code 확인법' },
       { label: '되돌리기', value: 'rollback', hint: '설치 전 상태로 복구' },
       { label: '팀 목록 보기', value: 'list', hint: '설치 가능한 팀' },
@@ -303,6 +430,7 @@ async function interactiveMenu(opts) {
     }
     if (choice === 'install') await cmdInstall(opts);
     else if (choice === 'custom') await cmdCustom(opts);
+    else if (choice === 'roles') await cmdRoles(opts);
     else if (choice === 'verify') cmdVerify(opts);
     else if (choice === 'rollback') await cmdRollback(opts);
     else if (choice === 'list') cmdList();

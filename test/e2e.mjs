@@ -9,6 +9,7 @@ import { buildPlan, applyPlan, verifyInfo } from '../src/install.mjs';
 import { listBackups, restoreBackup } from '../src/backup.mjs';
 import { isSafeName, toSafeName } from '../src/validate.mjs';
 import { buildExport, writeExport, readImport } from '../src/share.mjs';
+import { rolesDir, listPersonalRoles, saveRole, removeRole } from '../src/roles.mjs';
 
 let pass = 0;
 const ok = (m) => {
@@ -151,6 +152,29 @@ const names = vinfo.agents.map((a) => a.name).sort();
 assert.deepEqual(names, ['backend-dev', 'frontend-dev', 'planner', 'reviewer'], 'verify가 이름 정확히 읽음');
 assert.equal(vinfo.hasMcp, true, 'verify가 .mcp.json 감지');
 ok('확인(verify): 설치된 에이전트 이름·MCP 정확히 읽음(읽기 전용)');
+
+// 11) 내 역할 관리: 추가 → 목록 → (이름 보안) → 삭제  (홈은 임시폴더로 격리)
+process.env.AGENTROSTER_HOME = path.join(root, 'home');
+assert.equal(listPersonalRoles().length, 0, '처음엔 내 역할 0');
+saveRole({ name: 'seo-expert', description: '검색 최적화를 점검할 때', systemPrompt: '당신은 SEO 전문가입니다. 검색 노출을 점검하세요.', allowedTools: ['Read', 'Grep'], model: 'inherit' });
+const mine = listPersonalRoles();
+assert.equal(mine.length, 1, '추가 후 1개');
+assert.equal(mine[0].name, 'seo-expert', '이름 복원');
+assert.equal(mine[0].description, '검색 최적화를 점검할 때', '설명 복원');
+assert.deepEqual(mine[0].allowedTools, ['Read', 'Grep'], '권한 복원');
+ok('내 역할: 추가 → 목록 정확 복원(설명·권한 포함)');
+
+let roleNameBlocked = false;
+try { saveRole({ name: '../evil', description: 'd', systemPrompt: 's' }); } catch { roleNameBlocked = true; }
+assert.ok(roleNameBlocked, '위험한 역할 이름(../) 차단');
+let emptyBlocked = false;
+try { saveRole({ name: 'x-role', description: '', systemPrompt: '' }); } catch { emptyBlocked = true; }
+assert.ok(emptyBlocked, '빈 설명/지시문 저장 거부');
+ok('보안: 위험한 이름·빈 입력 저장 차단');
+
+removeRole('seo-expert');
+assert.equal(listPersonalRoles().length, 0, '삭제 후 0');
+ok('내 역할: 삭제 정상');
 
 console.log(`\n🎉 모든 검증 통과: ${pass}건`);
 fs.rmSync(root, { recursive: true, force: true });

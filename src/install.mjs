@@ -6,7 +6,7 @@ import { validatePreset, assertSafeName } from './validate.mjs';
 import { color, line } from './ui.mjs';
 
 // 역할 1개 → .claude/agents/<name>.md 본문(frontmatter + 시스템 프롬프트)
-function agentFileContent(role) {
+export function agentFileContent(role) {
   const fm = [
     '---',
     `name: ${role.name}`,
