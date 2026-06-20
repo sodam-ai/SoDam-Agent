@@ -8,9 +8,12 @@ function timestampId() {
   return `bk-${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}-${p(d.getMilliseconds(), 3)}`;
 }
 
-// 설치 직전 현재 상태(.mcp.json + agents/*.md)를 통째로 사본 보관.
-export function createBackup(target) {
+// 설치 직전 현재 상태(.mcp.json + agents/*.md)를 사본 보관.
+// opts.onlyAgents: 주어지면 그 파일들만 백업(전역처럼 같은 폴더에 에이전트가 매우 많을 때
+//   '건드리는 파일'만 보관해 통째 복사를 피한다). 없으면 폴더의 모든 .md 백업(프로젝트 기본).
+export function createBackup(target, opts = {}) {
   const { agentDir, mcpPath, backupRoot } = target;
+  const onlyAgents = opts.onlyAgents || null;
   // 고유 ID 보장: 같은 밀리초에 두 번 백업해도 서로 덮어쓰지 않게 충돌 시 번호를 붙인다.
   const base = timestampId();
   let id = base;
@@ -23,12 +26,13 @@ export function createBackup(target) {
   fs.mkdirSync(dest, { recursive: true });
   const files = [];
 
-  if (fs.existsSync(mcpPath)) {
+  if (mcpPath && fs.existsSync(mcpPath)) {
     fs.copyFileSync(mcpPath, path.join(dest, '.mcp.json'));
     files.push('.mcp.json');
   }
   if (fs.existsSync(agentDir)) {
-    const agents = fs.readdirSync(agentDir).filter((f) => f.endsWith('.md'));
+    let agents = fs.readdirSync(agentDir).filter((f) => f.endsWith('.md'));
+    if (onlyAgents) agents = agents.filter((f) => onlyAgents.includes(f));
     if (agents.length) {
       fs.mkdirSync(path.join(dest, 'agents'), { recursive: true });
       for (const a of agents) {
@@ -74,14 +78,14 @@ export function restoreBackup(target, id) {
     }
     // 설치가 .mcp.json을 '없던 상태에서 새로 만든' 경우 → 그 파일 자체를 제거
     const backupHasMcp = fs.existsSync(path.join(dest, '.mcp.json'));
-    if (record.mcpExistedBefore === false && !backupHasMcp && fs.existsSync(mcpPath)) {
+    if (mcpPath && record.mcpExistedBefore === false && !backupHasMcp && fs.existsSync(mcpPath)) {
       fs.rmSync(mcpPath);
     }
   }
 
   // 2) 백업에 있던 원본 복원(덮어썼던 것)
   const bkMcp = path.join(dest, '.mcp.json');
-  if (fs.existsSync(bkMcp)) fs.copyFileSync(bkMcp, mcpPath);
+  if (mcpPath && fs.existsSync(bkMcp)) fs.copyFileSync(bkMcp, mcpPath);
   const bkAgents = path.join(dest, 'agents');
   if (fs.existsSync(bkAgents)) {
     fs.mkdirSync(agentDir, { recursive: true });

@@ -40,33 +40,70 @@ export function buildPlan(preset, target) {
     const file = path.join(target.agentDir, `${r.name}.md`);
     return { name: r.name, file, exists: fs.existsSync(file), content: agentFileContent(r) };
   });
+
+  // 전역(mcpPath 없음)은 사용자 MCP 설정을 자동으로 건드리지 않는다 → 표시(안내)만 한다.
+  if (!target.mcpPath) {
+    const manualMcp = (preset.tools || []).map((t) => {
+      assertSafeName(t.id, 'MCP id');
+      const s = t.installSpec || {};
+      return { id: t.id, command: [s.command, ...(s.args || [])].join(' ') };
+    });
+    return { preset, target, agents, mcpExisting: null, newServers: {}, manualMcp };
+  }
+
   const mcpExisting = readJsonSafe(target.mcpPath);
   const newServers = {};
   for (const t of preset.tools || []) {
     assertSafeName(t.id, 'MCP id');
     if (!mcpExisting?.mcpServers?.[t.id]) newServers[t.id] = t.installSpec;
   }
-  return { preset, target, agents, mcpExisting, newServers };
+  return { preset, target, agents, mcpExisting, newServers, manualMcp: [] };
 }
 
 // 설치 전 사용자에게 보여줄 미리보기(명령 주입 방지의 핵심 — 실제 명령을 그대로 노출).
 export function printPlan(plan) {
+  const isGlobal = plan.target.scope === 'global';
   line('\n' + color.bold('📋 설치 미리보기 (아직 아무것도 바꾸지 않았습니다)'));
-  line(color.gray(`   대상 폴더: ${plan.target.projectRoot}`));
+  if (isGlobal) {
+    line(color.gray('   대상: ') + color.bold('전역(모든 폴더 공용)') + color.gray(`  ${plan.target.agentDir}`));
+    line(color.yellow('   ⚠️ 전역 설치 — 모든 프로젝트에서 보입니다. 같은 이름이 있으면 덮어씁니다(먼저 백업).'));
+  } else {
+    line(color.gray(`   대상 폴더: ${plan.target.projectRoot}`));
+  }
+
+  const overwrites = plan.agents.filter((a) => a.exists);
   line('\n' + color.bold('   ① 만들 에이전트(직원) 파일:'));
   for (const a of plan.agents) {
     const tag = a.exists ? color.yellow('[기존 덮어씀·백업됨]') : color.green('[새로 만듦]');
-    line(`      ${tag} .claude/agents/${a.name}.md`);
+    line(`      ${tag} ${a.name}.md`);
   }
-  const ids = Object.keys(plan.newServers);
-  line('\n' + color.bold('   ② 연결할 MCP — 설치될 실제 명령(꼭 확인하세요):'));
-  if (ids.length === 0) {
-    line(color.gray('      (추가할 MCP 없음 — 이미 있거나 프리셋에 없음)'));
+  if (isGlobal && overwrites.length) {
+    line(
+      color.yellow(
+        `      → 덮어쓰는 기존 전역 역할 ${overwrites.length}개: ${overwrites.map((a) => a.name).join(', ')}  (백업 후 진행 · rollback으로 복구 가능)`
+      )
+    );
+  }
+
+  line('\n' + color.bold('   ② 연결할 MCP:'));
+  if (isGlobal) {
+    if (plan.manualMcp && plan.manualMcp.length) {
+      line(color.gray('      전역은 안전을 위해 MCP를 자동 연결하지 않습니다. 필요하면 직접 추가하세요(선택):'));
+      for (const m of plan.manualMcp) line(`      • ${color.cyan(m.id)} → ${color.bold(m.command)}`);
+    } else {
+      line(color.gray('      (이 팀은 MCP가 없습니다)'));
+    }
   } else {
-    for (const id of ids) {
-      const s = plan.newServers[id];
-      const cmd = [s.command, ...(s.args || [])].join(' ');
-      line(`      • ${color.cyan(id)} → ${color.bold(cmd)}`);
+    const ids = Object.keys(plan.newServers);
+    line(color.gray('      설치될 실제 명령(꼭 확인하세요):'));
+    if (ids.length === 0) {
+      line(color.gray('      (추가할 MCP 없음 — 이미 있거나 프리셋에 없음)'));
+    } else {
+      for (const id of ids) {
+        const s = plan.newServers[id];
+        const cmd = [s.command, ...(s.args || [])].join(' ');
+        line(`      • ${color.cyan(id)} → ${color.bold(cmd)}`);
+      }
     }
   }
   line('');
@@ -89,7 +126,9 @@ function ensureGitignore(root) {
 // 실제 적용: 백업 → 에이전트 쓰기 → MCP 병합 → 설치기록 저장.
 export function applyPlan(plan) {
   const { target, agents, newServers, preset } = plan;
-  const backup = createBackup(target);
+  // 전역은 같은 폴더에 에이전트가 매우 많을 수 있으니 '건드리는 파일'만 백업한다.
+  const onlyAgents = target.scope === 'global' ? agents.map((a) => `${a.name}.md`) : null;
+  const backup = createBackup(target, onlyAgents ? { onlyAgents } : {});
 
   fs.mkdirSync(target.agentDir, { recursive: true });
   const added = [];
@@ -99,19 +138,23 @@ export function applyPlan(plan) {
     writeAtomic(a.file, a.content);
   }
 
-  const mcpExistedBefore = fs.existsSync(target.mcpPath);
-  if (Object.keys(newServers).length > 0) {
-    const cur = mcpExistedBefore ? JSON.parse(fs.readFileSync(target.mcpPath, 'utf8')) : {};
-    cur.mcpServers = cur.mcpServers || {};
-    for (const [id, spec] of Object.entries(newServers)) {
-      if (!cur.mcpServers[id]) cur.mcpServers[id] = spec; // 기존 서버는 절대 덮지 않음
+  let mcpExistedBefore = false;
+  if (target.mcpPath) {
+    mcpExistedBefore = fs.existsSync(target.mcpPath);
+    if (Object.keys(newServers).length > 0) {
+      const cur = mcpExistedBefore ? JSON.parse(fs.readFileSync(target.mcpPath, 'utf8')) : {};
+      cur.mcpServers = cur.mcpServers || {};
+      for (const [id, spec] of Object.entries(newServers)) {
+        if (!cur.mcpServers[id]) cur.mcpServers[id] = spec; // 기존 서버는 절대 덮지 않음
+      }
+      writeAtomic(target.mcpPath, JSON.stringify(cur, null, 2) + '\n');
     }
-    writeAtomic(target.mcpPath, JSON.stringify(cur, null, 2) + '\n');
   }
 
   const record = {
     presetId: preset.id,
     installedAt: new Date().toISOString(),
+    scope: target.scope,
     addedAgents: added,
     overwrittenAgents: overwritten,
     mcpAdded: Object.keys(newServers),
@@ -119,7 +162,8 @@ export function applyPlan(plan) {
   };
   fs.writeFileSync(path.join(backup.dest, 'install-record.json'), JSON.stringify(record, null, 2));
 
-  ensureGitignore(target.projectRoot);
+  // 전역은 홈 폴더에 .gitignore를 만들지 않는다(프로젝트만 백업 폴더 Git 제외).
+  if (target.scope !== 'global') ensureGitignore(target.projectRoot);
   return { backup, record };
 }
 
@@ -140,7 +184,8 @@ export function listInstalledAgents(target) {
 export function verifyInfo(target) {
   return {
     projectRoot: target.projectRoot,
+    scope: target.scope,
     agents: listInstalledAgents(target),
-    hasMcp: fs.existsSync(target.mcpPath),
+    hasMcp: target.mcpPath ? fs.existsSync(target.mcpPath) : false,
   };
 }

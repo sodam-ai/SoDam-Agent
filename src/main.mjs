@@ -54,11 +54,12 @@ export async function main(argv) {
 }
 
 function parseArgs(argv) {
-  const opts = { dir: undefined, out: undefined, yes: false };
+  const opts = { dir: undefined, out: undefined, yes: false, global: false };
   const positional = [];
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--yes' || a === '-y') opts.yes = true;
+    else if (a === '--global' || a === '-g') opts.global = true;
     else if (a === '--dir') opts.dir = argv[++i];
     else if (a.startsWith('--dir=')) opts.dir = a.slice(6);
     else if (a === '--out') opts.out = argv[++i];
@@ -89,6 +90,8 @@ function printHelp() {
     agentroster import <파일>   받은 팀 파일을 설치
 
   옵션:
+    --global, -g   모든 폴더에서 쓰도록 전역(~/.claude/agents) 설치/확인/되돌리기
+                   (한 번 깔면 어디서나 — install·custom·verify·rollback에 사용)
     --dir <폴더>   설치/확인할 프로젝트 폴더 (기본: 현재 폴더)
     --out <파일>   내보내기 파일 경로 (기본: <팀id>.agentroster.json)
     --yes, -y      확인 질문 없이 진행
@@ -121,14 +124,33 @@ function fullRoleLibrary() {
   return [...personal, ...getRoleLibrary().filter((r) => !seen.has(r.name))];
 }
 
+// 설치 위치 결정: 이 폴더만(project) vs 모든 폴더(global).
+//  - --global 플래그가 있으면 전역. --yes(배치)는 안전하게 프로젝트 기본.
+//  - 그 외 대화형이면 사용자에게 물어본다.
+async function resolveScope(opts, projectRoot) {
+  if (opts.global) return true;
+  if (opts.yes) return false;
+  const scope = await ui.selectFromList('어디에 설치할까요?', [
+    { label: '이 폴더에만 (이 프로젝트 전용 · 가장 안전)', value: 'project', hint: projectRoot },
+    {
+      label: '모든 폴더에서 쓰기 (전역 — 한 번 깔면 어디서나)',
+      value: 'global',
+      hint: '~/.claude/agents · 공용이라 같은 이름이 있으면 덮어씀(백업됨)',
+    },
+  ]);
+  return scope === 'global';
+}
+
 async function cmdInstall(opts) {
-  const target = resolveTarget(opts.dir);
   let preset = opts.preset ? getPreset(opts.preset) : null;
   if (opts.preset && !preset) {
     ui.warn(`그런 팀이 없습니다: ${opts.preset}.  'agentroster list'로 목록을 보세요.`);
     return;
   }
   if (!preset) preset = await pickPreset('어떤 팀을 설치할까요?');
+
+  const useGlobal = await resolveScope(opts, resolveTarget(opts.dir).projectRoot);
+  const target = resolveTarget(opts.dir, { global: useGlobal });
 
   const plan = buildPlan(preset, target);
   printPlan(plan);
@@ -148,31 +170,41 @@ async function cmdInstall(opts) {
 
 // ⭐ 설치 후 "마지막 한 단계" 안내 — 비개발자가 가장 많이 막히는 지점이라 강하게 안내한다.
 function printAfterInstall(backup, target, sampleRole = 'reviewer') {
-  line(color.gray(`   백업 위치: .agentroster/backups/${backup.id}  (되돌리기로 복구 가능)`));
+  const isGlobal = target.scope === 'global';
+  line(color.gray(`   백업 위치: ${backup.dest}  (되돌리기로 복구 가능)`));
   line('');
   ui.warn('마지막 한 단계 — 이게 제일 중요합니다!');
   line(`   새로 깐 에이전트는 ${color.bold('"완전히 새로 켠"')} Claude Code에서만 보입니다.`);
   line('');
   line(color.bold('   ✅ 이렇게 확인하세요:'));
-  line(`   1) 이 폴더에서 Claude Code를 켜세요 → ${color.cyan(target.projectRoot)}`);
-  line(color.gray('      (탐색기에서 이 폴더 → 주소창에 cmd 입력 → 검은 창에 claude 입력)'));
+  if (isGlobal) {
+    line(`   1) Claude Code를 ${color.bold('완전히 종료')} 후 ${color.bold('아무 폴더에서나')} 새로 켜세요.`);
+    line(color.gray('      (전역 설치라 폴더 위치와 상관없이 모든 창에서 보입니다)'));
+  } else {
+    line(`   1) 이 폴더에서 Claude Code를 켜세요 → ${color.cyan(target.projectRoot)}`);
+    line(color.gray('      (탐색기에서 이 폴더 → 주소창에 cmd 입력 → 검은 창에 claude 입력)'));
+  }
   line(`   2) ${color.red('이전 대화가 그대로 보이면 "이어하기"라 안 보입니다!')} 텅 빈 새 창이어야 해요.`);
   line(`   3) 새 창에서 ${color.bold('/agents')} 또는 ${color.bold(`"${sampleRole} 에이전트 불러줘"`)} 로 확인.`);
   line('');
-  line(color.gray('   언제든 "agentroster verify" 로 설치 상태와 확인법을 다시 볼 수 있어요.'));
+  line(color.gray(`   언제든 "agentroster verify${isGlobal ? ' --global' : ''}" 로 설치 상태와 확인법을 다시 볼 수 있어요.`));
   line('');
 }
 
 function cmdVerify(opts) {
-  const target = resolveTarget(opts.dir);
+  const isGlobal = !!opts.global;
+  const target = resolveTarget(opts.dir, { global: isGlobal });
   const info = verifyInfo(target);
   banner();
-  line(color.bold(`  🔎 설치 확인 — 폴더: ${info.projectRoot}\n`));
+  line(color.bold(`  🔎 설치 확인 — ${isGlobal ? '전역(모든 폴더): ' : '폴더: '}${info.projectRoot}\n`));
 
   if (info.agents.length === 0) {
-    ui.info('이 폴더엔 설치된 에이전트(팀)가 없습니다.');
+    ui.info(`${isGlobal ? '전역에' : '이 폴더엔'} 설치된 에이전트(팀)가 없습니다.`);
     line(color.gray('   먼저 "agentroster install <팀id>" 또는 메뉴에서 설치하세요.'));
-    line(color.gray('   (혹시 다른 폴더에 깔았다면: agentroster verify --dir "그 폴더 경로")'));
+    if (!isGlobal) {
+      line(color.gray('   (다른 폴더에 깔았다면: agentroster verify --dir "그 폴더 경로")'));
+      line(color.gray('   (모든 폴더 공용으로 깔았다면: agentroster verify --global)'));
+    }
     return;
   }
 
@@ -180,21 +212,26 @@ function cmdVerify(opts) {
   for (const a of info.agents) {
     line(`   • ${color.cyan(a.name)}   ${color.gray('(.claude/agents/' + a.file + ')')}`);
   }
-  line(color.gray(`   MCP 설정(.mcp.json): ${info.hasMcp ? '있음' : '없음'}`));
+  if (!isGlobal) line(color.gray(`   MCP 설정(.mcp.json): ${info.hasMcp ? '있음' : '없음'}`));
   line('');
   line(color.bold('  ⭐ Claude Code에서 진짜 보이는지 확인하는 법:'));
-  line('   1) 이 폴더에서 Claude Code를 ' + color.bold('완전히 새로') + ' 켜세요.');
-  line(color.gray('      (탐색기에서 이 폴더 → 주소창에 cmd → claude)'));
+  if (isGlobal) {
+    line('   1) Claude Code를 ' + color.bold('완전히 종료 후 아무 폴더에서나') + ' 새로 켜세요(전역이라 위치 무관).');
+  } else {
+    line('   1) 이 폴더에서 Claude Code를 ' + color.bold('완전히 새로') + ' 켜세요.');
+    line(color.gray('      (탐색기에서 이 폴더 → 주소창에 cmd → claude)'));
+  }
   line(`   2) ${color.red('이전 대화가 보이면 "이어하기"라 새 직원이 안 보입니다.')} 텅 빈 새 창이어야 함.`);
   line(`   3) 새 창에서 ${color.bold('/agents')} 또는 ${color.bold(`"${info.agents[0].name} 에이전트 불러줘"`)} 로 위 이름이 보이는지 확인.`);
   line('');
 }
 
 async function cmdRollback(opts) {
-  const target = resolveTarget(opts.dir);
+  const target = resolveTarget(opts.dir, { global: !!opts.global });
   const backups = listBackups(target);
   if (backups.length === 0) {
-    ui.info('되돌릴 백업이 없습니다(아직 설치 기록 없음).');
+    ui.info(`되돌릴 백업이 없습니다(아직 ${opts.global ? '전역 ' : ''}설치 기록 없음).`);
+    if (!opts.global) line(color.gray('   (전역 설치를 되돌리려면: agentroster rollback --global)'));
     return;
   }
   let chosen = backups[0];
@@ -216,7 +253,6 @@ async function cmdRollback(opts) {
 }
 
 async function cmdCustom(opts) {
-  const target = resolveTarget(opts.dir);
   banner();
   line(color.bold('  🧩 커스텀 팀 만들기 — 역할을 골라 나만의 팀을 구성합니다.\n'));
 
@@ -242,6 +278,9 @@ async function cmdCustom(opts) {
   }
 
   const preset = { id, name: (rawName || '').trim() || id, description: '커스텀 팀', roles, tools };
+
+  const useGlobal = await resolveScope(opts, resolveTarget(opts.dir).projectRoot);
+  const target = resolveTarget(opts.dir, { global: useGlobal });
 
   const plan = buildPlan(preset, target);
   printPlan(plan);

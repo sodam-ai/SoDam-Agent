@@ -176,6 +176,40 @@ removeRole('seo-expert');
 assert.equal(listPersonalRoles().length, 0, '삭제 후 0');
 ok('내 역할: 삭제 정상');
 
+// 12) 전역 설치(--global): 모든 폴더 공용 ~/.claude/agents에 설치 + 충돌 백업/되돌리기 (홈=임시폴더로 격리)
+process.env.AGENTROSTER_HOME = path.join(root, 'home');
+const g = resolveTarget(null, { global: true });
+assert.equal(g.scope, 'global', 'scope=global');
+assert.equal(g.mcpPath, null, '전역은 프로젝트 .mcp.json을 쓰지 않음(사용자 MCP 보호)');
+assert.ok(g.agentDir.startsWith(path.join(root, 'home')), '전역 경로가 격리된 홈 안');
+ok('전역: 경로/스코프 정확(mcpPath 없음 → 사용자 MCP 자동수정 안 함)');
+
+// 기존 전역 에이전트가 있다고 가정(이름 충돌 재현: planner)
+fs.mkdirSync(g.agentDir, { recursive: true });
+fs.writeFileSync(path.join(g.agentDir, 'planner.md'), '---\nname: planner\n---\nOLD-GLOBAL-PLANNER');
+const gplan = buildPlan(getPreset('web-app-team'), g);
+assert.ok(gplan.agents.find((a) => a.name === 'planner').exists, '충돌(planner) 감지');
+assert.equal(Object.keys(gplan.newServers).length, 0, '전역은 자동 MCP 0');
+assert.equal(gplan.manualMcp.length, 1, '전역 MCP는 수동 안내로만 표시(context7)');
+const { backup: gbk } = applyPlan(gplan);
+for (const n of ['planner', 'frontend-dev', 'backend-dev', 'reviewer']) {
+  assert.ok(fs.existsSync(path.join(g.agentDir, `${n}.md`)), `전역 ${n}.md 설치`);
+}
+// 핵심 안전: 백업은 '덮어쓴' 파일만 — 폴더의 다른 전역 에이전트를 통째 복사하지 않음
+const gman = JSON.parse(fs.readFileSync(path.join(gbk.dest, 'manifest.json'), 'utf8'));
+assert.deepEqual(gman.files.sort(), ['agents/planner.md'], '백업은 덮어쓴 파일만(통째 복사 X)');
+assert.ok(!fs.existsSync(path.join(root, 'home', '.gitignore')), '전역은 홈에 .gitignore 안 만듦');
+ok('전역 설치: ~/.claude/agents에 설치 + 충돌 파일만 백업(+홈 gitignore 없음)');
+
+// 되돌리기: 전역도 원상복구 — 추가분 삭제 + 덮어쓴 원본 복원
+restoreBackup(g, gman.id);
+assert.ok(
+  fs.readFileSync(path.join(g.agentDir, 'planner.md'), 'utf8').includes('OLD-GLOBAL-PLANNER'),
+  '덮어쓴 planner 원본 복원'
+);
+assert.ok(!fs.existsSync(path.join(g.agentDir, 'reviewer.md')), '설치가 추가한 reviewer 제거');
+ok('전역 되돌리기: 추가분 삭제 + 덮어쓴 원본 복원(원상복구)');
+
 console.log(`\n🎉 모든 검증 통과: ${pass}건`);
 fs.rmSync(root, { recursive: true, force: true });
 console.log('임시 폴더 정리 완료.');
