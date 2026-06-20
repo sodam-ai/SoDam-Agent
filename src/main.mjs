@@ -1,15 +1,17 @@
 // AgentRoster 메인 흐름. 인자 없으면 대화형 메뉴, 있으면 명령 실행.
+import path from 'node:path';
 import { PRESETS, getPreset } from './presets.mjs';
 import { resolveTarget } from './paths.mjs';
 import { buildPlan, printPlan, applyPlan } from './install.mjs';
 import { listBackups, restoreBackup } from './backup.mjs';
+import { buildExport, writeExport, readImport } from './share.mjs';
 import { runDoctor } from './doctor.mjs';
 import * as ui from './ui.mjs';
 
 const { color, line } = ui;
 
 export async function main(argv) {
-  const { cmd, preset, opts } = parseArgs(argv);
+  const { cmd, arg2, opts } = parseArgs(argv);
   switch (cmd) {
     case undefined:
     case '':
@@ -19,9 +21,13 @@ export async function main(argv) {
     case 'list':
       return cmdList();
     case 'install':
-      return cmdInstall({ ...opts, preset });
+      return cmdInstall({ ...opts, preset: arg2 });
     case 'rollback':
       return cmdRollback(opts);
+    case 'export':
+      return cmdExport({ ...opts, preset: arg2 });
+    case 'import':
+      return cmdImport({ ...opts, file: arg2 });
     case 'help':
     case '--help':
     case '-h':
@@ -33,16 +39,18 @@ export async function main(argv) {
 }
 
 function parseArgs(argv) {
-  const opts = { dir: undefined, yes: false };
+  const opts = { dir: undefined, out: undefined, yes: false };
   const positional = [];
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--yes' || a === '-y') opts.yes = true;
     else if (a === '--dir') opts.dir = argv[++i];
     else if (a.startsWith('--dir=')) opts.dir = a.slice(6);
+    else if (a === '--out') opts.out = argv[++i];
+    else if (a.startsWith('--out=')) opts.out = a.slice(6);
     else positional.push(a);
   }
-  return { cmd: positional[0], preset: positional[1], opts };
+  return { cmd: positional[0], arg2: positional[1], opts };
 }
 
 function banner() {
@@ -59,9 +67,12 @@ function printHelp() {
     agentroster list            프리셋(팀) 목록
     agentroster install <팀id>  팀 설치 (예: install web-app-team)
     agentroster rollback        되돌리기(가장 최근 백업)
+    agentroster export <팀id>   팀을 파일로 내보내기(공유용)
+    agentroster import <파일>   받은 팀 파일을 설치
 
   옵션:
-    --dir <폴더>   설치할 프로젝트 폴더 (기본: 현재 폴더)
+    --dir <폴더>   설치/내보낼 프로젝트 폴더 (기본: 현재 폴더)
+    --out <파일>   내보내기 파일 경로 (기본: <팀id>.agentroster.json)
     --yes, -y      확인 질문 없이 진행
 `);
 }
@@ -77,6 +88,14 @@ function cmdList() {
   }
 }
 
+async function pickPreset(promptText) {
+  const id = await ui.selectFromList(
+    promptText,
+    PRESETS.map((p) => ({ label: `${p.name} (${p.id})`, value: p.id, hint: p.description }))
+  );
+  return getPreset(id);
+}
+
 async function cmdInstall(opts) {
   const target = resolveTarget(opts.dir);
   let preset = opts.preset ? getPreset(opts.preset) : null;
@@ -84,13 +103,7 @@ async function cmdInstall(opts) {
     ui.warn(`그런 팀이 없습니다: ${opts.preset}.  'agentroster list'로 목록을 보세요.`);
     return;
   }
-  if (!preset) {
-    const id = await ui.selectFromList(
-      '어떤 팀을 설치할까요?',
-      PRESETS.map((p) => ({ label: `${p.name} (${p.id})`, value: p.id, hint: p.description }))
-    );
-    preset = getPreset(id);
-  }
+  if (!preset) preset = await pickPreset('어떤 팀을 설치할까요?');
 
   const plan = buildPlan(preset, target);
   printPlan(plan);
@@ -105,6 +118,10 @@ async function cmdInstall(opts) {
 
   const { backup } = applyPlan(plan);
   ui.success(`'${preset.name}' 설치 완료!`);
+  printAfterInstall(backup);
+}
+
+function printAfterInstall(backup) {
   line(color.gray(`   백업 위치: .agentroster/backups/${backup.id}  (되돌리기로 복구 가능)`));
   line('');
   ui.warn('중요: 새로 깐 에이전트는 "완전히 새 창"에서만 보입니다.');
@@ -120,7 +137,7 @@ async function cmdRollback(opts) {
     ui.info('되돌릴 백업이 없습니다(아직 설치 기록 없음).');
     return;
   }
-  let chosen = backups[0]; // 최신
+  let chosen = backups[0];
   if (!opts.yes) {
     const id = await ui.selectFromList(
       '어느 시점으로 되돌릴까요? (최신이 위)',
@@ -138,15 +155,63 @@ async function cmdRollback(opts) {
   ui.warn('변경을 반영하려면 Claude Code를 완전히 종료 후 새 창으로 다시 켜세요.');
 }
 
+async function cmdExport(opts) {
+  let preset = opts.preset ? getPreset(opts.preset) : null;
+  if (opts.preset && !preset) {
+    ui.warn(`그런 팀이 없습니다: ${opts.preset}.  'agentroster list'로 목록을 보세요.`);
+    return;
+  }
+  if (!preset) preset = await pickPreset('어떤 팀을 파일로 내보낼까요?');
+
+  const obj = buildExport(preset);
+  const out = path.resolve(opts.dir || process.cwd(), opts.out || `${preset.id}.agentroster.json`);
+  writeExport(obj, out);
+  ui.success(`'${preset.name}' 팀을 파일로 내보냈습니다.`);
+  line(color.gray(`   파일: ${out}`));
+  line('   이 파일을 다른 사람에게 주면, 그 사람도 `agentroster import` 로 같은 팀을 설치할 수 있어요.');
+  line(color.gray('   (비밀번호·API 키 값은 들어있지 않습니다 — 안전하게 공유 가능.)'));
+}
+
+async function cmdImport(opts) {
+  if (!opts.file) {
+    ui.warn('가져올 파일 경로를 알려주세요. 예: agentroster import 내팀.agentroster.json');
+    return;
+  }
+  const target = resolveTarget(opts.dir);
+  let preset;
+  try {
+    preset = readImport(path.resolve(opts.file));
+  } catch (e) {
+    ui.danger('가져오기 중단: ' + (e?.message || e));
+    return;
+  }
+
+  ui.warn('이 파일은 외부에서 온 것일 수 있습니다. 아래 "설치될 명령"을 꼭 확인하세요.');
+  const plan = buildPlan(preset, target);
+  printPlan(plan);
+
+  if (!opts.yes) {
+    const go = await ui.confirm('위 내용을 신뢰하고 설치할까요? (기존 설정은 먼저 백업됩니다)', false);
+    if (!go) {
+      ui.info('취소했습니다. 아무것도 바꾸지 않았습니다.');
+      return;
+    }
+  }
+  const { backup } = applyPlan(plan);
+  ui.success(`'${preset.name}' 팀을 가져와 설치했습니다.`);
+  printAfterInstall(backup);
+}
+
 async function interactiveMenu(opts) {
   banner();
-  // 진입 시 한 번 가볍게 진단
   runDoctor(resolveTarget(opts.dir));
   while (true) {
     const choice = await ui.selectFromList('무엇을 할까요?', [
       { label: '팀 설치하기', value: 'install', hint: '프리셋 팀을 골라 설치' },
       { label: '되돌리기', value: 'rollback', hint: '설치 전 상태로 복구' },
       { label: '팀 목록 보기', value: 'list', hint: '설치 가능한 팀' },
+      { label: '팀 내보내기(파일로)', value: 'export', hint: '내 팀을 파일로 저장해 공유' },
+      { label: '팀 가져오기(파일에서)', value: 'import', hint: '받은 팀 파일을 설치' },
       { label: '진단 다시 하기', value: 'doctor', hint: '환경 점검' },
       { label: '끝내기', value: 'quit' },
     ]);
@@ -157,6 +222,10 @@ async function interactiveMenu(opts) {
     if (choice === 'install') await cmdInstall(opts);
     else if (choice === 'rollback') await cmdRollback(opts);
     else if (choice === 'list') cmdList();
-    else if (choice === 'doctor') runDoctor(resolveTarget(opts.dir));
+    else if (choice === 'export') await cmdExport(opts);
+    else if (choice === 'import') {
+      const f = await ui.ask('가져올 팀 파일 경로를 입력하세요: ');
+      await cmdImport({ ...opts, file: f });
+    } else if (choice === 'doctor') runDoctor(resolveTarget(opts.dir));
   }
 }

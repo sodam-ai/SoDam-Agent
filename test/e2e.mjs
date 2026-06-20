@@ -8,6 +8,7 @@ import { getPreset } from '../src/presets.mjs';
 import { buildPlan, applyPlan } from '../src/install.mjs';
 import { listBackups, restoreBackup } from '../src/backup.mjs';
 import { isSafeName } from '../src/validate.mjs';
+import { buildExport, writeExport, readImport } from '../src/share.mjs';
 
 let pass = 0;
 const ok = (m) => {
@@ -92,6 +93,37 @@ restoreBackup(target, first.id);
 assert.ok(!fs.existsSync(path.join(target.agentDir, 'planner.md')), 'planner.md 제거됨');
 assert.ok(!fs.existsSync(path.join(target.agentDir, 'reviewer.md')), 'reviewer.md 제거됨');
 ok('되돌리기: 최초 설치가 추가한 에이전트 모두 제거(원상복구)');
+
+// 6) 공유: 내보내기 → 가져오기 왕복
+const expFile = path.join(root, 'team.agentroster.json');
+writeExport(buildExport(getPreset('web-app-team')), expFile);
+assert.ok(fs.existsSync(expFile), '내보내기 파일 생성');
+const imported = readImport(expFile);
+assert.equal(imported.id, 'web-app-team', '가져오기 id 복원');
+assert.equal(imported.roles.length, 4, '가져오기 역할 4개 복원');
+ok('공유: 내보내기 → 가져오기 왕복 정상');
+
+// 7) 보안: 공유 파일에 비밀 '값'이 안 들어감(키 이름만)
+const withSecret = {
+  id: 'sec-team', name: 'sec', description: 'x',
+  roles: [{ name: 'r1', description: 'd', systemPrompt: 's' }],
+  tools: [{ id: 'mcpx', type: 'mcp', name: 'X', installSpec: { command: 'npx', args: [], env: { API_KEY: 'super-secret-value' } } }],
+};
+const exp2 = buildExport(withSecret);
+assert.equal(exp2.tools[0].installSpec.env.API_KEY, '', '비밀 값 제거(키 이름만)');
+assert.ok(!JSON.stringify(exp2).includes('super-secret-value'), '공유 객체에 비밀 값 없음');
+ok('보안: 공유 파일에 비밀 값 미포함(키 이름만 보존)');
+
+// 8) 보안: 악성 가져오기 차단(경로조작 이름·형식불일치·대용량)
+function importBlocked(name, content) {
+  const f = path.join(root, name);
+  fs.writeFileSync(f, content);
+  try { readImport(f); return false; } catch { return true; }
+}
+assert.ok(importBlocked('evil.json', JSON.stringify({ format: 'agentroster-team', version: 1, id: '../../evil', roles: [{ name: 'x', description: 'd', systemPrompt: 's' }] })), '경로조작 id 차단');
+assert.ok(importBlocked('bad.json', JSON.stringify({ hello: 'world' })), '형식 불일치 차단');
+assert.ok(importBlocked('big.json', '{"format":"agentroster-team","version":1,"roles":[],"_pad":"' + 'A'.repeat(300 * 1024) + '"}'), '대용량(256KB+) 차단');
+ok('보안: 악성 가져오기 차단(경로조작·형식불일치·대용량)');
 
 console.log(`\n🎉 모든 검증 통과: ${pass}건`);
 fs.rmSync(root, { recursive: true, force: true });
