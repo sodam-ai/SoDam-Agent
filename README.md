@@ -43,8 +43,12 @@
 | `node bin/cli.mjs doctor` | 내 컴퓨터 환경 점검 |
 | `node bin/cli.mjs install web-app-team` | 웹앱팀 설치 |
 | `node bin/cli.mjs rollback` | 되돌리기 |
+| `node bin/cli.mjs export web-app-team` | 팀을 파일로 내보내기(공유용) |
+| `node bin/cli.mjs import <파일>` | 받은 팀 파일을 안전하게 설치 |
 
-옵션: `--dir <폴더>` 설치할 폴더 지정(기본=현재 폴더) · `--yes` 확인 질문 없이 진행
+옵션: `--dir <폴더>` 설치할 폴더 지정(기본=현재 폴더) · `--out <파일>` 내보낼 파일 경로 · `--yes` 확인 질문 없이 진행
+
+> **팀 공유:** `export`로 만든 `*.agentroster.json` 파일을 다른 사람에게 주면, 그 사람도 `import`로 같은 팀을 깝니다. 공유 파일엔 **비밀번호·API 키 값이 들어가지 않습니다**(키 이름만). 받은 파일을 `import`할 땐 **설치될 명령을 미리 보여주고 확인**받으며, 위험한 이름·형식·대용량 파일은 자동 차단합니다.
 
 ---
 

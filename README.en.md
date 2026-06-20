@@ -43,8 +43,12 @@ When it finishes, you'll see guidance — **fully quit and reopen Claude Code**,
 | `node bin/cli.mjs doctor` | Check your environment |
 | `node bin/cli.mjs install web-app-team` | Install the web app team |
 | `node bin/cli.mjs rollback` | Roll back |
+| `node bin/cli.mjs export web-app-team` | Export a team to a file (for sharing) |
+| `node bin/cli.mjs import <file>` | Safely install a received team file |
 
-Options: `--dir <folder>` target folder (default = current) · `--yes` skip confirmation
+Options: `--dir <folder>` target folder (default = current) · `--out <file>` export file path · `--yes` skip confirmation
+
+> **Sharing teams:** Give the `*.agentroster.json` file made by `export` to someone else, and they can install the same team with `import`. Shared files **never contain secret values** (key names only). When you `import` a received file, the **commands to be installed are shown for confirmation first**, and dangerous names / wrong formats / oversized files are auto-rejected.
 
 ---
 
