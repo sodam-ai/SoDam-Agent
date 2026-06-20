@@ -11,3 +11,5 @@ node_modules/
 # 플러그인이 만든 세션 산출물 (제품 아님 — 공개 제외)
 .complexity-log.md
 .todos-report.md/
+.pair-programming-session.md
+.plugin-config/
