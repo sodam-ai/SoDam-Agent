@@ -1,0 +1,30 @@
+{
+  "name": "agentroster",
+  "owner": {
+    "name": "SoDam AI Studio"
+  },
+  "description": "역할별 에이전트 팀을 한 번에 설치하는 비개발자용 마켓플레이스 (Claude Code)",
+  "plugins": [
+    {
+      "name": "web-app-team",
+      "source": "./plugins/web-app-team",
+      "description": "웹앱 빌드팀 — 기획·프론트·백엔드·리뷰 (context7 MCP 포함)",
+      "version": "0.1.0",
+      "author": { "name": "SoDam AI Studio" }
+    },
+    {
+      "name": "docs-team",
+      "source": "./plugins/docs-team",
+      "description": "문서/콘텐츠팀 — 초안·편집·사실확인",
+      "version": "0.1.0",
+      "author": { "name": "SoDam AI Studio" }
+    },
+    {
+      "name": "research-team",
+      "source": "./plugins/research-team",
+      "description": "리서치팀 — 수집·분석·반증 (context7 MCP 포함)",
+      "version": "0.1.0",
+      "author": { "name": "SoDam AI Studio" }
+    }
+  ]
+}
