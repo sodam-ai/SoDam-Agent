@@ -16,6 +16,17 @@ export function assertSafeName(name, kind = '이름') {
   }
 }
 
+// 사용자가 자유 입력한 이름(한글·공백·특수문자 포함)을 안전한 식별자로 정화한다.
+// 소문자+숫자+하이픈만 남김. 결과가 비면 호출부에서 기본값으로 대체.
+export function toSafeName(input) {
+  return String(input || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .replace(/-{2,}/g, '-')
+    .slice(0, 50);
+}
+
 // 프리셋(또는 가져온 팀)의 기본 구조를 검증한다. 신뢰 못 할 입력 전제.
 export function validatePreset(p) {
   if (!p || typeof p !== 'object') throw new Error('프리셋 형식이 올바르지 않습니다.');

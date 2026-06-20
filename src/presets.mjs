@@ -136,3 +136,17 @@ export const PRESETS = [
 export function getPreset(id) {
   return PRESETS.find((p) => p.id === id) || null;
 }
+
+// 커스텀 마법사용: 모든 프리셋의 역할을 합쳐 중복 제거(이름 기준)
+export function getRoleLibrary() {
+  const seen = new Map();
+  for (const p of PRESETS) for (const r of p.roles) if (!seen.has(r.name)) seen.set(r.name, r);
+  return [...seen.values()];
+}
+
+// 커스텀 마법사용: 모든 프리셋의 추천 도구(MCP)를 합쳐 중복 제거(id 기준)
+export function getToolLibrary() {
+  const seen = new Map();
+  for (const p of PRESETS) for (const t of p.tools || []) if (!seen.has(t.id)) seen.set(t.id, t);
+  return [...seen.values()];
+}

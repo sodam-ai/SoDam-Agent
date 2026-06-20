@@ -53,3 +53,20 @@ export async function selectFromList(title, items) {
     warn(`1 ~ ${items.length} 사이의 번호를 입력해 주세요.`);
   }
 }
+
+// 여러 개를 쉼표로 고르는 메뉴. items: [{ label, value, hint }] → 고른 value 배열 반환.
+export async function selectMultiple(title, items, { min = 1 } = {}) {
+  line('\n' + color.bold(title));
+  items.forEach((it, i) => {
+    const num = color.cyan(String(i + 1).padStart(2));
+    const hint = it.hint ? color.gray('  — ' + it.hint) : '';
+    line(`  ${num}. ${it.label}${hint}`);
+  });
+  while (true) {
+    const a = await ask('\n넣고 싶은 번호들을 쉼표로 입력 (예: 1,3,4): ');
+    const nums = [...new Set(a.split(/[,\s]+/).filter(Boolean).map(Number))];
+    const ok = nums.length >= min && nums.every((n) => Number.isInteger(n) && n >= 1 && n <= items.length);
+    if (ok) return nums.map((n) => items[n - 1].value);
+    warn(`1 ~ ${items.length} 사이의 번호를 쉼표로 ${min}개 이상 입력해 주세요.`);
+  }
+}

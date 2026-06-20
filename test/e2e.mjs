@@ -4,10 +4,10 @@ import os from 'node:os';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import { resolveTarget } from '../src/paths.mjs';
-import { getPreset } from '../src/presets.mjs';
+import { getPreset, getRoleLibrary } from '../src/presets.mjs';
 import { buildPlan, applyPlan } from '../src/install.mjs';
 import { listBackups, restoreBackup } from '../src/backup.mjs';
-import { isSafeName } from '../src/validate.mjs';
+import { isSafeName, toSafeName } from '../src/validate.mjs';
 import { buildExport, writeExport, readImport } from '../src/share.mjs';
 
 let pass = 0;
@@ -124,6 +124,23 @@ assert.ok(importBlocked('evil.json', JSON.stringify({ format: 'agentroster-team'
 assert.ok(importBlocked('bad.json', JSON.stringify({ hello: 'world' })), '형식 불일치 차단');
 assert.ok(importBlocked('big.json', '{"format":"agentroster-team","version":1,"roles":[],"_pad":"' + 'A'.repeat(300 * 1024) + '"}'), '대용량(256KB+) 차단');
 ok('보안: 악성 가져오기 차단(경로조작·형식불일치·대용량)');
+
+// 9) 커스텀 팀: 이름 정화 + 라이브러리에서 역할 골라 조립 → 설치
+assert.equal(toSafeName('My Blog Team'), 'my-blog-team', '이름 정화(영문)');
+assert.equal(toSafeName('  weird__name!! '), 'weird-name', '이름 정화(특수문자)');
+assert.equal(toSafeName('내 팀'), '', '한글 이름→빈값(호출부 기본값으로 대체)');
+const lib = getRoleLibrary();
+assert.ok(lib.length >= 8, '역할 라이브러리 통합(중복 제거)');
+const cTarget = resolveTarget(path.join(root, 'custom-proj'));
+const customTeam = {
+  id: 'my-blog-team', name: '내 블로그팀', description: '커스텀',
+  roles: lib.filter((r) => ['planner', 'writer'].includes(r.name)), // 서로 다른 프리셋의 역할 조합
+  tools: [],
+};
+applyPlan(buildPlan(customTeam, cTarget));
+assert.ok(fs.existsSync(path.join(cTarget.agentDir, 'planner.md')), 'planner.md 설치');
+assert.ok(fs.existsSync(path.join(cTarget.agentDir, 'writer.md')), 'writer.md 설치');
+ok('커스텀: 역할 라이브러리에서 골라 조립 → 설치');
 
 console.log(`\n🎉 모든 검증 통과: ${pass}건`);
 fs.rmSync(root, { recursive: true, force: true });
