@@ -1,0 +1,13 @@
+node_modules/
+
+# AgentRoster (백업·비밀 포함 가능 — Git에 올리지 않음)
+.agentroster/
+
+# 내부 전략 문서·세션 상태 (공개 저장소에 올리지 않음 — 필요 시 사용자 결정으로 포함)
+.PRD/
+.omc/
+*.bak
+
+# 플러그인이 만든 세션 산출물 (제품 아님 — 공개 제외)
+.complexity-log.md
+.todos-report.md/

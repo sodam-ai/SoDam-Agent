@@ -1,0 +1,27 @@
+{
+  "name": "agentroster",
+  "version": "0.1.0",
+  "description": "Claude Code에 역할별 에이전트 팀을 명령어 한 번으로 설치·구성하는 비개발자용 CLI",
+  "author": "SoDam AI Studio",
+  "type": "module",
+  "bin": {
+    "agentroster": "bin/cli.mjs"
+  },
+  "scripts": {
+    "start": "node bin/cli.mjs",
+    "doctor": "node bin/cli.mjs doctor",
+    "list": "node bin/cli.mjs list",
+    "test": "node test/e2e.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "Apache-2.0",
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ]
+}

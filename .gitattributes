@@ -1,0 +1,3 @@
+# 줄바꿈 일관성: 소스는 LF, Windows 배치 파일은 CRLF로 고정
+* text=auto eol=lf
+*.bat text eol=crlf
