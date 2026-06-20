@@ -9,6 +9,29 @@
 
 ---
 
+## ⭐ Install as a plugin (Claude Code · easiest · recommended)
+
+> There are two ways to install — **(A) plugin (this section, recommended)** or **(B) npx CLI (from "Requirements" below)**.
+> The plugin needs **no terminal or folder navigation**: two commands inside Claude Code, and once installed it's visible in **every folder and session**.
+
+1. **Open Claude Code.**
+2. **Add the marketplace** (one time only):
+   ```
+   /plugin marketplace add sodam-ai/AgentRoster
+   ```
+3. **Install the team you want:**
+   ```
+   /plugin install web-app-team@agentroster
+   ```
+   Other teams: `docs-team@agentroster` · `research-team@agentroster`
+4. **Verify:** open `/agents` — names appear like `web-app-team:reviewer` (**`team:role`**), so the ones you installed are unambiguous.
+5. **Remove:** uninstall the plugin from the `/plugin` menu.
+
+> 📌 `web-app-team` and `research-team` come with the **context7 MCP** wired up (team-level).
+> ⚠️ This plugin currently lives on the `feat/plugin-marketplace` branch, so the commands above work **after it is merged into the default branch**. To try it before then, clone the repo and run `claude --plugin-dir ./plugins/web-app-team`.
+
+---
+
 ## 1. Requirements (just one)
 
 - **Node.js 18+** — if you don't have it, get the **"LTS"** build from https://nodejs.org.

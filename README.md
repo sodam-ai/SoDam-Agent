@@ -9,6 +9,29 @@
 
 ---
 
+## ⭐ 플러그인으로 설치 (Claude Code · 가장 쉬움 · 추천)
+
+> 설치 방법은 두 가지 — **(A) 플러그인(이 섹션, 추천)** 또는 **(B) npx CLI(아래 "준비물"부터)**.
+> 플러그인은 **터미널·폴더 이동 없이** Claude Code 안에서 명령 두 줄이면 끝, 한 번 깔면 **모든 폴더·세션에서** 보입니다.
+
+1. **Claude Code를 켭니다.**
+2. **마켓플레이스 등록** (맨 처음 한 번만):
+   ```
+   /plugin marketplace add sodam-ai/AgentRoster
+   ```
+3. **원하는 팀 설치:**
+   ```
+   /plugin install web-app-team@agentroster
+   ```
+   다른 팀: `docs-team@agentroster` · `research-team@agentroster`
+4. **확인:** `/agents` 에서 `web-app-team:reviewer` 처럼 **`팀:역할`** 로 보이면 성공 (이름이 안 겹쳐 내가 깐 게 분명히 구분됩니다).
+5. **제거:** `/plugin` 메뉴에서 해당 플러그인을 uninstall.
+
+> 📌 `web-app-team`·`research-team`은 **context7 MCP**가 팀 공용으로 함께 연결됩니다.
+> ⚠️ 현재 이 플러그인은 `feat/plugin-marketplace` 브랜치에 있어, **기본 브랜치에 병합된 뒤** 위 명령이 그대로 동작합니다. 그 전에 미리 써보려면 저장소를 내려받아 `claude --plugin-dir ./plugins/web-app-team` 로 테스트하세요.
+
+---
+
 ## 1. 준비물 (딱 하나)
 
 - **Node.js 18 이상** — 컴퓨터에 없으면 https://nodejs.org 에서 **"LTS"** 버전을 받아 설치하세요.
