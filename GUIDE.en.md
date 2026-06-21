@@ -1,4 +1,4 @@
-# AgentRoster — Beginner Guide (English)
+# SoDam-Agent — Beginner Guide (English)
 
 [한국어 가이드](./GUIDE.md) · [README (reference)](./README.en.md)
 
@@ -10,15 +10,17 @@
 ## 0. First — what is this? (1 min)
 
 - **Claude Code**: a program that lets you give tasks to an AI. Normally you talk to **one AI**.
-- **AgentRoster**: a tool that adds **several AI teammates (a team)** to Claude Code at once.
-  e.g., it "hires" a *planner · frontend developer · backend developer · reviewer* all together.
-- What you'll do: type **two commands** into Claude Code. That's it.
+- **SoDam-Agent**: a tool that adds **several AI teammates (a team)** to Claude Code at once, and lets you **create and train your own agents even after installing**.
+  e.g., it "hires" a *planner · frontend developer · backend developer · reviewer* all together — and lets you *hire and train more*.
+- What you'll do: type **a few commands** into Claude Code. That's it.
 
 > 💡 **One-line glossary**
-> - **Plugin**: a *part you snap into* a program. (AgentRoster is that part.)
+> - **Plugin**: a *part you snap into* a program. (SoDam-Agent is that part.)
 > - **Marketplace**: a *store that collects parts*. Register it, then you can grab parts.
 > - **Agent (subagent)**: one AI teammate.
 > - **Input box**: the field at the bottom of Claude Code where you type.
+
+> 📛 **Naming note**: the product is named **SoDam-Agent**. But the `@agentroster` after a team name in install commands is the *store's internal id* — the letters differ, but **type it as-is** (it's normal).
 
 ---
 
@@ -41,10 +43,10 @@
 ### Step 2 · Register the store (marketplace) — once only
 👉 Type this **exactly** in the input box and press Enter:
 ```
-/plugin marketplace add sodam-ai/AgentRoster
+/plugin marketplace add sodam-ai/SoDam-Agent
 ```
 🖥️ Success when you see a "marketplace added" message.
-> ⚠️ If it *fails* or says *not found*: it may not be published yet. In that case see **"Advanced: run from a download"** at the bottom.
+> ⚠️ If it says `Marketplace file not found`: GitHub may need **1–2 minutes** to propagate. Wait a moment and try again.
 
 ### Step 3 · Install a team
 👉 Type your chosen team and Enter (one is fine):
@@ -54,7 +56,15 @@
 - Docs team: `/plugin install docs-team@agentroster`
 - Research team: `/plugin install research-team@agentroster`
 
-🖥️ Done when you see an "installed" message!
+### Step 4 · (Optional) Install the management tool
+To **create and train your own agents**, also install:
+```
+/plugin install sodam-agent@agentroster
+```
+
+### Step 5 · ⭐ Restart — the most important step!
+👉 Type `/exit` to quit, then open `claude` again. (Or fully close and reopen the window.)
+> **Why?** Plugins are **loaded once when Claude Code starts**. So **before a restart**, the agents/commands you just installed **won't appear.** (This is the most common gotcha!)
 
 ---
 
@@ -86,61 +96,96 @@ Ask docs-team:editor to make this text smoother
 
 ---
 
-## 5. When you no longer need it (remove)
+## 5. Create & train your own agents (sodam-agent tool)
+
+If you installed `sodam-agent` in Step 4 and restarted, type `/sodam-agent:` to see these commands.
+
+### ➕ Create a new agent
+```
+/sodam-agent:new-agent
+```
+🖥️ It asks for name·job·personality. Answer, and **your agent** is created. (e.g., "a friendly helper that explains things in Korean")
+
+### 🎓 Train an agent
+```
+/sodam-agent:training-agent
+```
+🖥️ It edits the agent's **instructions** to change behavior. e.g., `Train the helper I just made to answer more briefly`
+> **What is "training"?** Not re-training the AI — it **changes the instructions** you give the agent. (Like updating a note that says "from now on, do it this way.")
+
+### 📋 Copy a team agent into yours
+```
+/sodam-agent:pick-agent
+```
+> **Why copy?** Team agents (`web-app-team:reviewer`, etc.) **can't be edited directly** (your edits vanish on update). So you make a **copy** and train that. (Like copying a library book into your own notebook to mark it up.)
+
+### 💾 Save · 🗑️ Delete an agent
+```
+/sodam-agent:save-agent     ← save your agent so every project can use it
+/sodam-agent:remove-agent   ← delete an agent (backs up first, then asks "delete for sure?")
+```
+> ⚠️ **Deletion caution**: the list may include agents **you actually use**. To practice, create a **throwaway** agent with `new-agent` and delete that one.
+
+---
+
+## 6. When you no longer need it (remove)
 
 👉 Type and Enter:
 ```
 /plugin
 ```
-🖥️ Your installed plugins are listed. Select the team and choose **uninstall**.
+🖥️ Your installed plugins are listed. Select the team/tool and choose **uninstall**.
 > Removal is handled safely by Claude Code — if you remove it by mistake, just install it again.
 
 ---
 
-## 6. When you get stuck (common cases)
+## 7. When you get stuck (common cases)
 
 | If this happens | Why? | Do this |
 |---|---|---|
+| Installed but `/agents`·`/sodam-agent:` show **nobody** | You **didn't restart** | **Quit and reopen Claude Code** (`/exit` → `claude`). Still missing? `/reload-plugins` |
+| `/sodam-agent` shows **unrelated stuff** (team-agents, etc.) | `sodam-agent` not installed or no restart | `/plugin install sodam-agent@agentroster` → **restart**. Type `/sodam-agent:` with the colon |
+| `marketplace add` says "not found" | GitHub propagation delay / typo | Retry in **1–2 min**. Still failing? `/plugin marketplace remove sodam-ai` then add again |
 | `/plugin` does nothing | Old Claude Code | **Update Claude Code** to the latest |
-| `marketplace add` won't work | Not published yet, or typo | Retry after it's published / use "Advanced" below |
 | Pasting a path gives an `Invalid ... format` error | The path **includes quotes (")** | **Remove the quotes** — path only. Use a space-free folder |
 | Added but `/agents` shows **nobody** | You did `marketplace add` but **not `install`** | Run `/plugin install <team>@agentroster` **once more** |
-| Installed but nothing in `/agents` | Not loaded yet | Type `/reload-plugins` → still missing? **Restart Claude Code** |
+| Trained a team agent but it reverted | You **edited a team agent directly** (overwritten on update) | Use `/sodam-agent:pick-agent` to make a **copy**, then train the copy |
 | The doc-search tool errors | No Node.js / blocked internet | Install LTS from nodejs.org / try another network |
-| Install fails on work network | Firewall / proxy | Try another network (e.g., home) |
 | Want to use it on a phone | — | This tool is **for Claude Code on a computer** (no standalone phone use) |
 
 ---
 
-## 7. Safety & cost (must know)
+## 8. Safety & cost (must know)
 
-- **Safe to remove.** Install/uninstall is managed by Claude Code.
-- **Passwords/keys are not stored in files.** (Tool config holds only the key *name*.)
+- **Safe to remove.** Install/uninstall is managed by Claude Code. Agent deletion also goes through backup + confirm.
+- **Passwords/keys are not stored in files.** (Tool config & agent creation hold only the key *name*.)
 - This tool is provided **"AS IS" with no warranty.** You are responsible for its use.
 - For any external tool (e.g., context7 doc search) or service you install, **check its pricing/terms yourself.** (Most have a free tier, but policies can change.)
 
 ---
 
-## 8. License (short)
+## 9. License (short)
 
 - **Apache License 2.0** — commercial use, modification, copying, and redistribution allowed (keep copyright notices, state changes, preserve NOTICE). See `LICENSE`·`NOTICE`.
-- "Claude Code/Anthropic/Context7" etc. are their companies' names (trademarks); **AgentRoster is unofficial and not affiliated.**
+- "Claude Code/Anthropic/Context7" etc. are their companies' names (trademarks); **SoDam-Agent is unofficial and not affiliated.** Whether the name "SoDam-Agent" is registrable as a trademark is undetermined — verify before commercial use.
+- Agent instructions/templates are **self-authored** and some text may be **AI-generated**. Review before sensitive commercial use.
 
 ---
 
-## 9. (Advanced) When the marketplace isn't ready — try it from your folder
+## 10. (Advanced) Instead of the marketplace — run it from your folder
 
-Even before publish, you can **register the downloaded folder as a "store"** (inside Claude Code, no terminal).
+You can **register a downloaded folder as a "store"** (inside Claude Code, no terminal).
 1. Download this project (ZIP from GitHub → unzip).
 2. In the Claude Code **input box** (⚠️ **no quotes**, a space-free path):
    ```
-   /plugin marketplace add C:\downloaded-folder\AgentRoster
+   /plugin marketplace add C:\downloaded-folder\SoDam-Agent
    ```
-3. Then install a team — **skip this and you'll see no teammates**:
+3. Then install teams/tool — **skip this and you'll see no teammates**:
    ```
    /plugin install web-app-team@agentroster
+   /plugin install sodam-agent@agentroster
    ```
-4. The rest is the same as **Steps 3·4 (verify·use)** above.
+4. **Restart** to apply. The rest is the same as **Steps 3·4·5** above.
 > 💡 If you prefer a terminal: `claude --plugin-dir "downloaded-folder\plugins\web-app-team"` also works.
 
 ---

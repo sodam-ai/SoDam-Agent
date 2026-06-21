@@ -1,38 +1,43 @@
-# AgentRoster
+# SoDam-Agent
 
 [한국어](./README.md) | **English** · [Beginner Guide (GUIDE)](./GUIDE.en.md)
 
-> A **beginner-friendly** tool that adds **role-based AI teammate teams** (planner, developer, reviewer, …) to Claude Code with **a single plugin install**.
-> No hand-editing config files — **two commands** inside Claude Code and your team is ready.
+> A **beginner-friendly** tool that adds **role-based AI teammate teams** (planner, developer, reviewer, …) to Claude Code with **a single plugin install** — and lets you **create, train, and manage your own agents even after installing**.
+> No hand-editing config files — **a few commands** inside Claude Code and you're set.
 > This is an **installer tool** for teams. It does **not** run the agents for you.
+
+> 📛 **Naming note (so you don't get confused)**
+> - **Product / repository name = `SoDam-Agent`** (marketplace address: `sodam-ai/SoDam-Agent`)
+> - **The `@agentroster` in install commands = the marketplace's internal id.** The letters differ from the product name, but that's **normal** — just type it as-is.
 
 ---
 
 ## 📑 Table of Contents
-1. [What is AgentRoster? (in plain words)](#1-what-is-agentroster-in-plain-words)
+1. [What is SoDam-Agent? (in plain words)](#1-what-is-sodam-agent-in-plain-words)
 2. [Prerequisites & required programs](#2-prerequisites--required-programs)
 3. [Download & install](#3-download--install)
 4. [Quick start (3 steps)](#4-quick-start-3-steps)
-5. [Installable teams (3)](#5-installable-teams-3)
+5. [What you can install (3 teams + management tool)](#5-what-you-can-install-3-teams--management-tool)
 6. [How to use it](#6-how-to-use-it)
-7. [Command reference](#7-command-reference)
-8. [Workflow](#8-workflow-at-a-glance)
-9. [File & document locations](#9-file--document-locations)
-10. [Troubleshooting](#10-troubleshooting-symptom--cause--fix)
-11. [Safety & disclaimer](#11-safety--disclaimer)
-12. [License · Copyright · Commercial use](#12-license--copyright--commercial-use-important)
+7. [Manage your own agents after install (sodam-agent)](#7-manage-your-own-agents-after-install-sodam-agent)
+8. [Command reference](#8-command-reference)
+9. [Workflow](#9-workflow-at-a-glance)
+10. [File & document locations](#10-file--document-locations)
+11. [Troubleshooting](#11-troubleshooting-symptom--cause--fix)
+12. [Safety & disclaimer](#12-safety--disclaimer)
+13. [License · Copyright · Commercial use](#13-license--copyright--commercial-use-important)
 
 ---
 
-## 1. What is AgentRoster? (in plain words)
+## 1. What is SoDam-Agent? (in plain words)
 
 Claude Code lets you give tasks to an AI — usually you talk to **one AI**.
-**AgentRoster** adds **several AI teammates (subagents) as a "team set"** to Claude Code at once.
+**SoDam-Agent** adds **several AI teammates (subagents) as a "team set"** to Claude Code at once. And **even after installing**, you can **create new agents yourself** and **train them** to behave the way you want.
 
-- Analogy: it "hires" *role-based teammates* — **planner · frontend-dev · backend-dev · reviewer** — for your previously solo AI, all in one go.
-- You **never** create files or edit config by hand. Just pick a team.
+- Analogy: it "hires" *role-based teammates* — **planner · frontend-dev · backend-dev · reviewer** — for your previously solo AI, and lets you *hire and train more* as needed.
+- You **never** create files or edit config by hand. Just pick from menus/commands.
 
-> In one line: **"A tool that installs AI teammate teams into Claude Code in a few clicks."**
+> In one line: **"A tool that installs AI teammate teams into Claude Code, and lets you create and train your own."**
 
 ---
 
@@ -53,47 +58,58 @@ Claude Code lets you give tasks to an AI — usually you talk to **one AI**.
 There are two methods. **For most people, Method A (marketplace)** is all you need.
 
 ### ⭐ Method A — Install from the marketplace (recommended, easiest)
-**Two commands** inside Claude Code. No terminal, no folder navigation, no "open in the right folder" hassle.
+**A few commands** inside Claude Code. No terminal, no folder navigation.
 
 1. **Open Claude Code.**
 2. **Add the marketplace** (one time only):
    ```
-   /plugin marketplace add sodam-ai/AgentRoster
+   /plugin marketplace add sodam-ai/SoDam-Agent
    ```
+   🖥️ Success when you see a "marketplace added" message.
 3. **Install the team you want:**
    ```
    /plugin install web-app-team@agentroster
    ```
    - Other teams: `docs-team@agentroster` · `research-team@agentroster`
+4. **(Optional) Install the agent-management tool** — to create & train your own agents:
+   ```
+   /plugin install sodam-agent@agentroster
+   ```
+5. **Restart Claude Code (quit and reopen).**
+   - ⚠️ **The most common gotcha**: right after install, `/agents`·`/sodam-agent:` may **not appear** — plugins are **loaded once when Claude Code starts**. **Restart and they show up.**
 
-> ⚠️ **Important (current status)**: the marketplace commands above work **after the plugin is on the repository's default branch (i.e., after publishing/merge)**. If it isn't ready yet, use **Method B** first.
+> 💡 `@agentroster` is the marketplace's internal id — type it as-is (it's fine that it differs from the product name SoDam-Agent).
 
-### Method B — Try it before publish, from your own folder (inside Claude Code, no terminal)
-Even before the marketplace is public, you can **register the downloaded folder as a "store"** and install inside Claude Code.
+### Method B — Run it from your own folder (inside Claude Code, no terminal)
+Instead of the online marketplace, you can **register a downloaded folder as a "store."**
 1. Get this repository (`git clone` or download the ZIP from GitHub and unzip).
 2. In the Claude Code **input box** (⚠️ **no quotes**, prefer a space-free path):
    ```
-   /plugin marketplace add C:\downloaded-folder\AgentRoster
+   /plugin marketplace add C:\downloaded-folder\SoDam-Agent
    ```
-3. Then install a team (skip this and `/agents` will be empty):
+3. Then install teams/tool (skip this and `/agents` will be empty):
    ```
    /plugin install web-app-team@agentroster
+   /plugin install sodam-agent@agentroster
    ```
+4. **Restart** to apply.
 > 💡 If you prefer a terminal: `claude --plugin-dir "<downloaded folder>\plugins\web-app-team"` also works (repeat `--plugin-dir` for multiple teams).
 
 ---
 
 ## 4. Quick start (3 steps)
 
-1. In Claude Code: `/plugin marketplace add sodam-ai/AgentRoster` (once).
-2. `/plugin install web-app-team@agentroster`.
+1. In Claude Code: `/plugin marketplace add sodam-ai/SoDam-Agent` (once).
+2. `/plugin install web-app-team@agentroster` → **restart**.
 3. Open `/agents` — if you see a name like **`web-app-team:reviewer`**, you're done → use it: `Have web-app-team:reviewer review this code`.
 
-> Expected time: **about 2–3 minutes.**
+> Expected time: **about 2–3 minutes.** (To also create/train agents, install `sodam-agent` in step 4 above.)
 
 ---
 
-## 5. Installable teams (3)
+## 5. What you can install (3 teams + management tool)
+
+**① Team plugins (bundles of AI teammates)**
 
 | Team (install name) | Name | AI teammates (roles) | Bundled tool (MCP) |
 |---|---|---|---|
@@ -102,6 +118,8 @@ Even before the marketplace is public, you can **register the downloaded folder 
 | `research-team` | Research Team | researcher · analyst · critic | context7 |
 
 > Each teammate gets **least-privilege tools** (e.g., the reviewer is read-only). Model is `inherit` (follows your default model).
+
+**② Management tool plugin (`sodam-agent`)** — after installing teams, this is the **command set to create and train your own agents**. See [section 7](#7-manage-your-own-agents-after-install-sodam-agent).
 
 ---
 
@@ -117,84 +135,121 @@ After installing, teammates are registered as **`team:role`** (e.g., `web-app-te
   3. Automatic: Claude may delegate to the right teammate based on the task.
 - **Tools (MCP)**: installing `web-app-team`·`research-team` **also connects the context7 (doc search) tool** automatically (no extra setup).
 
-> 💡 Plugins are visible in **every folder and every session** right away — no need to launch Claude in a specific folder.
+> 💡 Plugins are visible in **every folder and every session** right away (after one restart) — no need to launch Claude in a specific folder.
 
 ---
 
-## 7. Command reference
+## 7. Manage your own agents after install (sodam-agent)
+
+With `sodam-agent` installed, you can create and manage agents **inside Claude Code with slash commands** — no terminal. (Claude Code's native `/agents` "Create" is hard for beginners to find, so this replaces it with **one command**.)
+
+> Type `/sodam-agent:` to narrow to the 5 commands below. (Don't see them? → **restart**.)
+
+| Command | What it does | One-line note |
+|---|---|---|
+| `/sodam-agent:new-agent` | **Create a new agent** | Asks name·job·personality, then creates your agent (`.claude/agents/`). |
+| `/sodam-agent:training-agent` | **Train an agent** | Edits the agent's instructions to change its behavior. *(read "What is training?" below)* |
+| `/sodam-agent:save-agent` | **Save / reuse an agent** | Saves your agent globally (usable in every project) or backs it up. |
+| `/sodam-agent:pick-agent` | **Copy a team agent to yours** | Copies a team agent into your own agents. |
+| `/sodam-agent:remove-agent` | **Delete an agent** | Safely deletes your agent (`.bak` backup + "delete for sure?" confirm). |
+
+### 🎓 What is "training"? (an honest explanation)
+- Here, **training is NOT re-training the AI.** It edits the agent's **instructions (system prompt)** to change behavior. (e.g., "Reviewer, from now on focus on **security**.")
+- **Agents you created** → edit them **directly** with `training-agent` (easiest).
+- **Team agents** (`web-app-team:reviewer`, etc.) → **cannot be edited directly.** Your edits would be wiped on the next plugin update. Instead, use `pick-agent` to **make a copy**, then train the copy. (Like copying a library book into your own notebook to mark it up, instead of writing in the book.)
+
+### 🔒 Safety when creating
+- Names allow **safe characters only** (letters·digits·hyphens) → blocks path tricks.
+- **No passwords/API keys written directly** (only the env-var *name* if needed).
+- Shows a **preview** before changes; deletion goes through **backup + confirm**.
+
+---
+
+## 8. Command reference
 
 > All commands below are typed in the **Claude Code input box** (not a black terminal).
 
 | Command | What it does |
 |---|---|
-| `/plugin marketplace add sodam-ai/AgentRoster` | Register the AgentRoster marketplace (first time) |
+| `/plugin marketplace add sodam-ai/SoDam-Agent` | Register the SoDam-Agent marketplace (first time) |
 | `/plugin install web-app-team@agentroster` | Install the web app team (swap the team name for others) |
+| `/plugin install sodam-agent@agentroster` | Install the agent-management tool |
 | `/plugin` | Plugin manager (installed list · uninstall · enable/disable) |
 | `/agents` | View/manage installed AI teammates |
+| `/sodam-agent:new-agent` | Create a new agent |
+| `/sodam-agent:training-agent` | Train an agent |
+| `/sodam-agent:save-agent` | Save / reuse an agent |
+| `/sodam-agent:pick-agent` | Copy a team agent into yours |
+| `/sodam-agent:remove-agent` | Delete an agent (backup + confirm) |
 | `/reload-plugins` | (Method B, during dev) reload after editing files |
 
 ---
 
-## 8. Workflow at a glance
+## 9. Workflow at a glance
 
 ```
-Add marketplace (once) → Install a team (/plugin install) → Verify with /agents (team:role)
-   → Call a teammate (natural language / @) → Remove via /plugin (uninstall) when done
+Add marketplace (once) → Install teams/tool (/plugin install) → Restart
+   → Verify with /agents (team:role)
+   → Call a teammate (natural language / @)
+   → (optional) /sodam-agent:new-agent to create → training-agent to teach
+   → Remove via /sodam-agent:remove-agent or /plugin when done
 ```
 
 ---
 
-## 9. File & document locations
+## 10. File & document locations
 
 - **Installed plugin cache** (managed automatically by Claude Code): `~/.claude/plugins/cache/`
+- **Agents you create**: `<project>/.claude/agents/<name>.md` (global save: `~/.claude/agents/`)
 - **This repository's structure**:
-  - `.claude-plugin/marketplace.json` — marketplace catalog (the 3 teams)
+  - `.claude-plugin/marketplace.json` — marketplace catalog (3 teams + management tool)
   - `plugins/<team>/.claude-plugin/plugin.json` — team metadata
   - `plugins/<team>/agents/<role>.md` — one AI teammate (description + instructions)
   - `plugins/<team>/.mcp.json` — the team's tool (MCP) config (web-app · research)
+  - `plugins/sodam-agent/commands/*.md` — the 5 agent-management commands
 - **Docs**: `README.md` (KO) · `README.en.md` (EN, this file) · `GUIDE.md` (KO beginner) · `GUIDE.en.md` (EN) · `docs/*.pdf` (PDF copies) · `LICENSE` · `NOTICE`
 
 ---
 
-## 10. Troubleshooting (symptom → cause → fix)
+## 11. Troubleshooting (symptom → cause → fix)
 
 | Symptom | Cause | Fix |
 |---|---|---|
+| Installed but `/agents`·`/sodam-agent:` show **nothing** | **No restart** (plugins load at startup) | **Quit and reopen Claude Code**. Still missing? `/reload-plugins` |
+| `/sodam-agent` shows **unrelated stuff** (team-agents, etc.) | `sodam-agent` not installed or no restart | `/plugin install sodam-agent@agentroster` → **restart**. Type `/sodam-agent:` with the colon |
+| `marketplace add` says `Marketplace file not found` | The repo's **default branch has no marketplace file** | The publisher must set the **default branch to the marketplace branch** (done for this repo). Retry shortly |
 | No `/plugin` command | Old Claude Code | **Update Claude Code** to the latest (docs: code.claude.com) |
-| `marketplace add` fails | Not yet on the default branch / typo | Retry **after publish (merge)**, or use **Method B** (register your folder) |
-| Pasting a path gives `Invalid ... format` | The path **includes quotes (")** | **Remove the quotes** — paste the path only. Prefer a space-free folder |
+| Pasting a path gives `Invalid ... format` | The path **includes quotes (")** | **Remove the quotes** — path only. Prefer a space-free folder |
 | Marketplace added but `/agents` shows **0 teammates** | You ran `marketplace add` but **not `install`** | Run `/plugin install <team>@agentroster` **separately** (adding ≠ installing) |
-| Installed but no teammates in `/agents` | Not loaded yet | Type `/reload-plugins`; if still missing, **restart Claude Code** |
+| Trained a team agent but it reverts | You **edited a team agent directly** (overwritten on update) | Use `/sodam-agent:pick-agent` to make a **copy**, then train the copy |
 | Names like `web-app-team:` look confusing | — | That's expected. The **`team:role`** naming makes *your* installs unambiguous |
 | context7 (doc search) errors | No Node.js / network blocked | Install **LTS** from [nodejs.org](https://nodejs.org) / try another network |
 | Install fails behind corporate proxy/firewall | Network blocked | Try another network / ask admin to unblock |
 | (Method B) Windows "blocked this app" | SmartScreen / antivirus | Right-click the file → Properties → "Unblock" / add AV exception |
-| (Method B) Garbled text on non-ASCII path | Path encoding | Keep files on an ASCII, space-free path |
-| Want to remove it | — | `/plugin` → select the plugin → **uninstall** |
-| Claude Code doesn't know the teammate | Claude Code missing/outdated | Install/update and retry |
 | MCP asks for an API key | Some tools need a key | Get a key from the provider → store it in an **OS environment variable** (never in files) |
-| Want to use it on mobile | — | AgentRoster is **Claude Code (desktop/CLI) only**; standalone mobile use is not supported |
+| Want to use it on mobile | — | SoDam-Agent is **Claude Code (desktop/CLI) only**; standalone mobile use is not supported |
 
 ---
 
-## 11. Safety & disclaimer
+## 12. Safety & disclaimer
 
-- **Removal is safe**: install/uninstall is handled by Claude Code's `/plugin` manager (easy to undo).
-- **Secrets are never stored in files**: MCP config holds only the key *name*; the actual value stays in your OS environment variable.
+- **Removal is safe**: install/uninstall is handled by Claude Code's `/plugin` manager (easy to undo). Agent deletion goes through `.bak` backup + confirm.
+- **Secrets are never stored in files**: MCP config and agent creation hold only the key *name*; the actual value stays in your OS environment variable.
+- **A limit, honestly**: `sodam-agent`'s safeguards are **prompt-instruction based**, which is weaker than code-enforced. **Always check the preview** before important actions.
 - This software is provided **"AS IS" with no warranty.** You are responsible for its use.
 - Check the **pricing / terms / data policy of any external tools (MCP) / APIs** you install — yourself.
 
 ---
 
-## 12. License · Copyright · Commercial use (important)
+## 13. License · Copyright · Commercial use (important)
 
 - **License: Apache License 2.0.** Commercial use, modification, copying, and redistribution are **allowed**.
   - Conditions: keep `LICENSE`/copyright notices, **state changes**, **preserve `NOTICE`**, **no trademark grant**, **no warranty (AS IS)**. Full text: [`LICENSE`](./LICENSE) · [`NOTICE`](./NOTICE).
 - **Copyright**: © 2026 SoDam AI Studio. *(Exact legal entity name to be finalized.)*
-- **Trademarks**: "Claude Code", "Claude", "Anthropic" are trademarks of Anthropic; "Context7"·"Upstash" are trademarks of their owners. **AgentRoster is unofficial and not affiliated with or endorsed by any of them.** Trademarks are used **nominatively** only (no logos).
+- **Trademarks**: "Claude Code", "Claude", "Anthropic" are trademarks of Anthropic; "Context7"·"Upstash" are trademarks of their owners. **SoDam-Agent is unofficial and not affiliated with or endorsed by any of them.** Trademarks are used **nominatively** only (no logos). Also, whether the name **"SoDam-Agent"** itself is registrable as a trademark is undetermined — check for conflicts with same/similar names yourself.
 - **Commercial scope**: under Apache-2.0, **modification, copying, forking, redistribution, selling, running as a service, training material, and client delivery** are mostly allowed. But **the following is your responsibility.**
-- **Your responsibility (must verify separately)**: the **pricing, terms of service, model-use policy, and data-handling policy of the MCPs (e.g., context7/Upstash) and external APIs** you install are **not guaranteed by AgentRoster** — verify them yourself before commercial use.
-- **Preset (teammate instructions) origin**: authored as **AgentRoster's own curation** (no third-party works bundled). Some text may be AI-generated; review before sensitive commercial use.
+- **Your responsibility (must verify separately)**: the **pricing, terms of service, model-use policy, and data-handling policy of the MCPs (e.g., context7/Upstash) and external APIs** you install are **not guaranteed by SoDam-Agent** — verify them yourself before commercial use.
+- **Preset / generated-content origin**: team agent instructions and the templates `sodam-agent` creates are **SoDam-Agent's own curation** (no third-party works bundled). Some text may be **AI-generated**; review before sensitive commercial use.
 
 ---
 
