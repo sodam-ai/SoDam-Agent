@@ -1,11 +1,11 @@
 {
-  "name": "agentroster",
+  "name": "sodam-agent",
   "version": "0.1.0",
   "description": "Claude Code에 역할별 에이전트 팀을 명령어 한 번으로 설치·구성하는 비개발자용 CLI",
   "author": "SoDam AI Studio",
   "type": "module",
   "bin": {
-    "agentroster": "bin/cli.mjs"
+    "sodam-agent": "bin/cli.mjs"
   },
   "scripts": {
     "start": "node bin/cli.mjs",
