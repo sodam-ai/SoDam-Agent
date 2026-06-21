@@ -20,7 +20,7 @@
 > - **Agent (subagent)**: one AI teammate.
 > - **Input box**: the field at the bottom of Claude Code where you type.
 
-> 📛 **Naming note**: the product is named **SoDam-Agent**. But the `@agentroster` after a team name in install commands is the *store's internal id* — the letters differ, but **type it as-is** (it's normal).
+> 📛 **Naming note**: the product is named **SoDam-Agent**. But the `@sodamagent-marketplace` after a team name in install commands is the *store's internal id* — the letters differ, but **type it as-is** (it's normal).
 
 ---
 
@@ -51,15 +51,15 @@
 ### Step 3 · Install a team
 👉 Type your chosen team and Enter (one is fine):
 ```
-/plugin install web-app-team@agentroster
+/plugin install web-app-team@sodamagent-marketplace
 ```
-- Docs team: `/plugin install docs-team@agentroster`
-- Research team: `/plugin install research-team@agentroster`
+- Docs team: `/plugin install docs-team@sodamagent-marketplace`
+- Research team: `/plugin install research-team@sodamagent-marketplace`
 
 ### Step 4 · (Optional) Install the management tool
 To **create and train your own agents**, also install:
 ```
-/plugin install sodam-agent@agentroster
+/plugin install sodam-agent@sodamagent-marketplace
 ```
 
 ### Step 5 · ⭐ Restart — the most important step!
@@ -144,11 +144,11 @@ If you installed `sodam-agent` in Step 4 and restarted, type `/sodam-agent:` to 
 | If this happens | Why? | Do this |
 |---|---|---|
 | Installed but `/agents`·`/sodam-agent:` show **nobody** | You **didn't restart** | **Quit and reopen Claude Code** (`/exit` → `claude`). Still missing? `/reload-plugins` |
-| `/sodam-agent` shows **unrelated stuff** (team-agents, etc.) | `sodam-agent` not installed or no restart | `/plugin install sodam-agent@agentroster` → **restart**. Type `/sodam-agent:` with the colon |
+| `/sodam-agent` shows **unrelated stuff** (team-agents, etc.) | `sodam-agent` not installed or no restart | `/plugin install sodam-agent@sodamagent-marketplace` → **restart**. Type `/sodam-agent:` with the colon |
 | `marketplace add` says "not found" | GitHub propagation delay / typo | Retry in **1–2 min**. Still failing? `/plugin marketplace remove sodam-ai` then add again |
 | `/plugin` does nothing | Old Claude Code | **Update Claude Code** to the latest |
 | Pasting a path gives an `Invalid ... format` error | The path **includes quotes (")** | **Remove the quotes** — path only. Use a space-free folder |
-| Added but `/agents` shows **nobody** | You did `marketplace add` but **not `install`** | Run `/plugin install <team>@agentroster` **once more** |
+| Added but `/agents` shows **nobody** | You did `marketplace add` but **not `install`** | Run `/plugin install <team>@sodamagent-marketplace` **once more** |
 | Trained a team agent but it reverted | You **edited a team agent directly** (overwritten on update) | Use `/sodam-agent:pick-agent` to make a **copy**, then train the copy |
 | The doc-search tool errors | No Node.js / blocked internet | Install LTS from nodejs.org / try another network |
 | Want to use it on a phone | — | This tool is **for Claude Code on a computer** (no standalone phone use) |
@@ -182,8 +182,8 @@ You can **register a downloaded folder as a "store"** (inside Claude Code, no te
    ```
 3. Then install teams/tool — **skip this and you'll see no teammates**:
    ```
-   /plugin install web-app-team@agentroster
-   /plugin install sodam-agent@agentroster
+   /plugin install web-app-team@sodamagent-marketplace
+   /plugin install sodam-agent@sodamagent-marketplace
    ```
 4. **Restart** to apply. The rest is the same as **Steps 3·4·5** above.
 > 💡 If you prefer a terminal: `claude --plugin-dir "downloaded-folder\plugins\web-app-team"` also works.

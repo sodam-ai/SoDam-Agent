@@ -20,7 +20,7 @@
 > - **에이전트(서브에이전트)**: AI 직원 한 명.
 > - **입력창**: Claude Code 화면 아래쪽, 글자를 쳐 넣는 칸.
 
-> 📛 **이름 안내**: 제품 이름은 **SoDam-Agent**예요. 그런데 설치할 때 팀 뒤에 붙는 `@agentroster`는 *가게의 내부 이름*이라 글자가 달라요. **그대로 입력**하면 됩니다(정상이에요).
+> 📛 **이름 안내**: 제품 이름은 **SoDam-Agent**예요. 그런데 설치할 때 팀 뒤에 붙는 `@sodamagent-marketplace`는 *가게의 내부 이름*이라 글자가 달라요. **그대로 입력**하면 됩니다(정상이에요).
 
 ---
 
@@ -51,15 +51,15 @@
 ### 3단계 · 팀 설치
 👉 원하는 팀을 입력창에 치고 Enter (하나만 골라도 됩니다):
 ```
-/plugin install web-app-team@agentroster
+/plugin install web-app-team@sodamagent-marketplace
 ```
-- 문서 팀을 원하면: `/plugin install docs-team@agentroster`
-- 리서치 팀을 원하면: `/plugin install research-team@agentroster`
+- 문서 팀을 원하면: `/plugin install docs-team@sodamagent-marketplace`
+- 리서치 팀을 원하면: `/plugin install research-team@sodamagent-marketplace`
 
 ### 4단계 · (선택) 직원 관리 도구 설치
 새 직원을 **직접 만들고 가르치고** 싶다면 이것도 설치하세요:
 ```
-/plugin install sodam-agent@agentroster
+/plugin install sodam-agent@sodamagent-marketplace
 ```
 
 ### 5단계 · ⭐ 껐다 켜기 (재시작) — 가장 중요!
@@ -144,11 +144,11 @@ docs-team:editor 한테 이 글을 더 매끄럽게 다듬어 달라고 해줘
 | 이런 일이 생기면 | 왜? | 이렇게 하세요 |
 |---|---|---|
 | 설치했는데 `/agents`·`/sodam-agent:`에 **아무도 안 보여요** | **껐다 켜기(재시작)를 안 함** | **Claude Code를 껐다 켜기**(`/exit` → `claude`). 그래도 없으면 `/reload-plugins` |
-| `/sodam-agent` 쳤더니 **엉뚱한 것**(team-agents 등)만 떠요 | `sodam-agent` 미설치 또는 미재시작 | `/plugin install sodam-agent@agentroster` → **재시작**. `:`(콜론)까지 쳐서 `/sodam-agent:` 로 입력 |
+| `/sodam-agent` 쳤더니 **엉뚱한 것**(team-agents 등)만 떠요 | `sodam-agent` 미설치 또는 미재시작 | `/plugin install sodam-agent@sodamagent-marketplace` → **재시작**. `:`(콜론)까지 쳐서 `/sodam-agent:` 로 입력 |
 | `marketplace add` 가 "not found" | GitHub 반영 지연 / 주소 오타 | **1~2분 뒤** 다시. 안 되면 `/plugin marketplace remove sodam-ai` 후 다시 add |
 | `/plugin` 을 쳐도 안 먹혀요 | Claude Code가 옛날 버전 | Claude Code를 **최신으로 업데이트** |
 | 경로를 넣었더니 "Invalid ... format" 에러 | 경로에 **따옴표(")가 들어감** | 따옴표를 **빼고** 경로만. 공백·한글 없는 폴더로 |
-| 등록은 됐는데 `/agents`에 **아무도 없어요** | `marketplace add`만 하고 **설치(`install`)를 안 함** | `/plugin install <팀>@agentroster` 를 **한 번 더** 실행 |
+| 등록은 됐는데 `/agents`에 **아무도 없어요** | `marketplace add`만 하고 **설치(`install`)를 안 함** | `/plugin install <팀>@sodamagent-marketplace` 를 **한 번 더** 실행 |
 | 팀 직원을 가르쳤는데 다음에 사라졌어요 | 팀 직원을 **직접 고침**(업데이트 때 덮어써짐) | `/sodam-agent:pick-agent` 로 **복사본**을 만들어 그걸 가르치기 |
 | 자료 검색 도구가 오류 나요 | Node.js 없음/인터넷 막힘 | nodejs.org에서 LTS 설치 / 다른 인터넷 |
 | 휴대폰에서 쓰고 싶어요 | — | 이 도구는 **컴퓨터의 Claude Code 전용**이에요(휴대폰 단독 X) |
@@ -182,8 +182,8 @@ docs-team:editor 한테 이 글을 더 매끄럽게 다듬어 달라고 해줘
    ```
 3. 이어서 팀·도구 설치 — **이 줄을 빠뜨리면 직원이 안 보여요**:
    ```
-   /plugin install web-app-team@agentroster
-   /plugin install sodam-agent@agentroster
+   /plugin install web-app-team@sodamagent-marketplace
+   /plugin install sodam-agent@sodamagent-marketplace
    ```
 4. **껐다 켜면(재시작)** 적용돼요. 그다음은 위 **3·4·5단계** 와 똑같아요.
 > 💡 검은 터미널이 익숙하면 `claude --plugin-dir "내려받은폴더\plugins\web-app-team"` 도 됩니다.

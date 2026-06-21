@@ -9,7 +9,7 @@
 
 > 📛 **이름 안내(헷갈리지 않게)**
 > - **제품·저장소 이름 = `SoDam-Agent`** (마켓 등록 주소: `sodam-ai/SoDam-Agent`)
-> - **설치 명령에 붙는 `@agentroster` = 마켓(가게)의 내부 식별자**입니다. 제품명과 글자가 다르지만 **정상**이며, **그대로 입력**하시면 됩니다.
+> - **설치 명령에 붙는 `@sodamagent-marketplace` = 마켓(가게)의 내부 식별자**입니다. 제품명과 글자가 다르지만 **정상**이며, **그대로 입력**하시면 됩니다.
 
 ---
 
@@ -69,17 +69,17 @@ Claude Code 안에서 **명령 몇 줄**이면 끝납니다. 터미널·폴더 �
    🖥️ "마켓플레이스가 추가되었다"는 안내가 나오면 성공.
 3. **원하는 팀을 설치:**
    ```
-   /plugin install web-app-team@agentroster
+   /plugin install web-app-team@sodamagent-marketplace
    ```
-   - 다른 팀: `docs-team@agentroster` · `research-team@agentroster`
+   - 다른 팀: `docs-team@sodamagent-marketplace` · `research-team@sodamagent-marketplace`
 4. **(선택) 직원 관리 도구도 설치** — 새 직원을 직접 만들고 가르치고 싶다면:
    ```
-   /plugin install sodam-agent@agentroster
+   /plugin install sodam-agent@sodamagent-marketplace
    ```
 5. **Claude Code를 껐다 켭니다(재시작).**
    - ⚠️ **가장 흔한 막힘 지점**: 설치 직후엔 `/agents`·`/sodam-agent:`가 **안 보일 수 있습니다.** 플러그인은 **켤 때 한 번 로드**되기 때문입니다. **재시작하면 보입니다.**
 
-> 💡 `@agentroster`는 마켓의 내부 식별자라 그대로 입력하면 됩니다(제품명 SoDam-Agent와 글자가 달라도 정상).
+> 💡 `@sodamagent-marketplace`는 마켓의 내부 식별자라 그대로 입력하면 됩니다(제품명 SoDam-Agent와 글자가 달라도 정상).
 
 ### 방법 B — 내 컴퓨터 폴더로 써 보기 (클로드 안에서 · 검은창 불필요)
 인터넷 마켓 대신, **내려받은 폴더를 직접 "가게"로 등록**해도 됩니다.
@@ -90,8 +90,8 @@ Claude Code 안에서 **명령 몇 줄**이면 끝납니다. 터미널·폴더 �
    ```
 3. 이어서 팀·도구를 설치합니다(이 단계를 빠뜨리면 직원이 안 보입니다):
    ```
-   /plugin install web-app-team@agentroster
-   /plugin install sodam-agent@agentroster
+   /plugin install web-app-team@sodamagent-marketplace
+   /plugin install sodam-agent@sodamagent-marketplace
    ```
 4. **재시작**하면 적용됩니다.
 > 💡 검은 터미널이 익숙하면: `claude --plugin-dir "<내려받은 폴더>\plugins\web-app-team"` 로 켤 수도 있습니다(여러 팀은 `--plugin-dir` 반복).
@@ -101,7 +101,7 @@ Claude Code 안에서 **명령 몇 줄**이면 끝납니다. 터미널·폴더 �
 ## 4. 빠른 시작 (3단계)
 
 1. Claude Code에서 `/plugin marketplace add sodam-ai/SoDam-Agent` (한 번만).
-2. `/plugin install web-app-team@agentroster` → **재시작**.
+2. `/plugin install web-app-team@sodamagent-marketplace` → **재시작**.
 3. `/agents` 를 열어 **`web-app-team:reviewer`** 같은 이름이 보이면 성공 → 바로 `web-app-team:reviewer 서브에이전트로 이 코드 검토해줘` 처럼 사용.
 
 > 예상 소요: **약 2~3분.** (직원 만들기·가르치기까지 쓰려면 4번에서 `sodam-agent`도 설치)
@@ -173,8 +173,8 @@ Claude Code 안에서 **명령 몇 줄**이면 끝납니다. 터미널·폴더 �
 | 명령 | 하는 일 |
 |---|---|
 | `/plugin marketplace add sodam-ai/SoDam-Agent` | SoDam-Agent 마켓플레이스 등록(처음 한 번) |
-| `/plugin install web-app-team@agentroster` | 웹앱팀 설치 (팀 이름만 바꾸면 다른 팀) |
-| `/plugin install sodam-agent@agentroster` | 직원 관리 도구 설치 |
+| `/plugin install web-app-team@sodamagent-marketplace` | 웹앱팀 설치 (팀 이름만 바꾸면 다른 팀) |
+| `/plugin install sodam-agent@sodamagent-marketplace` | 직원 관리 도구 설치 |
 | `/plugin` | 플러그인 관리 화면(설치 목록·제거·켜고 끄기) |
 | `/agents` | 설치된 AI 직원 목록 보기·관리 |
 | `/sodam-agent:new-agent` | 새 직원 만들기 |
@@ -217,11 +217,11 @@ Claude Code 안에서 **명령 몇 줄**이면 끝납니다. 터미널·폴더 �
 | 증상 | 원인 | 해결 |
 |---|---|---|
 | 설치했는데 `/agents`·`/sodam-agent:`에 **아무것도 안 보임** | **재시작을 안 함** (플러그인은 켤 때 로드) | **Claude Code를 껐다 켜기**. 그래도 없으면 `/reload-plugins` |
-| `/sodam-agent` 쳤더니 **엉뚱한 팀(team-agents 등)만** 뜸 | `sodam-agent` 미설치 또는 미재시작 | `/plugin install sodam-agent@agentroster` → **재시작** |
+| `/sodam-agent` 쳤더니 **엉뚱한 팀(team-agents 등)만** 뜸 | `sodam-agent` 미설치 또는 미재시작 | `/plugin install sodam-agent@sodamagent-marketplace` → **재시작** |
 | `marketplace add`가 `Marketplace file not found` | 저장소 **기본 브랜치에 마켓 파일이 없음** | 게시자가 **기본 브랜치를 마켓 브랜치로** 설정해야 함(이 저장소는 설정 완료). 잠시 후 재시도 |
 | `/plugin` 명령이 없음 | Claude Code 구버전 | Claude Code를 **최신으로 업데이트**(문서: code.claude.com) |
 | 경로를 넣었더니 `Invalid ... format` | 경로에 **따옴표(")가 포함**됨 | 따옴표를 **빼고** 경로만 입력. 공백·한글 없는 폴더 권장 |
-| 마켓은 등록됐는데 `/agents`에 직원이 **0명** | `marketplace add`만 하고 **`install`을 안 함** | `/plugin install <팀>@agentroster` 를 **따로** 실행 (등록 ≠ 설치) |
+| 마켓은 등록됐는데 `/agents`에 직원이 **0명** | `marketplace add`만 하고 **`install`을 안 함** | `/plugin install <팀>@sodamagent-marketplace` 를 **따로** 실행 (등록 ≠ 설치) |
 | 팀 직원을 가르쳤는데 다음에 사라짐 | **팀 직원을 직접 수정**함(업데이트 시 덮어써짐) | `/sodam-agent:pick-agent` 로 **복사본**을 만들어 그걸 가르치기 |
 | `web-app-team:` 같은 이름이 헷갈림 | — | 그게 정상입니다. **`팀:역할`** 이름이라 내가 깐 게 확실히 구분됩니다 |
 | context7(자료검색) 도구가 에러 | Node.js 없음 / 네트워크 차단 | [nodejs.org](https://nodejs.org)에서 **LTS** 설치 / 다른 네트워크 |

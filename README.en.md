@@ -8,7 +8,7 @@
 
 > 📛 **Naming note (so you don't get confused)**
 > - **Product / repository name = `SoDam-Agent`** (marketplace address: `sodam-ai/SoDam-Agent`)
-> - **The `@agentroster` in install commands = the marketplace's internal id.** The letters differ from the product name, but that's **normal** — just type it as-is.
+> - **The `@sodamagent-marketplace` in install commands = the marketplace's internal id.** The letters differ from the product name, but that's **normal** — just type it as-is.
 
 ---
 
@@ -68,17 +68,17 @@ There are two methods. **For most people, Method A (marketplace)** is all you ne
    🖥️ Success when you see a "marketplace added" message.
 3. **Install the team you want:**
    ```
-   /plugin install web-app-team@agentroster
+   /plugin install web-app-team@sodamagent-marketplace
    ```
-   - Other teams: `docs-team@agentroster` · `research-team@agentroster`
+   - Other teams: `docs-team@sodamagent-marketplace` · `research-team@sodamagent-marketplace`
 4. **(Optional) Install the agent-management tool** — to create & train your own agents:
    ```
-   /plugin install sodam-agent@agentroster
+   /plugin install sodam-agent@sodamagent-marketplace
    ```
 5. **Restart Claude Code (quit and reopen).**
    - ⚠️ **The most common gotcha**: right after install, `/agents`·`/sodam-agent:` may **not appear** — plugins are **loaded once when Claude Code starts**. **Restart and they show up.**
 
-> 💡 `@agentroster` is the marketplace's internal id — type it as-is (it's fine that it differs from the product name SoDam-Agent).
+> 💡 `@sodamagent-marketplace` is the marketplace's internal id — type it as-is (it's fine that it differs from the product name SoDam-Agent).
 
 ### Method B — Run it from your own folder (inside Claude Code, no terminal)
 Instead of the online marketplace, you can **register a downloaded folder as a "store."**
@@ -89,8 +89,8 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
    ```
 3. Then install teams/tool (skip this and `/agents` will be empty):
    ```
-   /plugin install web-app-team@agentroster
-   /plugin install sodam-agent@agentroster
+   /plugin install web-app-team@sodamagent-marketplace
+   /plugin install sodam-agent@sodamagent-marketplace
    ```
 4. **Restart** to apply.
 > 💡 If you prefer a terminal: `claude --plugin-dir "<downloaded folder>\plugins\web-app-team"` also works (repeat `--plugin-dir` for multiple teams).
@@ -100,7 +100,7 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
 ## 4. Quick start (3 steps)
 
 1. In Claude Code: `/plugin marketplace add sodam-ai/SoDam-Agent` (once).
-2. `/plugin install web-app-team@agentroster` → **restart**.
+2. `/plugin install web-app-team@sodamagent-marketplace` → **restart**.
 3. Open `/agents` — if you see a name like **`web-app-team:reviewer`**, you're done → use it: `Have web-app-team:reviewer review this code`.
 
 > Expected time: **about 2–3 minutes.** (To also create/train agents, install `sodam-agent` in step 4 above.)
@@ -172,8 +172,8 @@ With `sodam-agent` installed, you can create and manage agents **inside Claude C
 | Command | What it does |
 |---|---|
 | `/plugin marketplace add sodam-ai/SoDam-Agent` | Register the SoDam-Agent marketplace (first time) |
-| `/plugin install web-app-team@agentroster` | Install the web app team (swap the team name for others) |
-| `/plugin install sodam-agent@agentroster` | Install the agent-management tool |
+| `/plugin install web-app-team@sodamagent-marketplace` | Install the web app team (swap the team name for others) |
+| `/plugin install sodam-agent@sodamagent-marketplace` | Install the agent-management tool |
 | `/plugin` | Plugin manager (installed list · uninstall · enable/disable) |
 | `/agents` | View/manage installed AI teammates |
 | `/sodam-agent:new-agent` | Create a new agent |
@@ -216,11 +216,11 @@ Add marketplace (once) → Install teams/tool (/plugin install) → Restart
 | Symptom | Cause | Fix |
 |---|---|---|
 | Installed but `/agents`·`/sodam-agent:` show **nothing** | **No restart** (plugins load at startup) | **Quit and reopen Claude Code**. Still missing? `/reload-plugins` |
-| `/sodam-agent` shows **unrelated stuff** (team-agents, etc.) | `sodam-agent` not installed or no restart | `/plugin install sodam-agent@agentroster` → **restart**. Type `/sodam-agent:` with the colon |
+| `/sodam-agent` shows **unrelated stuff** (team-agents, etc.) | `sodam-agent` not installed or no restart | `/plugin install sodam-agent@sodamagent-marketplace` → **restart**. Type `/sodam-agent:` with the colon |
 | `marketplace add` says `Marketplace file not found` | The repo's **default branch has no marketplace file** | The publisher must set the **default branch to the marketplace branch** (done for this repo). Retry shortly |
 | No `/plugin` command | Old Claude Code | **Update Claude Code** to the latest (docs: code.claude.com) |
 | Pasting a path gives `Invalid ... format` | The path **includes quotes (")** | **Remove the quotes** — path only. Prefer a space-free folder |
-| Marketplace added but `/agents` shows **0 teammates** | You ran `marketplace add` but **not `install`** | Run `/plugin install <team>@agentroster` **separately** (adding ≠ installing) |
+| Marketplace added but `/agents` shows **0 teammates** | You ran `marketplace add` but **not `install`** | Run `/plugin install <team>@sodamagent-marketplace` **separately** (adding ≠ installing) |
 | Trained a team agent but it reverts | You **edited a team agent directly** (overwritten on update) | Use `/sodam-agent:pick-agent` to make a **copy**, then train the copy |
 | Names like `web-app-team:` look confusing | — | That's expected. The **`team:role`** naming makes *your* installs unambiguous |
 | context7 (doc search) errors | No Node.js / network blocked | Install **LTS** from [nodejs.org](https://nodejs.org) / try another network |
