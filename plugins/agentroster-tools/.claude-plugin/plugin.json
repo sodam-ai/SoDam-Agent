@@ -1,0 +1,7 @@
+{
+  "name": "agentroster-tools",
+  "description": "직원 관리 도구 — 팀 설치 후에도 /명령으로 새 AI 직원을 직접 만들고·가르치고·관리. AgentRoster 자체 큐레이션.",
+  "version": "0.1.1",
+  "author": { "name": "SoDam AI Studio" },
+  "license": "Apache-2.0"
+}
