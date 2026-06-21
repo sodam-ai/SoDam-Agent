@@ -103,6 +103,8 @@ Ask docs-team:editor to make this text smoother
 |---|---|---|
 | `/plugin` does nothing | Old Claude Code | **Update Claude Code** to the latest |
 | `marketplace add` won't work | Not published yet, or typo | Retry after it's published / use "Advanced" below |
+| Pasting a path gives an `Invalid ... format` error | The path **includes quotes (")** | **Remove the quotes** — path only. Use a space-free folder |
+| Added but `/agents` shows **nobody** | You did `marketplace add` but **not `install`** | Run `/plugin install <team>@agentroster` **once more** |
 | Installed but nothing in `/agents` | Not loaded yet | Type `/reload-plugins` → still missing? **Restart Claude Code** |
 | The doc-search tool errors | No Node.js / blocked internet | Install LTS from nodejs.org / try another network |
 | Install fails on work network | Firewall / proxy | Try another network (e.g., home) |
@@ -126,14 +128,20 @@ Ask docs-team:editor to make this text smoother
 
 ---
 
-## 9. (Advanced) Run from a download — when the marketplace isn't ready
+## 9. (Advanced) When the marketplace isn't ready — try it from your folder
 
+Even before publish, you can **register the downloaded folder as a "store"** (inside Claude Code, no terminal).
 1. Download this project (ZIP from GitHub → unzip).
-2. In a terminal, launch it pointing at a team folder:
+2. In the Claude Code **input box** (⚠️ **no quotes**, a space-free path):
    ```
-   claude --plugin-dir "downloaded-folder\plugins\web-app-team"
+   /plugin marketplace add C:\downloaded-folder\AgentRoster
    ```
-3. The rest is the same as **Steps 3·4 (verify·use)** above.
+3. Then install a team — **skip this and you'll see no teammates**:
+   ```
+   /plugin install web-app-team@agentroster
+   ```
+4. The rest is the same as **Steps 3·4 (verify·use)** above.
+> 💡 If you prefer a terminal: `claude --plugin-dir "downloaded-folder\plugins\web-app-team"` also works.
 
 ---
 

@@ -68,13 +68,18 @@ Claude Code 안에서 **명령 두 줄**이면 끝납니다. 터미널·폴더 �
 
 > ⚠️ **중요(현재 상태)**: 위 마켓플레이스 명령은 저장소의 **기본 브랜치에 플러그인이 올라간 뒤(공개 후)** 동작합니다. 아직 준비 중이라면 **방법 B**로 먼저 써 보세요.
 
-### 방법 B — 내려받아 로컬에서 (미리보기 · 개발용)
+### 방법 B — 공개 전, 내 컴퓨터 폴더로 미리 써 보기 (클로드 안에서 · 검은창 불필요)
+마켓플레이스가 아직 공개 전이어도, **내려받은 폴더를 직접 "가게"로 등록**하면 클로드 안에서 그대로 설치됩니다.
 1. 이 저장소를 내려받습니다(`git clone` 또는 GitHub에서 ZIP 다운로드 → 압축 해제).
-2. 검은 명령창에서 원하는 팀 폴더를 지정해 Claude Code를 켭니다:
+2. Claude Code **입력창**에 (⚠️ **따옴표 없이**, 공백·한글 없는 경로 권장):
    ```
-   claude --plugin-dir "<내려받은 폴더>/plugins/web-app-team"
+   /plugin marketplace add C:\내려받은폴더\AgentRoster
    ```
-   - 여러 팀 동시: `--plugin-dir ...docs-team --plugin-dir ...research-team` 처럼 반복.
+3. 이어서 팀을 설치합니다(이 단계를 빠뜨리면 `/agents`에 직원이 안 보입니다):
+   ```
+   /plugin install web-app-team@agentroster
+   ```
+> 💡 검은 터미널이 익숙하면: `claude --plugin-dir "<내려받은 폴더>\plugins\web-app-team"` 로 켤 수도 있습니다(여러 팀은 `--plugin-dir` 반복).
 
 ---
 
@@ -156,7 +161,9 @@ Claude Code 안에서 **명령 두 줄**이면 끝납니다. 터미널·폴더 �
 | 증상 | 원인 | 해결 |
 |---|---|---|
 | `/plugin` 명령이 없음 | Claude Code 구버전 | Claude Code를 **최신으로 업데이트**(문서: code.claude.com) |
-| `marketplace add` 가 실패/안 됨 | 기본 브랜치에 아직 안 올라옴 / 주소 오타 | **공개(병합) 후** 재시도, 또는 **방법 B**(로컬 `--plugin-dir`) |
+| `marketplace add` 가 실패/안 됨 | 기본 브랜치에 아직 안 올라옴 / 주소 오타 | **공개(병합) 후** 재시도, 또는 **방법 B**(내 폴더 등록) |
+| 경로를 넣었더니 `Invalid ... format` | 경로에 **따옴표(")가 포함**됨 | 따옴표를 **빼고** 경로만 입력. 공백·한글 없는 폴더 권장 |
+| 마켓은 등록됐는데 `/agents`에 직원이 **0명** | `marketplace add`만 하고 **`install`을 안 함** | `/plugin install <팀>@agentroster` 를 **따로** 실행 (등록 ≠ 설치) |
 | 설치했는데 `/agents`에 직원이 안 보임 | 반영 전 | `/reload-plugins` 입력, 그래도 없으면 **Claude Code 재시작** |
 | `web-app-team:` 같은 이름이 헷갈림 | — | 그게 정상입니다. **`팀:역할`** 이름이라 내가 깐 게 확실히 구분됩니다 |
 | context7(자료검색) 도구가 에러 | Node.js 없음 / 네트워크 차단 | [nodejs.org](https://nodejs.org)에서 **LTS** 설치 / 다른 네트워크 |

@@ -68,13 +68,18 @@ There are two methods. **For most people, Method A (marketplace)** is all you ne
 
 > ⚠️ **Important (current status)**: the marketplace commands above work **after the plugin is on the repository's default branch (i.e., after publishing/merge)**. If it isn't ready yet, use **Method B** first.
 
-### Method B — Run locally from a download (preview / development)
+### Method B — Try it before publish, from your own folder (inside Claude Code, no terminal)
+Even before the marketplace is public, you can **register the downloaded folder as a "store"** and install inside Claude Code.
 1. Get this repository (`git clone` or download the ZIP from GitHub and unzip).
-2. In a terminal, launch Claude Code pointing at the team folder:
+2. In the Claude Code **input box** (⚠️ **no quotes**, prefer a space-free path):
    ```
-   claude --plugin-dir "<downloaded folder>/plugins/web-app-team"
+   /plugin marketplace add C:\downloaded-folder\AgentRoster
    ```
-   - Multiple teams at once: repeat `--plugin-dir ...docs-team --plugin-dir ...research-team`.
+3. Then install a team (skip this and `/agents` will be empty):
+   ```
+   /plugin install web-app-team@agentroster
+   ```
+> 💡 If you prefer a terminal: `claude --plugin-dir "<downloaded folder>\plugins\web-app-team"` also works (repeat `--plugin-dir` for multiple teams).
 
 ---
 
@@ -156,7 +161,9 @@ Add marketplace (once) → Install a team (/plugin install) → Verify with /age
 | Symptom | Cause | Fix |
 |---|---|---|
 | No `/plugin` command | Old Claude Code | **Update Claude Code** to the latest (docs: code.claude.com) |
-| `marketplace add` fails | Not yet on the default branch / typo | Retry **after publish (merge)**, or use **Method B** (local `--plugin-dir`) |
+| `marketplace add` fails | Not yet on the default branch / typo | Retry **after publish (merge)**, or use **Method B** (register your folder) |
+| Pasting a path gives `Invalid ... format` | The path **includes quotes (")** | **Remove the quotes** — paste the path only. Prefer a space-free folder |
+| Marketplace added but `/agents` shows **0 teammates** | You ran `marketplace add` but **not `install`** | Run `/plugin install <team>@agentroster` **separately** (adding ≠ installing) |
 | Installed but no teammates in `/agents` | Not loaded yet | Type `/reload-plugins`; if still missing, **restart Claude Code** |
 | Names like `web-app-team:` look confusing | — | That's expected. The **`team:role`** naming makes *your* installs unambiguous |
 | context7 (doc search) errors | No Node.js / network blocked | Install **LTS** from [nodejs.org](https://nodejs.org) / try another network |
