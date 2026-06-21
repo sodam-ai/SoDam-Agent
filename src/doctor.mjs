@@ -13,10 +13,12 @@ export function runDoctor(target) {
   else warn(`Node.js ${process.versions.node} — 18 이상을 권장합니다. https://nodejs.org 에서 설치하세요.`);
 
   // 2) Claude Code 감지(있으면 좋고, 없어도 설치는 됨)
+  // Windows에서 claude는 claude.cmd/claude.ps1이라 셸 없이는 execFile이 못 찾음 → shell로 실행해야 오탐이 없음.
   try {
     const out = execFileSync('claude', ['--version'], {
       timeout: 5000,
       stdio: ['ignore', 'pipe', 'ignore'],
+      shell: process.platform === 'win32',
     })
       .toString()
       .trim();

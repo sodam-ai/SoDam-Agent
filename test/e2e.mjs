@@ -10,6 +10,7 @@ import { listBackups, restoreBackup } from '../src/backup.mjs';
 import { isSafeName, toSafeName } from '../src/validate.mjs';
 import { buildExport, writeExport, readImport } from '../src/share.mjs';
 import { rolesDir, listPersonalRoles, saveRole, removeRole } from '../src/roles.mjs';
+import { expectedPluginFiles } from '../src/plugin-sync.mjs';
 
 let pass = 0;
 const ok = (m) => {
@@ -209,6 +210,17 @@ assert.ok(
 );
 assert.ok(!fs.existsSync(path.join(g.agentDir, 'reviewer.md')), '설치가 추가한 reviewer 제거');
 ok('전역 되돌리기: 추가분 삭제 + 덮어쓴 원본 복원(원상복구)');
+
+// 13) 프리셋 단일 정본: plugins/*의 에이전트·MCP가 presets.mjs에서 생성한 것과 어긋나지 않는지(drift 차단)
+for (const e of expectedPluginFiles()) {
+  const rel = e.file.split(/[\\/]plugins[\\/]/)[1].replace(/\\/g, '/');
+  if (e.kind === 'agent') {
+    assert.equal(fs.readFileSync(e.file, 'utf8'), e.content, `정본 동기화: plugins/${rel}`);
+  } else {
+    assert.deepEqual(JSON.parse(fs.readFileSync(e.file, 'utf8')), e.servers, `정본 동기화(mcp): plugins/${rel}`);
+  }
+}
+ok('프리셋 정본: plugins 에이전트/MCP가 presets.mjs와 일치(presets만 고치면 됨·drift 차단)');
 
 console.log(`\n🎉 모든 검증 통과: ${pass}건`);
 fs.rmSync(root, { recursive: true, force: true });
