@@ -11,6 +11,7 @@ import { isSafeName, toSafeName } from '../src/validate.mjs';
 import { buildExport, writeExport, readImport } from '../src/share.mjs';
 import { rolesDir, listPersonalRoles, saveRole, removeRole } from '../src/roles.mjs';
 import { expectedPluginFiles } from '../src/plugin-sync.mjs';
+import { agentsMd, skillMd, codexConfigToml, buildCodexPlan, applyCodexPlan } from '../src/writers/codex.mjs';
 
 let pass = 0;
 const ok = (m) => {
@@ -221,6 +222,54 @@ for (const e of expectedPluginFiles()) {
   }
 }
 ok('프리셋 정본: plugins 에이전트/MCP가 presets.mjs와 일치(presets만 고치면 됨·drift 차단)');
+
+// 14) Codex 역할 번역 (Phase 2-a) — 같은 팀 정의를 Codex 형식(AGENTS.md + skills + config.toml)으로
+const wap = getPreset('web-app-team');
+
+const am = agentsMd(wap);
+assert.ok(am.includes('planner') && am.includes('reviewer'), 'AGENTS.md에 역할 포함');
+assert.ok(/번역|같은 팀이 아닙|멀티 ?에이전트|병렬/.test(am), 'Codex 한계 정직 고지 포함');
+ok('Codex: AGENTS.md에 역할(모드) + 정직한 한계 고지');
+
+const sk = skillMd(wap.roles[0]); // planner
+assert.ok(sk.startsWith('---\nname: planner\n'), 'SKILL frontmatter name');
+assert.ok(sk.includes('description:'), 'SKILL description');
+assert.ok(sk.includes(wap.roles[0].systemPrompt.slice(0, 12)), 'SKILL 본문에 지시문');
+ok('Codex: SKILL.md 형식(frontmatter + 지시문)');
+
+const toml = codexConfigToml(wap);
+assert.ok(toml.includes('[mcp_servers.context7]'), 'TOML mcp_servers 섹션');
+assert.ok(toml.includes('command = "npx"'), 'TOML command');
+assert.ok(toml.includes('args = ["-y", "@upstash/context7-mcp"]'), 'TOML args');
+assert.equal(codexConfigToml(getPreset('docs-team')).trim(), '', 'MCP 없는 팀은 빈 TOML');
+ok('Codex: config.toml MCP 스니펫(TOML) + MCP 없으면 빈 값');
+
+const cxRoot = path.join(root, 'codex-proj');
+const cxPlan = buildCodexPlan(wap, cxRoot);
+assert.ok(cxPlan.agentsFile.endsWith('AGENTS.md'), 'AGENTS.md 경로');
+assert.equal(cxPlan.skills.length, 4, '역할 4개 스킬');
+assert.ok(cxPlan.skills.every((s) => s.file.includes(path.join('.agents', 'skills'))), '스킬 경로 .agents/skills');
+ok('Codex: buildCodexPlan 파일 목록 정확(AGENTS.md + 스킬4)');
+
+fs.mkdirSync(cxRoot, { recursive: true });
+fs.writeFileSync(path.join(cxRoot, 'AGENTS.md'), 'OLD-AGENTS-CONTENT');
+applyCodexPlan(buildCodexPlan(wap, cxRoot));
+assert.ok(fs.existsSync(path.join(cxRoot, 'AGENTS.md')), 'AGENTS.md 생성');
+assert.ok(
+  fs.readFileSync(path.join(cxRoot, 'AGENTS.md.bak'), 'utf8').includes('OLD-AGENTS-CONTENT'),
+  '기존 AGENTS.md 백업(.bak)'
+);
+assert.ok(fs.existsSync(path.join(cxRoot, '.agents', 'skills', 'planner', 'SKILL.md')), 'planner SKILL 생성');
+ok('Codex: 적용 — AGENTS.md+스킬 생성 + 기존 AGENTS.md 백업');
+
+let cxBlocked = false;
+try {
+  skillMd({ name: '../evil', description: 'd', systemPrompt: 's' });
+} catch {
+  cxBlocked = true;
+}
+assert.ok(cxBlocked, 'Codex 스킬 역할 이름 경로조작 차단');
+ok('Codex 보안: 역할 이름 경로조작 차단');
 
 console.log(`\n🎉 모든 검증 통과: ${pass}건`);
 fs.rmSync(root, { recursive: true, force: true });

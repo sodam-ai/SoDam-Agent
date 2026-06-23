@@ -4,6 +4,7 @@ import { PRESETS, getPreset, getRoleLibrary, getToolLibrary } from './presets.mj
 import { toSafeName } from './validate.mjs';
 import { resolveTarget } from './paths.mjs';
 import { buildPlan, printPlan, applyPlan, verifyInfo } from './install.mjs';
+import { buildCodexPlan, applyCodexPlan } from './writers/codex.mjs';
 import { listBackups, restoreBackup } from './backup.mjs';
 import { buildExport, writeExport, readImport } from './share.mjs';
 import { listPersonalRoles, saveRole, removeRole, rolesDir } from './roles.mjs';
@@ -54,7 +55,7 @@ export async function main(argv) {
 }
 
 function parseArgs(argv) {
-  const opts = { dir: undefined, out: undefined, yes: false, global: false };
+  const opts = { dir: undefined, out: undefined, yes: false, global: false, target: 'claude' };
   const positional = [];
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -64,6 +65,8 @@ function parseArgs(argv) {
     else if (a.startsWith('--dir=')) opts.dir = a.slice(6);
     else if (a === '--out') opts.out = argv[++i];
     else if (a.startsWith('--out=')) opts.out = a.slice(6);
+    else if (a === '--target') opts.target = argv[++i];
+    else if (a.startsWith('--target=')) opts.target = a.slice(9);
     else positional.push(a);
   }
   return { cmd: positional[0], arg2: positional[1], opts };
@@ -82,6 +85,7 @@ function printHelp() {
     agentroster doctor          환경 진단
     agentroster list            프리셋(팀) 목록
     agentroster install <팀id>  팀 설치 (예: install web-app-team)
+    agentroster install <팀id> --target codex   같은 팀을 Codex용으로 번역(베타)
     agentroster custom          역할을 골라 나만의 팀 만들기(마법사)
     agentroster roles           내 역할 만들기/고치기/지우기
     agentroster verify          설치 상태 + Claude Code에서 확인하는 법 보기
@@ -149,6 +153,12 @@ async function cmdInstall(opts) {
   }
   if (!preset) preset = await pickPreset('어떤 팀을 설치할까요?');
 
+  if (opts.target && opts.target !== 'claude' && opts.target !== 'codex') {
+    ui.warn(`모르는 대상: ${opts.target}. --target은 claude(기본) 또는 codex만 됩니다.`);
+    return;
+  }
+  if (opts.target === 'codex') return cmdInstallCodex(opts, preset);
+
   const useGlobal = await resolveScope(opts, resolveTarget(opts.dir).projectRoot);
   const target = resolveTarget(opts.dir, { global: useGlobal });
 
@@ -166,6 +176,43 @@ async function cmdInstall(opts) {
   const { backup } = applyPlan(plan);
   ui.success(`'${preset.name}' 설치 완료!`);
   printAfterInstall(backup, target, preset.roles[0]?.name);
+}
+
+// Codex 역할 번역 설치(베타) — 같은 팀을 AGENTS.md + .agents/skills 로 변환. config.toml은 자동수정 X(스니펫 안내).
+async function cmdInstallCodex(opts, preset) {
+  const plan = buildCodexPlan(preset, opts.dir);
+  line('\n' + color.bold('📋 Codex 설치 미리보기 (아직 아무것도 바꾸지 않았습니다)'));
+  line(color.gray(`   대상 폴더: ${plan.root}`));
+  line(color.yellow('   ⚠️ Codex는 멀티에이전트가 아니라 "역할 번역"입니다 — 똑같은 팀이 아니에요(베타).'));
+  line('\n' + color.bold('   ① 만들/덮을 파일:'));
+  line(`      ${plan.agentsExists ? color.yellow('[기존 덮어씀·.bak 백업]') : color.green('[새로 만듦]')} AGENTS.md`);
+  for (const s of plan.skills) line(`      ${color.green('[새로 만듦]')} .agents/skills/${s.role}/SKILL.md`);
+  line('\n' + color.bold('   ② Codex MCP (자동 수정 안 함 — 직접 추가):'));
+  if (plan.tomlSnippet) {
+    line(color.gray('      ~/.codex/config.toml 에 아래를 직접 추가하세요:'));
+    for (const ln of plan.tomlSnippet.split('\n')) line('      ' + color.cyan(ln));
+  } else {
+    line(color.gray('      (이 팀은 MCP가 없습니다)'));
+  }
+  line('');
+
+  if (!opts.yes) {
+    const go = await ui.confirm('위 내용으로 Codex용 파일을 만들까요? (기존 AGENTS.md는 .bak로 백업)', false);
+    if (!go) {
+      ui.info('취소했습니다. 아무것도 바꾸지 않았습니다.');
+      return;
+    }
+  }
+
+  const res = applyCodexPlan(plan);
+  ui.success(`'${preset.name}' 팀을 Codex용으로 번역했습니다(베타).`);
+  if (res.backup) line(color.gray(`   기존 AGENTS.md 백업: ${res.backup}`));
+  line('');
+  line(color.bold('   ✅ 다음 단계:'));
+  line('   1) 이 폴더에서 Codex를 실행하면 ' + color.bold('AGENTS.md') + ' 를 읽고 역할 지침을 적용합니다.');
+  if (plan.tomlSnippet) line('   2) MCP가 필요하면 위 TOML을 ' + color.bold('~/.codex/config.toml') + ' 에 추가 후 Codex 재시작.');
+  line(color.gray('   ※ Codex는 역할을 "지침"으로 따릅니다(병렬 팀 아님). 실제 동작은 Codex에서 직접 확인하세요.'));
+  line('');
 }
 
 // ⭐ 설치 후 "마지막 한 단계" 안내 — 비개발자가 가장 많이 막히는 지점이라 강하게 안내한다.
