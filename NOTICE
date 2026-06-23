@@ -1,4 +1,4 @@
-AgentRoster
+SoDam-Agent
 Copyright 2026 SoDam AI Studio
 
 This product is licensed under the Apache License, Version 2.0 (see LICENSE).
@@ -13,12 +13,12 @@ This product is licensed under the Apache License, Version 2.0 (see LICENSE).
 - "Claude", "Claude Code", "Anthropic"는 Anthropic, PBC의 상표입니다.
 - "Codex", "OpenAI"는 OpenAI의 상표입니다.
 - 기타 언급된 제품·서비스명은 각 소유자의 상표입니다.
-- AgentRoster는 위 회사들과 제휴·후원·보증 관계가 없으며, 상표는 사실적(nominative) 설명 목적으로만 사용합니다. 로고는 사용하지 않습니다.
+- SoDam-Agent는 위 회사들과 제휴·후원·보증 관계가 없으며, 상표는 사실적(nominative) 설명 목적으로만 사용합니다. 로고는 사용하지 않습니다.
 
 면책
 - 본 소프트웨어는 "있는 그대로(AS IS)" 제공되며 어떠한 보증도 하지 않습니다(LICENSE 제7조).
-- 사용자가 설치하는 외부 도구(MCP)·API의 요금제·약관·모델 정책은 AgentRoster가 보장하지 않으며, 사용자가 직접 확인해야 합니다.
+- 사용자가 설치하는 외부 도구(MCP)·API의 요금제·약관·모델 정책은 SoDam-Agent가 보장하지 않으며, 사용자가 직접 확인해야 합니다.
 
 [공개 전 확인 권장 — 법무 영역, 본 문서는 법률 자문이 아님]
 - 저작권 법적 주체명(개인 vs 사업자 "SoDam AI Studio") 확정.
-- "AgentRoster" 명칭의 상표/브랜드 충돌 여부 확인.
+- "SoDam-Agent" 명칭의 상표/브랜드 충돌 여부 확인.

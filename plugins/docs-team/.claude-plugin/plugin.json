@@ -1,6 +1,6 @@
 {
   "name": "docs-team",
-  "description": "문서/콘텐츠팀 — 초안(writer) → 다듬기(editor) → 사실확인(fact-checker). AgentRoster 자체 큐레이션.",
+  "description": "문서/콘텐츠팀 — 초안(writer) → 다듬기(editor) → 사실확인(fact-checker). SoDam-Agent 자체 큐레이션.",
   "version": "0.1.0",
   "author": { "name": "SoDam AI Studio" },
   "license": "Apache-2.0"
