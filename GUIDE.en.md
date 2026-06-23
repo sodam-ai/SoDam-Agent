@@ -172,6 +172,28 @@ If you installed `sodam-agent` in Step 4 and restarted, type `/sodam-agent:` to 
 
 ---
 
+## (Optional) Using it in Codex too — role translation (beta)
+
+If you also use **Codex** (another AI coding tool), you can build the same team for Codex too.
+> Honestly: Codex isn't a "several agents working separately as a team" style. So instead of the same team, it **"translates" each role into instructions Codex understands** (beta).
+
+> ⚠️ This **one** thing needs a **black terminal** (unlike plugin install). Codex users are usually comfortable with a terminal.
+
+**Prerequisites**: ① a downloaded copy of this project (see section 10) ② **Node.js** (LTS from nodejs.org)
+
+**How** — from the downloaded SoDam-Agent folder, in a terminal, one line (put your Codex project folder in `--dir`):
+```
+node bin/cli.mjs install web-app-team --target codex --dir "C:\my_codex_project_folder"
+```
+🖥️ It previews what will be created and asks → say yes, and that folder gets **`AGENTS.md`** (role instructions) and `.agents/skills/...`.
+- Swap the team for `docs-team`·`research-team`.
+- If you need the doc-search tool (context7), paste the **few TOML lines shown into `~/.codex/config.toml` and restart Codex**.
+
+**How to use**: open **Codex in that folder**; it reads `AGENTS.md` and works by the roles.
+> If it doesn't work: make sure you opened Codex **in that folder** (elsewhere it can't read `AGENTS.md`). And Codex follows the roles as "instructions" — it's not several agents running at once (that's normal).
+
+---
+
 ## 10. (Advanced) Instead of the marketplace — run it from your folder
 
 You can **register a downloaded folder as a "store"** (inside Claude Code, no terminal).

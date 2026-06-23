@@ -26,6 +26,7 @@
 11. [Troubleshooting](#11-troubleshooting-symptom--cause--fix)
 12. [Safety & disclaimer](#12-safety--disclaimer)
 13. [License · Copyright · Commercial use](#13-license--copyright--commercial-use-important)
+- ✨ [Using it in Codex too (role translation · beta)](#using-it-in-codex-too-role-translation--beta)
 
 ---
 
@@ -136,6 +137,51 @@ After installing, teammates are registered as **`team:role`** (e.g., `web-app-te
 - **Tools (MCP)**: installing `web-app-team`·`research-team` **also connects the context7 (doc search) tool** automatically (no extra setup).
 
 > 💡 Plugins are visible in **every folder and every session** right away (after one restart) — no need to launch Claude in a specific folder.
+
+---
+
+## Using it in Codex too (role translation · beta)
+
+Besides Claude Code, you can use the same team in **Codex (another AI coding tool)**.
+But, **honestly**: Codex has no concept of *"several agents running as a separate team"* like Claude Code.
+So instead of "the same team," it **"translates" each role into Codex's way (an instructions file + skills)** (beta).
+
+> ⚠️ **This feature alone needs a terminal** (unlike plugin install). Codex users are usually comfortable with a terminal.
+
+**Prerequisites**
+- A downloaded copy of this repo (like [Method B in section 3](#3-download--install): GitHub ZIP or `git clone`)
+- **Node.js 18+** (needed to run the CLI — [nodejs.org](https://nodejs.org) LTS)
+
+**How to install** — from the downloaded SoDam-Agent folder, targeting the project folder you'll use with Codex:
+```
+node bin/cli.mjs install web-app-team --target codex --dir "C:\my\project\folder"
+```
+- Omit `--dir` to use the **current folder**. · Swap the team for `docs-team`·`research-team`.
+- It shows a **preview of what will be created** and asks for confirmation (`--yes` to skip).
+
+**What gets created (file locations)**
+
+| File | Location | Role |
+|---|---|---|
+| `AGENTS.md` | project folder root | The **role instructions** Codex reads on start (roles = "modes") |
+| `SKILL.md` | `.agents/skills/<role>/SKILL.md` | Per-role detailed instructions |
+| MCP config (TOML) | `~/.codex/config.toml` | Tools like doc search (context7). **Not touched automatically** — paste the printed TOML yourself |
+
+> If an `AGENTS.md` already exists, it is **backed up to `AGENTS.md.bak`** before writing (safe).
+
+**How to use**
+- Run **Codex in that folder**; it reads `AGENTS.md` and applies the role instructions.
+- For doc search (context7), paste the **TOML snippet shown at install into `~/.codex/config.toml` and restart Codex**.
+
+**Troubleshooting**
+
+| Symptom | Fix |
+|---|---|
+| Codex ignores the roles | Make sure you ran Codex **in that folder** (elsewhere it can't read `AGENTS.md`) |
+| The doc-search tool is missing | Add the TOML to `~/.codex/config.toml`, **restart Codex** / check Node.js is installed |
+| No parallel "same team" collaboration | That's normal — Codex follows roles as **instructions** (not a parallel team) |
+
+> 🔎 Verify recognition in your actual Codex runtime once (behavior may vary by tool/version).
 
 ---
 
