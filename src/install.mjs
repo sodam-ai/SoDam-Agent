@@ -119,7 +119,7 @@ function ensureGitignore(root) {
   const gi = path.join(root, '.gitignore');
   const cur = fs.existsSync(gi) ? fs.readFileSync(gi, 'utf8') : '';
   if (cur.includes('.agentroster/')) return;
-  const banner = '\n# AgentRoster (백업·비밀 포함 가능 — Git에 올리지 않음)\n';
+  const banner = '\n# SoDam-Agent (백업·비밀 포함 가능 — Git에 올리지 않음)\n';
   fs.appendFileSync(gi, banner + '.agentroster/\n');
 }
 

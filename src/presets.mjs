@@ -1,4 +1,4 @@
-// AgentRoster 기본 프리셋 3종 (02_DATA_MODEL "프리셋 3종 라인업").
+// SoDam-Agent 기본 프리셋 3종 (02_DATA_MODEL "프리셋 3종 라인업").
 // 역할 1개 = .claude/agents/<name>.md 1개. tools=최소권한, model=inherit(사용자 플랜/기본 모델 따름).
 // MCP는 recommendedTools 형태로, requirement=optional(없어도 동작).
 
@@ -8,7 +8,7 @@ export const PRESETS = [
     name: '웹앱 빌드팀',
     description: '기획 → 프론트 → 백엔드 → 리뷰까지 한 팀',
     category: '개발',
-    source: 'AgentRoster 자체 큐레이션',
+    source: 'SoDam-Agent 자체 큐레이션',
     roles: [
       {
         name: 'planner',
@@ -59,7 +59,7 @@ export const PRESETS = [
     name: '문서/콘텐츠팀',
     description: '초안 → 다듬기 → 사실 확인까지 한 팀',
     category: '콘텐츠',
-    source: 'AgentRoster 자체 큐레이션',
+    source: 'SoDam-Agent 자체 큐레이션',
     roles: [
       {
         name: 'writer',
@@ -94,7 +94,7 @@ export const PRESETS = [
     name: '리서치팀',
     description: '자료 수집 → 정리·종합 → 반증 검증까지 한 팀',
     category: '리서치',
-    source: 'AgentRoster 자체 큐레이션',
+    source: 'SoDam-Agent 자체 큐레이션',
     roles: [
       {
         name: 'researcher',

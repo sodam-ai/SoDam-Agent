@@ -65,7 +65,7 @@ export function readImport(filePath) {
     throw new Error('파일이 올바른 형식이 아닙니다(JSON 읽기 실패). 가져오기를 중단합니다.');
   }
   if (!raw || raw.format !== FORMAT) {
-    throw new Error('AgentRoster 팀 파일이 아닙니다(format 불일치). 가져오기를 중단합니다.');
+    throw new Error('SoDam-Agent 팀 파일이 아닙니다(format 불일치). 가져오기를 중단합니다.');
   }
   if (raw.version !== VERSION) {
     throw new Error(`지원하지 않는 버전입니다(version=${raw.version}). 가져오기를 중단합니다.`);

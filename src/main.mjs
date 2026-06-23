@@ -1,4 +1,4 @@
-// AgentRoster 메인 흐름. 인자 없으면 대화형 메뉴, 있으면 명령 실행.
+// SoDam-Agent 메인 흐름. 인자 없으면 대화형 메뉴, 있으면 명령 실행.
 import path from 'node:path';
 import { PRESETS, getPreset, getRoleLibrary, getToolLibrary } from './presets.mjs';
 import { toSafeName } from './validate.mjs';
@@ -73,7 +73,7 @@ function parseArgs(argv) {
 }
 
 function banner() {
-  line(color.bold('\n  AgentRoster') + color.gray('  — Claude Code에 에이전트 팀을 깔아주는 도구'));
+  line(color.bold('\n  SoDam-Agent') + color.gray('  — Claude Code·Codex에 에이전트 팀을 깔아주는 도구'));
   line(color.gray('  ────────────────────────────────────────────'));
 }
 
@@ -81,17 +81,17 @@ function printHelp() {
   banner();
   line(`
   사용법:
-    agentroster                 대화형 메뉴 (가장 쉬움)
-    agentroster doctor          환경 진단
-    agentroster list            프리셋(팀) 목록
-    agentroster install <팀id>  팀 설치 (예: install web-app-team)
-    agentroster install <팀id> --target codex   같은 팀을 Codex용으로 번역(베타)
-    agentroster custom          역할을 골라 나만의 팀 만들기(마법사)
-    agentroster roles           내 역할 만들기/고치기/지우기
-    agentroster verify          설치 상태 + Claude Code에서 확인하는 법 보기
-    agentroster rollback        되돌리기(가장 최근 백업)
-    agentroster export <팀id>   팀을 파일로 내보내기(공유용)
-    agentroster import <파일>   받은 팀 파일을 설치
+    sodam-agent                대화형 메뉴 (가장 쉬움)
+    sodam-agent doctor          환경 진단
+    sodam-agent list            프리셋(팀) 목록
+    sodam-agent install <팀id>  팀 설치 (예: install web-app-team)
+    sodam-agent install <팀id> --target codex   같은 팀을 Codex용으로 번역(베타)
+    sodam-agent custom          역할을 골라 나만의 팀 만들기(마법사)
+    sodam-agent roles           내 역할 만들기/고치기/지우기
+    sodam-agent verify          설치 상태 + Claude Code에서 확인하는 법 보기
+    sodam-agent rollback        되돌리기(가장 최근 백업)
+    sodam-agent export <팀id>   팀을 파일로 내보내기(공유용)
+    sodam-agent import <파일>   받은 팀 파일을 설치
 
   옵션:
     --global, -g   모든 폴더에서 쓰도록 전역(~/.claude/agents) 설치/확인/되돌리기
@@ -148,7 +148,7 @@ async function resolveScope(opts, projectRoot) {
 async function cmdInstall(opts) {
   let preset = opts.preset ? getPreset(opts.preset) : null;
   if (opts.preset && !preset) {
-    ui.warn(`그런 팀이 없습니다: ${opts.preset}.  'agentroster list'로 목록을 보세요.`);
+    ui.warn(`그런 팀이 없습니다: ${opts.preset}.  'sodam-agent list'로 목록을 보세요.`);
     return;
   }
   if (!preset) preset = await pickPreset('어떤 팀을 설치할까요?');
@@ -234,7 +234,7 @@ function printAfterInstall(backup, target, sampleRole = 'reviewer') {
   line(`   2) ${color.red('이전 대화가 그대로 보이면 "이어하기"라 안 보입니다!')} 텅 빈 새 창이어야 해요.`);
   line(`   3) 새 창에서 ${color.bold('/agents')} 또는 ${color.bold(`"${sampleRole} 에이전트 불러줘"`)} 로 확인.`);
   line('');
-  line(color.gray(`   언제든 "agentroster verify${isGlobal ? ' --global' : ''}" 로 설치 상태와 확인법을 다시 볼 수 있어요.`));
+  line(color.gray(`   언제든 "sodam-agent verify${isGlobal ? ' --global' : ''}" 로 설치 상태와 확인법을 다시 볼 수 있어요.`));
   line('');
 }
 
@@ -247,10 +247,10 @@ function cmdVerify(opts) {
 
   if (info.agents.length === 0) {
     ui.info(`${isGlobal ? '전역에' : '이 폴더엔'} 설치된 에이전트(팀)가 없습니다.`);
-    line(color.gray('   먼저 "agentroster install <팀id>" 또는 메뉴에서 설치하세요.'));
+    line(color.gray('   먼저 "sodam-agent install <팀id>" 또는 메뉴에서 설치하세요.'));
     if (!isGlobal) {
-      line(color.gray('   (다른 폴더에 깔았다면: agentroster verify --dir "그 폴더 경로")'));
-      line(color.gray('   (모든 폴더 공용으로 깔았다면: agentroster verify --global)'));
+      line(color.gray('   (다른 폴더에 깔았다면: sodam-agent verify --dir "그 폴더 경로")'));
+      line(color.gray('   (모든 폴더 공용으로 깔았다면: sodam-agent verify --global)'));
     }
     return;
   }
@@ -278,7 +278,7 @@ async function cmdRollback(opts) {
   const backups = listBackups(target);
   if (backups.length === 0) {
     ui.info(`되돌릴 백업이 없습니다(아직 ${opts.global ? '전역 ' : ''}설치 기록 없음).`);
-    if (!opts.global) line(color.gray('   (전역 설치를 되돌리려면: agentroster rollback --global)'));
+    if (!opts.global) line(color.gray('   (전역 설치를 되돌리려면: sodam-agent rollback --global)'));
     return;
   }
   let chosen = backups[0];
@@ -450,7 +450,7 @@ async function roleRemove() {
 async function cmdExport(opts) {
   let preset = opts.preset ? getPreset(opts.preset) : null;
   if (opts.preset && !preset) {
-    ui.warn(`그런 팀이 없습니다: ${opts.preset}.  'agentroster list'로 목록을 보세요.`);
+    ui.warn(`그런 팀이 없습니다: ${opts.preset}.  'sodam-agent list'로 목록을 보세요.`);
     return;
   }
   if (!preset) preset = await pickPreset('어떤 팀을 파일로 내보낼까요?');
@@ -460,13 +460,13 @@ async function cmdExport(opts) {
   writeExport(obj, out);
   ui.success(`'${preset.name}' 팀을 파일로 내보냈습니다.`);
   line(color.gray(`   파일: ${out}`));
-  line('   이 파일을 다른 사람에게 주면, 그 사람도 `agentroster import` 로 같은 팀을 설치할 수 있어요.');
+  line('   이 파일을 다른 사람에게 주면, 그 사람도 `sodam-agent import` 로 같은 팀을 설치할 수 있어요.');
   line(color.gray('   (비밀번호·API 키 값은 들어있지 않습니다 — 안전하게 공유 가능.)'));
 }
 
 async function cmdImport(opts) {
   if (!opts.file) {
-    ui.warn('가져올 파일 경로를 알려주세요. 예: agentroster import 내팀.agentroster.json');
+    ui.warn('가져올 파일 경로를 알려주세요. 예: sodam-agent import 내팀.agentroster.json');
     return;
   }
   const target = resolveTarget(opts.dir);
