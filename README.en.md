@@ -17,7 +17,7 @@
 2. [Prerequisites & required programs](#2-prerequisites--required-programs)
 3. [Download & install](#3-download--install)
 4. [Quick start (3 steps)](#4-quick-start-3-steps)
-5. [What you can install (3 teams + management tool)](#5-what-you-can-install-3-teams--management-tool)
+5. [What you can install (5 teams, 3 registered + management tool)](#5-what-you-can-install-5-teams-3-registered--management-tool)
 6. [How to use it](#6-how-to-use-it)
 7. [Manage your own agents after install (sodam-agent)](#7-manage-your-own-agents-after-install-sodam-agent)
 8. [Command reference](#8-command-reference)
@@ -26,6 +26,9 @@
 11. [Troubleshooting](#11-troubleshooting-symptom--cause--fix)
 12. [Safety & disclaimer](#12-safety--disclaimer)
 13. [License · Copyright · Commercial use](#13-license--copyright--commercial-use-important)
+14. [Security & data flow](#14-security--data-flow)
+15. [Architecture](#15-architecture)
+16. [FAQ (frequently asked questions)](#16-faq-frequently-asked-questions)
 - ✨ [Using it in Codex too (role translation · beta)](#using-it-in-codex-too-role-translation--beta)
 
 ---
@@ -108,7 +111,7 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
 
 ---
 
-## 5. What you can install (3 teams + management tool)
+## 5. What you can install (5 teams, 3 registered + management tool)
 
 **① Team plugins (bundles of AI teammates)**
 
@@ -117,6 +120,10 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
 | `web-app-team` | Web App Build Team | planner · frontend-dev · backend-dev · reviewer | context7 (library-docs search) |
 | `docs-team` | Docs / Content Team | writer · editor · fact-checker | none |
 | `research-team` | Research Team | researcher · analyst · critic | context7 |
+| `marketing-team` ⚙️ | Marketing Team | copywriter (copy & content) · seo-analyst (SEO) · social-manager (social media) | none |
+| `data-team` ⚙️ | Data Team | data-engineer (collect & clean) · data-analyst (analysis) · data-viz (visualization) | none |
+
+> ⚙️ **Coming soon**: Agent files are complete but the plugin registration files (plugin.json · marketplace.json) still need manual setup. To install manually, see [DEVELOPMENT.md](./DEVELOPMENT.md).
 
 > Each teammate gets **least-privilege tools** (e.g., the reviewer is read-only). Model is `inherit` (follows your default model).
 
@@ -248,7 +255,7 @@ Add marketplace (once) → Install teams/tool (/plugin install) → Restart
 - **Installed plugin cache** (managed automatically by Claude Code): `~/.claude/plugins/cache/`
 - **Agents you create**: `<project>/.claude/agents/<name>.md` (global save: `~/.claude/agents/`)
 - **This repository's structure**:
-  - `.claude-plugin/marketplace.json` — marketplace catalog (3 teams + management tool)
+  - `.claude-plugin/marketplace.json` — marketplace catalog (3 registered, 5 total planned)
   - `plugins/<team>/.claude-plugin/plugin.json` — team metadata
   - `plugins/<team>/agents/<role>.md` — one AI teammate (description + instructions)
   - `plugins/<team>/.mcp.json` — the team's tool (MCP) config (web-app · research)
@@ -267,6 +274,7 @@ Add marketplace (once) → Install teams/tool (/plugin install) → Restart
 | No `/plugin` command | Old Claude Code | **Update Claude Code** to the latest (docs: code.claude.com) |
 | Pasting a path gives `Invalid ... format` | The path **includes quotes (")** | **Remove the quotes** — path only. Prefer a space-free folder |
 | Marketplace added but `/agents` shows **0 teammates** | You ran `marketplace add` but **not `install`** | Run `/plugin install <team>@sodamagent-marketplace` **separately** (adding ≠ installing) |
+| macOS · Linux install? | Supported scope | SoDam-Agent is developed and verified **Windows-first**. On macOS/Linux, the `/plugin` commands work the same if Claude Code is installed, but path/environment differences may cause edge cases. Report issues at [GitHub Issues](https://github.com/sodam-ai/SoDam-Agent/issues). |
 | Trained a team agent but it reverts | You **edited a team agent directly** (overwritten on update) | Use `/sodam-agent:pick-agent` to make a **copy**, then train the copy |
 | Names like `web-app-team:` look confusing | — | That's expected. The **`team:role`** naming makes *your* installs unambiguous |
 | context7 (doc search) errors | No Node.js / network blocked | Install **LTS** from [nodejs.org](https://nodejs.org) / try another network |
@@ -299,4 +307,136 @@ Add marketplace (once) → Install teams/tool (/plugin install) → Restart
 
 ---
 
-> 📘 Easier walkthrough: [Beginner Guide (GUIDE.en.md)](./GUIDE.en.md) · 🇰🇷 [한국어](./README.md) · 📄 PDF: `docs/` folder
+## 14. Security & data flow
+
+### Data collection
+- **SoDam-Agent has no server.** This tool downloads files from a GitHub repository and registers them with Claude Code. That's it.
+- **No user data is collected or transmitted.** Installation, agent creation, and command execution all happen entirely on your computer.
+
+### Data flow (at a glance)
+```
+User input
+  └─→ Claude Code
+       └─→ Subagent (based on agent instruction file)
+            └─→ (if tool needed) context7 MCP
+                 └─→ Upstash (external doc DB) ← internet required
+                      └─→ result returned
+```
+
+### API keys & secrets
+- API keys, passwords, and tokens are **never stored in files.**
+- Tool (MCP) configs and agent creation use only the key **name** (environment variable name).
+- Store actual key values in **OS environment variables** (e.g., Windows System Environment Variables).
+
+### Self-protection hook
+- A Claude Code hook blocks **accidental overwrites** of files inside `.claude-plugin/` folders.
+- This prevents marketplace and plugin definition files from being modified unintentionally.
+
+### context7 MCP behavior
+- context7 MCP connects when `web-app-team` or `research-team` is installed.
+- It runs **locally via `npx`** and fetches library documentation from Upstash (an external service).
+- context7's pricing, terms, and data policy are managed by Upstash — **verify them yourself** at the Upstash site.
+
+### Backup policy
+- When an agent is deleted, an automatic `.bak` backup is created in the same folder.
+- Backups are capped at 10 (oldest are auto-removed).
+
+---
+
+## 15. Architecture
+
+### Repository structure
+```
+sodam-ai/SoDam-Agent (GitHub)
+│
+├── .claude-plugin/marketplace.json    ← marketplace catalog (plugin list)
+│
+├── plugins/
+│   ├── web-app-team/
+│   │   ├── .claude-plugin/plugin.json ← team metadata
+│   │   ├── agents/
+│   │   │   ├── planner.md             ← agent instructions (1 agent)
+│   │   │   ├── frontend-dev.md
+│   │   │   ├── backend-dev.md
+│   │   │   └── reviewer.md
+│   │   └── .mcp.json                  ← context7 MCP connection config
+│   ├── docs-team/       (same structure)
+│   ├── research-team/   (same structure)
+│   ├── marketing-team/  ⚙️ (plugin.json coming soon)
+│   ├── data-team/       ⚙️ (plugin.json coming soon)
+│   └── sodam-agent/
+│       └── commands/
+│           ├── new-agent.md           ← slash command (1 command)
+│           ├── training-agent.md
+│           ├── save-agent.md
+│           ├── pick-agent.md
+│           └── remove-agent.md
+│
+├── src/                               ← Codex CLI only (unrelated to plugin install)
+│   ├── presets.mjs                    ← team preset definitions
+│   ├── install.mjs                    ← team install logic
+│   ├── backup.mjs                     ← backup / restore
+│   └── share.mjs                      ← team export
+└── bin/cli.mjs                        ← Codex CLI entry point
+```
+
+### Install flow (plugin method)
+```
+1. /plugin marketplace add sodam-ai/SoDam-Agent
+   → Registers the marketplace.json URL with Claude Code
+
+2. /plugin install <team>@sodamagent-marketplace
+   → Claude Code downloads plugin.json + agents/*.md from GitHub
+   → Stores in ~/.claude/plugins/cache/
+
+3. Restart Claude Code
+   → Loads agent instruction files (.md) from cache
+   → Registers as "team:role" in /agents
+
+4. User calls an agent
+   → Claude Code runs that agent's instruction file as a subagent
+```
+
+### Core design principles
+- **Serverless**: No dedicated SoDam-Agent server — runs entirely on GitHub + Claude Code
+- **File-based agents**: Agent definitions are `.md` files (LLM-friendly, easy to version-control)
+- **Zero external dependencies**: No npm packages required; Node.js 18+ only (for Codex CLI)
+- **Least privilege**: Each agent has only the tools it needs
+
+---
+
+## 16. FAQ (frequently asked questions)
+
+**Q. Is this tool free to use?**
+> SoDam-Agent itself is **free** (Apache-2.0 open source). However, **Claude Code subscription fees** follow Anthropic's pricing, and **connected MCP services** (e.g., context7/Upstash) have their own pricing — check each service directly.
+
+**Q. Which Claude plan do I need?**
+> Plugin and subagent features are verified on **Pro or higher** plans. Behavior on the Free plan is unverified and may vary depending on Anthropic's policies.
+
+**Q. Can I use it offline?**
+> The initial install requires an internet connection. After installing, the agents themselves work as long as the Claude API is reachable. However, **context7 MCP** (doc search) requires online access.
+
+**Q. How do I update?**
+> Check for updates in the `/plugin` manager, or remove and re-add the marketplace to pull the latest version. Since agent files are overwritten on updates, **keep customized copies using `pick-agent`** before updating.
+
+**Q. Can I create my own teams or agents?**
+> Yes. Use the 5 `sodam-agent` commands to create and manage your own agents. To build a full team from scratch, see [DEVELOPMENT.md](./DEVELOPMENT.md) (`plugin.json` + `agents/*.md` format).
+
+**Q. Is my data sent to a SoDam-Agent server?**
+> No. SoDam-Agent has no separate server. All processing happens on your computer and inside Claude Code. (See [§14 Security & data flow](#14-security--data-flow).)
+
+**Q. Is it Windows-only?**
+> Windows is the primary development and testing platform. macOS/Linux users can use `/plugin`-based features with Claude Code, but some path/environment differences may occur. Report any issues via [GitHub Issues](https://github.com/sodam-ai/SoDam-Agent/issues).
+
+**Q. Can I share the agents I create?**
+> Yes. Use `/sodam-agent:save-agent` to save globally, then share the `~/.claude/agents/<name>.md` file. **Always check for personal info or API keys before sharing.**
+
+**Q. Can I permanently change a team agent's instructions?**
+> Team agent files are overwritten on updates if edited directly. The recommended approach: use `/sodam-agent:pick-agent` to copy it as your own agent, then modify with `/sodam-agent:training-agent`.
+
+**Q. Is it OK if context7 is missing?**
+> Perfectly fine. Without context7, AI agents can't look up live library docs, but all other functions work normally. Agents are usable even without Node.js or in offline environments.
+
+---
+
+> 📘 Easier walkthrough: [Beginner Guide (GUIDE.en.md)](./GUIDE.en.md) · 🇰🇷 [한국어](./README.md) · 📄 PDF: `docs/` folder · [Security & Data Flow](#14-security--data-flow) · [FAQ](#16-faq-frequently-asked-questions)

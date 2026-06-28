@@ -32,6 +32,20 @@
       "description": "직원 관리 도구 — 팀 설치 후에도 /명령으로 새 직원을 직접 만들고 관리",
       "version": "0.1.1",
       "author": { "name": "SoDam AI Studio" }
+    },
+    {
+      "name": "marketing-team",
+      "source": "./plugins/marketing-team",
+      "description": "마케팅팀 — 카피·콘텐츠(copywriter) → SEO 최적화(seo-analyst) → SNS 관리(social-manager)",
+      "version": "0.1.0",
+      "author": { "name": "SoDam AI Studio" }
+    },
+    {
+      "name": "data-team",
+      "source": "./plugins/data-team",
+      "description": "데이터팀 — 수집·정제(data-engineer) → 분석(data-analyst) → 시각화(data-viz)",
+      "version": "0.1.0",
+      "author": { "name": "SoDam AI Studio" }
     }
   ]
 }

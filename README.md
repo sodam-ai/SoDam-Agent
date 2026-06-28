@@ -18,7 +18,7 @@
 2. [사전 준비물 · 필요 프로그램](#2-사전-준비물--필요-프로그램)
 3. [다운로드 · 설치 방법](#3-다운로드--설치-방법)
 4. [빠른 시작 (3단계)](#4-빠른-시작-3단계)
-5. [설치할 수 있는 것 (팀 4종 + 관리 도구)](#5-설치할-수-있는-것-팀-4종--관리-도구)
+5. [설치할 수 있는 것 (팀 5종 + 관리 도구)](#5-설치할-수-있는-것-팀-5종--관리-도구)
 6. [사용 · 작동 방법](#6-사용--작동-방법)
 7. [설치 후 내 직원 직접 관리하기 (sodam-agent)](#7-설치-후-내-직원-직접-관리하기-sodam-agent)
 8. [명령어 모음](#8-명령어-모음)
@@ -27,6 +27,9 @@
 11. [문제 · 오류 대처](#11-문제--오류-대처-증상--원인--해결)
 12. [안전 · 면책](#12-안전--면책)
 13. [라이선스 · 저작권 · 상업적 사용](#13-라이선스--저작권--상업적-사용-중요)
+14. [보안 · 데이터 흐름](#14-보안--데이터-흐름)
+15. [아키텍처](#15-아키텍처)
+16. [FAQ (자주 묻는 질문)](#16-faq-자주-묻는-질문)
 - ✨ [Codex에서도 쓰기 (역할 번역 · 베타)](#codex에서도-쓰기-역할-번역--베타)
 
 ---
@@ -109,7 +112,7 @@ Claude Code 안에서 **명령 몇 줄**이면 끝납니다. 터미널·폴더 �
 
 ---
 
-## 5. 설치할 수 있는 것 (팀 4종 + 관리 도구)
+## 5. 설치할 수 있는 것 (팀 5종 + 관리 도구)
 
 **① 팀 플러그인 (AI 직원 묶음)**
 
@@ -310,4 +313,139 @@ node bin/cli.mjs install web-app-team --target codex --dir "C:\내\프로젝트\
 
 ---
 
-> 📘 더 쉬운 따라하기: [왕초보 가이드(GUIDE.md)](./GUIDE.md) · 🇺🇸 [English](./README.en.md) · 📄 PDF: `docs/` 폴더
+## 14. 보안 · 데이터 흐름
+
+### 데이터 수집 여부
+- **SoDam-Agent 서버가 없습니다.** 이 도구는 GitHub 저장소에서 파일을 받아 Claude Code에 등록할 뿐입니다.
+- **사용자 데이터를 수집하거나 전송하지 않습니다.** 설치·에이전트 생성·명령 실행은 전부 내 컴퓨터에서만 일어납니다.
+
+### 데이터 흐름 (한눈에)
+
+```
+사용자 입력
+  └─→ Claude Code
+       └─→ 서브에이전트 (에이전트 지시문 기반)
+            └─→ (도구 필요 시) context7 MCP
+                 └─→ Upstash (외부 문서 DB) ← 인터넷 연결 필요
+                      └─→ 결과 반환
+```
+
+### API 키 · 비밀정보 관리
+- API 키, 비밀번호, 토큰은 **절대 파일에 저장하지 않습니다.**
+- 도구(MCP) 설정과 에이전트 생성에서는 키 **이름(환경변수 이름)만** 사용합니다.
+- 실제 키 값은 **OS 환경변수**(예: Windows 시스템 환경변수)에 저장하세요.
+
+### 자기보호 안전장치 (Self-Protection Hook)
+- Claude Code 훅(hook)이 `.claude-plugin/` 폴더 내부를 **실수로 덮어쓰지 않도록** 차단합니다.
+- 마켓플레이스·플러그인 정의 파일이 임의 수정되는 것을 방지합니다.
+
+### context7 MCP 동작
+- `web-app-team`·`research-team` 설치 시 context7 MCP가 연결됩니다.
+- context7는 **로컬에서 `npx`로 실행**되고, 라이브러리 문서를 Upstash(외부 서비스)에서 가져옵니다.
+- context7의 요금·약관·데이터 정책은 **사용자가 Upstash 사이트에서 직접 확인**하세요.
+
+### 백업 정책
+- 에이전트 삭제 시 `.bak` 파일로 자동 백업(같은 폴더에 보관).
+- 백업은 최신 10개 자동 유지(오래된 것 자동 삭제).
+
+---
+
+## 15. 아키텍처
+
+### 저장소 구조
+
+```
+sodam-ai/SoDam-Agent (GitHub)
+│
+├── .claude-plugin/marketplace.json   ← 마켓플레이스 카탈로그 (플러그인 목록)
+│
+├── plugins/
+│   ├── web-app-team/
+│   │   ├── .claude-plugin/plugin.json  ← 팀 메타데이터
+│   │   ├── agents/
+│   │   │   ├── planner.md             ← 에이전트 지시문 (1명)
+│   │   │   ├── frontend-dev.md
+│   │   │   ├── backend-dev.md
+│   │   │   └── reviewer.md
+│   │   └── .mcp.json                 ← context7 MCP 연결 설정
+│   ├── docs-team/  (같은 구조)
+│   ├── research-team/  (같은 구조)
+│   ├── marketing-team/ ⚙️  (plugin.json 준비 중)
+│   ├── data-team/ ⚙️  (plugin.json 준비 중)
+│   └── sodam-agent/
+│       └── commands/
+│           ├── new-agent.md          ← 슬래시 명령 (1개)
+│           ├── training-agent.md
+│           ├── save-agent.md
+│           ├── pick-agent.md
+│           └── remove-agent.md
+│
+├── src/                              ← Codex CLI 전용 (플러그인 설치와 무관)
+│   ├── presets.mjs                   ← 팀 프리셋 정의
+│   ├── install.mjs                   ← 팀 설치 로직
+│   ├── backup.mjs                    ← 백업·복원
+│   └── share.mjs                     ← 팀 내보내기
+└── bin/cli.mjs                       ← Codex CLI 진입점
+```
+
+### 설치 흐름 (플러그인 방식)
+
+```
+1. /plugin marketplace add sodam-ai/SoDam-Agent
+   → marketplace.json URL을 Claude Code에 등록
+
+2. /plugin install <팀>@sodamagent-marketplace
+   → Claude Code가 GitHub에서 plugin.json + agents/*.md 다운로드
+   → ~/.claude/plugins/cache/ 에 저장
+
+3. Claude Code 재시작
+   → 캐시에서 에이전트 지시문(.md) 로드
+   → /agents 에 "팀:역할" 형태로 등록
+
+4. 사용자가 에이전트 호출
+   → Claude Code가 해당 에이전트 지시문을 서브에이전트로 실행
+```
+
+### 핵심 설계 원칙
+- **서버리스**: SoDam-Agent 전용 서버 없음 → GitHub + Claude Code만으로 동작
+- **파일 기반 에이전트**: 에이전트 정의 = `.md` 파일 (LLM 친화적, 버전관리 용이)
+- **최소 의존성**: 외부 npm 패키지 없음, Node.js 18+만으로 동작 (Codex CLI 전용)
+- **최소 권한**: 각 에이전트는 필요한 도구(tools)만 가짐
+
+---
+
+## 16. FAQ (자주 묻는 질문)
+
+**Q. 이 도구를 쓰려면 돈이 드나요?**
+> SoDam-Agent 자체는 **무료**(Apache-2.0 오픈소스)입니다. 단, **Claude Code 구독 요금**은 Anthropic 정책에 따르며, **context7(Upstash) 등 연동 MCP 서비스**의 요금도 각 서비스에서 직접 확인하세요.
+
+**Q. 어떤 Claude 플랜이 필요한가요?**
+> 플러그인·서브에이전트 기능은 **Pro 이상** 플랜에서 검증됩니다. Free 플랜에서의 동작은 미검증이며, Anthropic 정책 변경에 따라 다를 수 있습니다.
+
+**Q. 오프라인에서도 쓸 수 있나요?**
+> 초기 설치에는 인터넷이 필요합니다. 설치 후 에이전트 자체는 Claude API 연결이 있으면 동작합니다. 단, **context7 MCP**(자료검색)는 온라인이 필요합니다.
+
+**Q. 업데이트는 어떻게 하나요?**
+> `/plugin` 관리 화면에서 업데이트를 확인하거나, 마켓플레이스 제거(`/plugin marketplace remove sodam-ai`) 후 재등록하면 최신 버전을 받습니다. 에이전트 파일은 업데이트 시 덮어써지므로, **커스텀 수정본은 `pick-agent`로 복사해 보관**하세요.
+
+**Q. 직접 팀이나 에이전트를 만들 수 있나요?**
+> 네. `sodam-agent` 도구의 5개 명령으로 내 에이전트를 만들고 관리할 수 있습니다. 팀 전체를 직접 만들려면 [DEVELOPMENT.md](./DEVELOPMENT.md)를 참고하세요(`plugin.json` + `agents/*.md` 형식).
+
+**Q. 내 데이터가 SoDam-Agent 서버로 전송되나요?**
+> 아니요. SoDam-Agent에는 별도 서버가 없습니다. 모든 처리는 내 컴퓨터와 Claude Code 안에서 이뤄집니다. ([§14 보안·데이터 흐름](#14-보안--데이터-흐름) 참고)
+
+**Q. Windows에서만 쓸 수 있나요?**
+> Windows 우선으로 개발·검증됩니다. macOS·Linux에서도 `/plugin` 명령 기반 기능은 동작하지만 일부 경로·환경 차이가 있을 수 있습니다. 문제 발생 시 [GitHub 이슈](https://github.com/sodam-ai/SoDam-Agent/issues)로 알려주세요.
+
+**Q. 만든 에이전트를 다른 사람과 공유할 수 있나요?**
+> `/sodam-agent:save-agent`로 전역 저장 후, `~/.claude/agents/<이름>.md` 파일을 공유하면 됩니다. 단, 공유 전 **개인정보·API 키 포함 여부를 꼭 확인**하세요.
+
+**Q. 팀 에이전트의 지시문을 영구적으로 바꾸고 싶어요.**
+> 팀 에이전트 파일은 직접 수정하면 업데이트 시 덮어써집니다. `/sodam-agent:pick-agent`로 내 에이전트로 복사한 뒤 `/sodam-agent:training-agent`로 수정하는 방식을 권장합니다.
+
+**Q. context7가 없어도 괜찮나요?**
+> 괜찮습니다. context7가 없으면 AI 직원이 실시간 라이브러리 문서를 참조하지 못할 뿐이고, 나머지 기능은 정상 작동합니다. Node.js가 없거나 오프라인 환경에서도 에이전트는 사용 가능합니다.
+
+---
+
+> 📘 더 쉬운 따라하기: [왕초보 가이드(GUIDE.md)](./GUIDE.md) · 🇺🇸 [English](./README.en.md) · 📄 PDF: `docs/` 폴더 · [보안·데이터 흐름](#14-보안--데이터-흐름) · [FAQ](#16-faq-자주-묻는-질문)

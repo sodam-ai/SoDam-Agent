@@ -1,0 +1,7 @@
+{
+  "name": "marketing-team",
+  "description": "마케팅팀 — 카피·콘텐츠(copywriter) → SEO 최적화(seo-analyst) → SNS 관리(social-manager). SoDam-Agent 자체 큐레이션.",
+  "version": "0.1.0",
+  "author": { "name": "SoDam AI Studio" },
+  "license": "Apache-2.0"
+}

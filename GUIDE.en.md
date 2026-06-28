@@ -152,6 +152,7 @@ If you installed `sodam-agent` in Step 4 and restarted, type `/sodam-agent:` to 
 | Trained a team agent but it reverted | You **edited a team agent directly** (overwritten on update) | Use `/sodam-agent:pick-agent` to make a **copy**, then train the copy |
 | The doc-search tool errors | No Node.js / blocked internet | Install LTS from nodejs.org / try another network |
 | Want to use it on a phone | — | This tool is **for Claude Code on a computer** (no standalone phone use) |
+| Want to use it on macOS / Linux | — | The `/plugin` commands work the same on macOS/Linux with Claude Code installed. However, SoDam-Agent is **Windows-first** for development/testing — minor differences may occur. Report issues at [GitHub Issues](https://github.com/sodam-ai/SoDam-Agent/issues). |
 
 ---
 
@@ -212,4 +213,19 @@ You can **register a downloaded folder as a "store"** (inside Claude Code, no te
 
 ---
 
-> Full reference: [README.en.md](./README.en.md) · 🇰🇷 [한국어 가이드](./GUIDE.md)
+## 11. Frequently asked questions (FAQ)
+
+| Question | Answer |
+|---|---|
+| **Is SoDam-Agent free?** | SoDam-Agent is free (Apache-2.0). Claude Code subscription and connected tools (e.g., context7) have their own pricing — check each service. |
+| **Which Claude plan do I need?** | Pro or higher is recommended. Free plan behavior is unverified. |
+| **Can I use it offline?** | Install needs internet. After that, agents work with a Claude API connection. context7 doc-search needs internet. |
+| **How do I update?** | In `/plugin` manager, or remove and re-add the marketplace. Keep custom copies with `pick-agent` before updating. |
+| **Is my data sent anywhere?** | No. SoDam-Agent has no server. Everything runs on your computer. |
+| **Can I make my own team?** | Yes. Use the 5 `sodam-agent` commands for your own agents. To build a full team, see [DEVELOPMENT.md](./DEVELOPMENT.md). |
+| **What if context7 is missing?** | Agents still work — only live library doc lookup is unavailable. |
+| **Can I share my agents?** | Yes — share the `.md` file. Check for personal info or API keys first. |
+
+---
+
+> Full reference: [README.en.md](./README.en.md) · 🇰🇷 [한국어 가이드](./GUIDE.md) · [FAQ & Architecture →](./README.en.md#16-faq-frequently-asked-questions)

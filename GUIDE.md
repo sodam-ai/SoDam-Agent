@@ -212,4 +212,19 @@ node bin/cli.mjs install web-app-team --target codex --dir "C:\Codex로_쓸_내_
 
 ---
 
-> 더 자세한 설명서: [README.md](./README.md) · 🇺🇸 [English Guide](./GUIDE.en.md)
+## 11. FAQ (자주 묻는 질문)
+
+| 질문 | 답 |
+|---|---|
+| **SoDam-Agent는 무료인가요?** | SoDam-Agent 자체는 무료(Apache-2.0)입니다. Claude Code 구독료와 연동 도구(예: context7) 요금은 각 서비스에서 확인하세요. |
+| **어떤 Claude 플랜이 필요한가요?** | Pro 이상 권장. Free 플랜 동작은 미검증입니다. |
+| **오프라인에서 쓸 수 있나요?** | 설치에는 인터넷 필요. 이후 에이전트는 Claude API 연결이 있으면 동작. context7 자료검색은 온라인 필요. |
+| **어떻게 업데이트 하나요?** | `/plugin` 관리 화면에서 업데이트 확인, 또는 마켓 제거 후 재등록. 수정본은 `pick-agent`로 복사해 보관하세요. |
+| **내 데이터가 어딘가로 전송되나요?** | 아니요. SoDam-Agent 서버 없음. 모든 처리는 내 컴퓨터에서 이뤄집니다. |
+| **직접 팀을 만들 수 있나요?** | 네. `sodam-agent` 5개 명령으로 내 에이전트 만들기 가능. 팀 전체 만들기는 [DEVELOPMENT.md](./DEVELOPMENT.md) 참고. |
+| **context7 없어도 되나요?** | 됩니다. 에이전트는 정상 동작하고, 실시간 라이브러리 문서 조회만 안 됩니다. |
+| **만든 에이전트를 공유할 수 있나요?** | 네. `.md` 파일 공유. 공유 전 개인정보·API 키 포함 여부 확인 필수. |
+
+---
+
+> 더 자세한 설명서: [README.md](./README.md) · 🇺🇸 [English Guide](./GUIDE.en.md) · [FAQ & 아키텍처 →](./README.md#16-faq-자주-묻는-질문)
