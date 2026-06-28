@@ -6,7 +6,7 @@ import { resolveTarget } from './paths.mjs';
 import { buildPlan, printPlan, applyPlan, verifyInfo } from './install.mjs';
 import { buildCodexPlan, applyCodexPlan } from './writers/codex.mjs';
 import { listBackups, restoreBackup } from './backup.mjs';
-import { buildExport, writeExport, readImport } from './share.mjs';
+import { buildExport, writeExport, readImport, checkDangerousCommands } from './share.mjs';
 import { listPersonalRoles, saveRole, removeRole, rolesDir } from './roles.mjs';
 import { runDoctor } from './doctor.mjs';
 import * as ui from './ui.mjs';
@@ -477,6 +477,7 @@ async function cmdImport(opts) {
     ui.danger('가져오기 중단: ' + (e?.message || e));
     return;
   }
+  for (const w of checkDangerousCommands(preset)) ui.warn(w);
 
   ui.warn('이 파일은 외부에서 온 것일 수 있습니다. 아래 "설치될 명령"을 꼭 확인하세요.');
   const plan = buildPlan(preset, target);
@@ -499,7 +500,7 @@ async function interactiveMenu(opts) {
   runDoctor(resolveTarget(opts.dir));
   while (true) {
     const choice = await ui.selectFromList('무엇을 할까요?', [
-      { label: '팀 설치하기', value: 'install', hint: '프리셋 팀을 골라 설치' },
+      { label: '★ 팀 설치하기', value: 'install', hint: '처음이라면 여기서 시작 — 프리셋 팀을 골라 설치' },
       { label: '나만의 팀 만들기', value: 'custom', hint: '역할을 골라 커스텀 팀 구성' },
       { label: '내 역할 관리', value: 'roles', hint: '역할 만들기/고치기/지우기' },
       { label: '설치 확인하기', value: 'verify', hint: '깔린 에이전트 + Claude Code 확인법' },

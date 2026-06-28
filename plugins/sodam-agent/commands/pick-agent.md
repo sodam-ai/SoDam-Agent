@@ -9,6 +9,8 @@ argument-hint: "[역할 이름]"
 - **웹앱팀**: planner(기획) · frontend-dev(화면) · backend-dev(서버) · reviewer(검토)
 - **문서팀**: writer(초안) · editor(다듬기) · fact-checker(사실확인)
 - **리서치팀**: researcher(수집) · analyst(분석) · critic(반증)
+- **마케팅팀**: copywriter(카피·콘텐츠) · seo-analyst(SEO 최적화) · social-manager(SNS 관리)
+- **데이터팀**: data-engineer(수집·정제) · data-analyst(분석) · data-viz(시각화)
 
 > ※ 위는 "어떤 직원이 있는지" 목록일 뿐입니다. 실제 내용(지시서)은 정본(설치된 플러그인)에서 가져오거나 사용자와 함께 정합니다 — 이 명령에 지시서를 복제해 두지 않습니다(원본과 어긋나는 것을 막기 위해).
 

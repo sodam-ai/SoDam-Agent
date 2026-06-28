@@ -97,7 +97,10 @@ export function printPlan(plan) {
     const ids = Object.keys(plan.newServers);
     line(color.gray('      설치될 실제 명령(꼭 확인하세요):'));
     if (ids.length === 0) {
-      line(color.gray('      (추가할 MCP 없음 — 이미 있거나 프리셋에 없음)'));
+      const hasTools = (plan.preset.tools || []).length > 0;
+      line(color.gray(hasTools
+        ? '      (이미 모두 설치됨 — 추가할 것 없음)'
+        : '      (이 팀은 추가 도구가 없습니다 — MCP 설정 불필요)'));
     } else {
       for (const id of ids) {
         const s = plan.newServers[id];

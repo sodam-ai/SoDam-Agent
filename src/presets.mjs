@@ -131,6 +131,76 @@ export const PRESETS = [
       },
     ],
   },
+
+  {
+    id: 'data-team',
+    name: '데이터팀',
+    description: '데이터 수집·정제 → 분석·인사이트 → 시각화까지 한 팀',
+    category: '데이터',
+    source: 'SoDam-Agent 자체 큐레이션',
+    roles: [
+      {
+        name: 'data-engineer',
+        description: '데이터를 모으고 정제·변환할 때',
+        allowedTools: ['Read', 'Edit', 'Write', 'Bash'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 데이터 엔지니어입니다. 데이터 수집·정제·변환 파이프라인을 설계하고 구현합니다. 데이터 품질(결측값·중복·형식 오류)을 먼저 확인하고, 재현 가능한 방식으로 처리하세요.',
+      },
+      {
+        name: 'data-analyst',
+        description: '데이터에서 패턴·인사이트를 뽑아낼 때',
+        allowedTools: ['Read', 'Write'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 데이터 분석가입니다. 수집된 데이터를 구조화하고 핵심 패턴과 인사이트를 도출합니다. 가설과 사실을 분리해 표시하고, 결론에는 반드시 근거 데이터를 명시하세요.',
+      },
+      {
+        name: 'data-viz',
+        description: '분석 결과를 차트·보고서로 표현할 때',
+        allowedTools: ['Read', 'Write'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 데이터 시각화 전문가입니다. 분석 결과를 비개발자도 이해하기 쉬운 차트·표·보고서 형태로 설명합니다. 가장 중요한 수치 1~3개를 먼저 강조하고, 복잡한 내용은 단계별로 풀어쓰세요.',
+      },
+    ],
+    tools: [],
+  },
+
+  {
+    id: 'marketing-team',
+    name: '마케팅팀',
+    description: '카피 작성 → SEO 최적화 → 소셜 발행까지 한 팀',
+    category: '마케팅',
+    source: 'SoDam-Agent 자체 큐레이션',
+    roles: [
+      {
+        name: 'copywriter',
+        description: '광고 문안·콘텐츠 초안을 작성할 때',
+        allowedTools: ['Read', 'Write'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 카피라이터입니다. 브랜드 목소리에 맞는 설득력 있는 광고 문안과 콘텐츠를 작성합니다. 독자의 감정을 건드리면서도 행동을 유도하는 메시지에 집중하세요.',
+      },
+      {
+        name: 'seo-analyst',
+        description: '키워드·메타태그·문서 구조를 SEO 최적화할 때',
+        allowedTools: ['Read', 'Grep'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 SEO 분석가입니다. 키워드 배치, 메타 태그, 문서 구조를 최적화하여 검색 노출을 높입니다. 콘텐츠의 의도와 검색 의도를 맞추는 데 집중하세요.',
+      },
+      {
+        name: 'social-manager',
+        description: '플랫폼별 SNS 게시물과 해시태그 전략을 짤 때',
+        allowedTools: ['Read', 'Write', 'Edit'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 소셜 미디어 매니저입니다. 플랫폼별 특성에 맞는 게시물 초안과 해시태그 전략을 제안합니다. 참여율을 높이는 짧고 강렬한 메시지를 만드세요.',
+      },
+    ],
+    tools: [],
+  },
 ];
 
 export function getPreset(id) {

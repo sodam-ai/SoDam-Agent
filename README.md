@@ -18,7 +18,7 @@
 2. [사전 준비물 · 필요 프로그램](#2-사전-준비물--필요-프로그램)
 3. [다운로드 · 설치 방법](#3-다운로드--설치-방법)
 4. [빠른 시작 (3단계)](#4-빠른-시작-3단계)
-5. [설치할 수 있는 것 (팀 3종 + 관리 도구)](#5-설치할-수-있는-것-팀-3종--관리-도구)
+5. [설치할 수 있는 것 (팀 4종 + 관리 도구)](#5-설치할-수-있는-것-팀-4종--관리-도구)
 6. [사용 · 작동 방법](#6-사용--작동-방법)
 7. [설치 후 내 직원 직접 관리하기 (sodam-agent)](#7-설치-후-내-직원-직접-관리하기-sodam-agent)
 8. [명령어 모음](#8-명령어-모음)
@@ -109,7 +109,7 @@ Claude Code 안에서 **명령 몇 줄**이면 끝납니다. 터미널·폴더 �
 
 ---
 
-## 5. 설치할 수 있는 것 (팀 3종 + 관리 도구)
+## 5. 설치할 수 있는 것 (팀 4종 + 관리 도구)
 
 **① 팀 플러그인 (AI 직원 묶음)**
 
@@ -118,6 +118,10 @@ Claude Code 안에서 **명령 몇 줄**이면 끝납니다. 터미널·폴더 �
 | `web-app-team` | 웹앱 빌드팀 | planner(기획) · frontend-dev(화면) · backend-dev(서버) · reviewer(검토) | context7(라이브러리 문서 검색) |
 | `docs-team` | 문서/콘텐츠팀 | writer(초안) · editor(다듬기) · fact-checker(사실확인) | 없음 |
 | `research-team` | 리서치팀 | researcher(수집) · analyst(분석) · critic(반박검증) | context7 |
+| `marketing-team` ⚙️ | 마케팅팀 | copywriter(카피·콘텐츠) · seo-analyst(SEO 최적화) · social-manager(SNS 관리) | 없음 |
+| `data-team` ⚙️ | 데이터팀 | data-engineer(수집·정제) · data-analyst(분석) · data-viz(시각화) | 없음 |
+
+> ⚙️ **준비 중**: 에이전트 파일은 완성됐지만 플러그인 등록 파일(plugin.json·marketplace.json)이 아직 수동 설정 필요합니다. 직접 설치하려면 [개발 문서(DEVELOPMENT.md)](./DEVELOPMENT.md) 참고.
 
 > 각 직원은 **최소한의 권한(tools)** 만 가집니다(예: 검토자는 읽기 전용). 모델은 `inherit`(사용자님이 쓰는 기본 모델을 따름).
 
@@ -249,7 +253,7 @@ node bin/cli.mjs install web-app-team --target codex --dir "C:\내\프로젝트\
 - **설치된 플러그인 캐시**(Claude Code가 자동 관리): `~/.claude/plugins/cache/`
 - **내가 만든 직원**: `<프로젝트>/.claude/agents/<이름>.md` (전역 저장 시 `~/.claude/agents/`)
 - **이 저장소 구조**:
-  - `.claude-plugin/marketplace.json` — 마켓플레이스 카탈로그(팀 3종 + 관리 도구)
+  - `.claude-plugin/marketplace.json` — 마켓플레이스 카탈로그(현재 3종 등록, 5종 예정)
   - `plugins/<팀>/.claude-plugin/plugin.json` — 팀 정보
   - `plugins/<팀>/agents/<역할>.md` — AI 직원 한 명(설명+지시문)
   - `plugins/<팀>/.mcp.json` — 그 팀이 쓰는 도구(MCP) 설정 (web-app·research)
@@ -275,6 +279,12 @@ node bin/cli.mjs install web-app-team --target codex --dir "C:\내\프로젝트\
 | (방법 B) Windows가 "차단했습니다" | SmartScreen·백신 | 내려받은 파일 우클릭 → 속성 → "차단 해제" / 백신 예외 |
 | MCP가 API 키를 요구함 | 일부 도구는 키 필요 | 해당 제공처에서 키 발급 → **OS 환경변수**에 저장(파일에 직접 넣지 마세요) |
 | 모바일에서 쓰고 싶음 | — | SoDam-Agent는 **Claude Code(데스크톱/CLI) 전용**입니다. 모바일 단독 사용은 지원하지 않습니다 |
+| 여러 팀을 동시에 설치하면 충돌하나요? | 안전합니다 | 팀마다 에이전트 이름이 `팀:역할` 형식으로 구분되어 공존합니다. 같은 이름이 있어도 덮어쓰기 전 안내가 나옵니다. |
+| 내가 만든 역할과 팀 역할 이름이 같으면? | 구분됩니다 | 시스템상 `팀:역할`(팀 직원)과 단순 이름(내 직원)은 구분됩니다. 혼란스러우면 내 직원 이름 앞에 `my-`를 붙이세요(예: `my-reviewer`). |
+| 역할의 권한(도구 목록)을 나중에 바꾸려면? | 복사 후 수정 | 팀 직원은 직접 수정이 안 됩니다(업데이트 때 사라짐). `/sodam-agent:pick-agent` 로 내 직원으로 복사 → `/sodam-agent:training-agent` 로 원하는 대로 고치세요. |
+| `.mcp.json`이 이미 있는데 설치하면? | 병합됩니다 | 기존 MCP 설정은 유지되고 새 MCP 항목만 추가됩니다. 기존 설정은 건드리지 않습니다. |
+| 마켓 등록 후 설치가 바로 안 됨 | 일시적 캐시 지연 | GitHub 캐시 반영에 1~2분 걸릴 수 있습니다. 잠시 기다렸다 다시 시도하세요. |
+| macOS·Linux에서 설치하면? | 공식 지원 범위 | SoDam-Agent는 **Windows 우선** 개발·검증됩니다. macOS·Linux에서도 Claude Code가 있으면 `/plugin` 명령은 동일하게 동작하나, 경로·환경 차이로 일부 기능이 다를 수 있습니다. 문제 발생 시 [GitHub 이슈](https://github.com/sodam-ai/SoDam-Agent/issues)로 알려주세요. |
 
 ---
 

@@ -6,6 +6,14 @@ const FORMAT = 'agentroster-team';
 const VERSION = 1;
 const MAX_BYTES = 256 * 1024; // 가져오기 크기 제한(폭주/손상 방지)
 
+// 임의 코드 실행 가능한 셸·인터프리터. npx·npm·pip·docker 등 패키지매니저는 정상 MCP 방식이라 제외.
+const DANGEROUS_CMDS = new Set([
+  'sh', 'bash', 'zsh', 'fish',
+  'python', 'python3', 'ruby', 'perl',
+  'node', 'deno', 'bun', 'exec',
+  'powershell', 'cmd',
+]);
+
 // env 객체에서 '값'은 버리고 '키 이름'만 남긴다(비밀 절대 미포함).
 function sanitizeEnvKeys(env) {
   if (!env || typeof env !== 'object') return {};
@@ -102,4 +110,19 @@ export function readImport(filePath) {
   // 화이트리스트·스키마 검증(이름→파일경로 조작 차단, command 필수 등). 통과 못 하면 throw.
   validatePreset(preset);
   return preset;
+}
+
+// 가져온 팀의 MCP command 중 위험 셸·인터프리터를 경고 문자열 배열로 반환. 없으면 빈 배열.
+export function checkDangerousCommands(preset) {
+  const warnings = [];
+  for (const t of preset.tools || []) {
+    const raw = (t?.installSpec?.command || '');
+    const cmd = raw.split('/').pop().split('\\').pop();
+    if (DANGEROUS_CMDS.has(cmd)) {
+      warnings.push(
+        `MCP '${t.id}'의 command가 '${cmd}'입니다. 시스템에서 임의 코드를 실행할 수 있으니, 신뢰할 수 있는 출처의 파일인지 확인하세요.`
+      );
+    }
+  }
+  return warnings;
 }

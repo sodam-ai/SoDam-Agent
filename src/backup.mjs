@@ -44,6 +44,7 @@ export function createBackup(target, opts = {}) {
 
   const manifest = { id, createdAt: new Date().toISOString(), files };
   fs.writeFileSync(path.join(dest, 'manifest.json'), JSON.stringify(manifest, null, 2));
+  pruneBackups(target);
   return { id, dest, files };
 }
 
@@ -94,4 +95,15 @@ export function restoreBackup(target, id) {
     }
   }
   return record || { id };
+}
+
+// 최근 keep개만 남기고 초과 백업 삭제. createBackup에서 자동 호출(무한 누적 방지).
+export function pruneBackups(target, keep = 10) {
+  const all = listBackups(target); // 이미 최신순 정렬
+  const toDelete = all.slice(keep);
+  for (const bk of toDelete) {
+    const dir = path.join(target.backupRoot, bk.id);
+    fs.rmSync(dir, { recursive: true });
+  }
+  return { kept: Math.min(all.length, keep), deleted: toDelete.length };
 }
