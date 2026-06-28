@@ -121,10 +121,8 @@ Claude Code 안에서 **명령 몇 줄**이면 끝납니다. 터미널·폴더 �
 | `web-app-team` | 웹앱 빌드팀 | planner(기획) · frontend-dev(화면) · backend-dev(서버) · reviewer(검토) | context7(라이브러리 문서 검색) |
 | `docs-team` | 문서/콘텐츠팀 | writer(초안) · editor(다듬기) · fact-checker(사실확인) | 없음 |
 | `research-team` | 리서치팀 | researcher(수집) · analyst(분석) · critic(반박검증) | context7 |
-| `marketing-team` ⚙️ | 마케팅팀 | copywriter(카피·콘텐츠) · seo-analyst(SEO 최적화) · social-manager(SNS 관리) | 없음 |
-| `data-team` ⚙️ | 데이터팀 | data-engineer(수집·정제) · data-analyst(분석) · data-viz(시각화) | 없음 |
-
-> ⚙️ **준비 중**: 에이전트 파일은 완성됐지만 플러그인 등록 파일(plugin.json·marketplace.json)이 아직 수동 설정 필요합니다. 직접 설치하려면 [개발 문서(DEVELOPMENT.md)](./DEVELOPMENT.md) 참고.
+| `marketing-team` | 마케팅팀 | copywriter(카피·콘텐츠) · seo-analyst(SEO 최적화) · social-manager(SNS 관리) | 없음 |
+| `data-team` | 데이터팀 | data-engineer(수집·정제) · data-analyst(분석) · data-viz(시각화) | 없음 |
 
 > 각 직원은 **최소한의 권한(tools)** 만 가집니다(예: 검토자는 읽기 전용). 모델은 `inherit`(사용자님이 쓰는 기본 모델을 따름).
 
@@ -370,8 +368,8 @@ sodam-ai/SoDam-Agent (GitHub)
 │   │   └── .mcp.json                 ← context7 MCP 연결 설정
 │   ├── docs-team/  (같은 구조)
 │   ├── research-team/  (같은 구조)
-│   ├── marketing-team/ ⚙️  (plugin.json 준비 중)
-│   ├── data-team/ ⚙️  (plugin.json 준비 중)
+│   ├── marketing-team/  (같은 구조)
+│   ├── data-team/  (같은 구조)
 │   └── sodam-agent/
 │       └── commands/
 │           ├── new-agent.md          ← 슬래시 명령 (1개)

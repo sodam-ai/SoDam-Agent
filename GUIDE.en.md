@@ -55,6 +55,8 @@
 ```
 - Docs team: `/plugin install docs-team@sodamagent-marketplace`
 - Research team: `/plugin install research-team@sodamagent-marketplace`
+- Marketing team: `/plugin install marketing-team@sodamagent-marketplace`
+- Data team: `/plugin install data-team@sodamagent-marketplace`
 
 ### Step 4 · (Optional) Install the management tool
 To **create and train your own agents**, also install:

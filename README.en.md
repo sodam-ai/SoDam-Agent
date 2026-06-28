@@ -111,7 +111,7 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
 
 ---
 
-## 5. What you can install (5 teams, 3 registered + management tool)
+## 5. What you can install (5 teams + management tool)
 
 **① Team plugins (bundles of AI teammates)**
 
@@ -120,10 +120,8 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
 | `web-app-team` | Web App Build Team | planner · frontend-dev · backend-dev · reviewer | context7 (library-docs search) |
 | `docs-team` | Docs / Content Team | writer · editor · fact-checker | none |
 | `research-team` | Research Team | researcher · analyst · critic | context7 |
-| `marketing-team` ⚙️ | Marketing Team | copywriter (copy & content) · seo-analyst (SEO) · social-manager (social media) | none |
-| `data-team` ⚙️ | Data Team | data-engineer (collect & clean) · data-analyst (analysis) · data-viz (visualization) | none |
-
-> ⚙️ **Coming soon**: Agent files are complete but the plugin registration files (plugin.json · marketplace.json) still need manual setup. To install manually, see [DEVELOPMENT.md](./DEVELOPMENT.md).
+| `marketing-team` | Marketing Team | copywriter (copy & content) · seo-analyst (SEO) · social-manager (social media) | none |
+| `data-team` | Data Team | data-engineer (collect & clean) · data-analyst (analysis) · data-viz (visualization) | none |
 
 > Each teammate gets **least-privilege tools** (e.g., the reviewer is read-only). Model is `inherit` (follows your default model).
 
@@ -362,8 +360,8 @@ sodam-ai/SoDam-Agent (GitHub)
 │   │   └── .mcp.json                  ← context7 MCP connection config
 │   ├── docs-team/       (same structure)
 │   ├── research-team/   (same structure)
-│   ├── marketing-team/  ⚙️ (plugin.json coming soon)
-│   ├── data-team/       ⚙️ (plugin.json coming soon)
+│   ├── marketing-team/  (same structure)
+│   ├── data-team/       (same structure)
 │   └── sodam-agent/
 │       └── commands/
 │           ├── new-agent.md           ← slash command (1 command)

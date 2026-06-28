@@ -55,6 +55,8 @@
 ```
 - 문서 팀을 원하면: `/plugin install docs-team@sodamagent-marketplace`
 - 리서치 팀을 원하면: `/plugin install research-team@sodamagent-marketplace`
+- 마케팅 팀을 원하면: `/plugin install marketing-team@sodamagent-marketplace`
+- 데이터 팀을 원하면: `/plugin install data-team@sodamagent-marketplace`
 
 ### 4단계 · (선택) 직원 관리 도구 설치
 새 직원을 **직접 만들고 가르치고** 싶다면 이것도 설치하세요:
