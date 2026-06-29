@@ -17,7 +17,7 @@
 2. [Prerequisites & required programs](#2-prerequisites--required-programs)
 3. [Download & install](#3-download--install)
 4. [Quick start (3 steps)](#4-quick-start-3-steps)
-5. [What you can install (5 teams, 3 registered + management tool)](#5-what-you-can-install-5-teams-3-registered--management-tool)
+5. [What you can install (5 teams + management tool)](#5-what-you-can-install-5-teams--management-tool)
 6. [How to use it](#6-how-to-use-it)
 7. [Manage your own agents after install (sodam-agent)](#7-manage-your-own-agents-after-install-sodam-agent)
 8. [Command reference](#8-command-reference)
@@ -253,7 +253,7 @@ Add marketplace (once) → Install teams/tool (/plugin install) → Restart
 - **Installed plugin cache** (managed automatically by Claude Code): `~/.claude/plugins/cache/`
 - **Agents you create**: `<project>/.claude/agents/<name>.md` (global save: `~/.claude/agents/`)
 - **This repository's structure**:
-  - `.claude-plugin/marketplace.json` — marketplace catalog (3 registered, 5 total planned)
+  - `.claude-plugin/marketplace.json` — marketplace catalog (6 teams, all registered)
   - `plugins/<team>/.claude-plugin/plugin.json` — team metadata
   - `plugins/<team>/agents/<role>.md` — one AI teammate (description + instructions)
   - `plugins/<team>/.mcp.json` — the team's tool (MCP) config (web-app · research)

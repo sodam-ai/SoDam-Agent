@@ -254,7 +254,7 @@ node bin/cli.mjs install web-app-team --target codex --dir "C:\내\프로젝트\
 - **설치된 플러그인 캐시**(Claude Code가 자동 관리): `~/.claude/plugins/cache/`
 - **내가 만든 직원**: `<프로젝트>/.claude/agents/<이름>.md` (전역 저장 시 `~/.claude/agents/`)
 - **이 저장소 구조**:
-  - `.claude-plugin/marketplace.json` — 마켓플레이스 카탈로그(현재 3종 등록, 5종 예정)
+  - `.claude-plugin/marketplace.json` — 마켓플레이스 카탈로그(6종 모두 등록)
   - `plugins/<팀>/.claude-plugin/plugin.json` — 팀 정보
   - `plugins/<팀>/agents/<역할>.md` — AI 직원 한 명(설명+지시문)
   - `plugins/<팀>/.mcp.json` — 그 팀이 쓰는 도구(MCP) 설정 (web-app·research)
