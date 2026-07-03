@@ -1,7 +1,7 @@
 ---
 name: backend-dev
 description: API·데이터 처리를 구현할 때
-tools: Read, Edit, Write, Bash, mcp__plugin_web-app-team_context7__*
+tools: Read, Edit, Write, Bash, mcp__plugin_web-app-team_context7__resolve-library-id, mcp__plugin_web-app-team_context7__query-docs
 model: inherit
 ---
 

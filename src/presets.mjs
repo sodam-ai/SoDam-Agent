@@ -21,7 +21,11 @@ export const PRESETS = [
       {
         name: 'frontend-dev',
         description: '화면(UI)을 구현할 때',
-        allowedTools: ['Read', 'Edit', 'Write', 'Bash', 'mcp__plugin_web-app-team_context7__*'],
+        allowedTools: [
+          'Read', 'Edit', 'Write', 'Bash',
+          'mcp__plugin_web-app-team_context7__resolve-library-id',
+          'mcp__plugin_web-app-team_context7__query-docs',
+        ],
         model: 'inherit',
         systemPrompt:
           '당신은 프론트엔드 개발자입니다. 사용자에게 보이는 화면(UI)과 상호작용을 구현합니다. 접근성과 반응형(모바일 포함)을 기본으로 챙기고, 무엇을 왜 바꿨는지 짧게 설명하세요.',
@@ -29,7 +33,11 @@ export const PRESETS = [
       {
         name: 'backend-dev',
         description: 'API·데이터 처리를 구현할 때',
-        allowedTools: ['Read', 'Edit', 'Write', 'Bash', 'mcp__plugin_web-app-team_context7__*'],
+        allowedTools: [
+          'Read', 'Edit', 'Write', 'Bash',
+          'mcp__plugin_web-app-team_context7__resolve-library-id',
+          'mcp__plugin_web-app-team_context7__query-docs',
+        ],
         model: 'inherit',
         systemPrompt:
           '당신은 백엔드 개발자입니다. API와 데이터 처리 로직을 구현합니다. 입력 검증·에러 처리·보안(비밀 노출 금지)을 기본으로 지키세요.',
@@ -99,7 +107,11 @@ export const PRESETS = [
       {
         name: 'researcher',
         description: '자료를 수집할 때',
-        allowedTools: ['Read', 'WebSearch', 'WebFetch', 'mcp__plugin_research-team_context7__*'],
+        allowedTools: [
+          'Read', 'WebSearch', 'WebFetch',
+          'mcp__plugin_research-team_context7__resolve-library-id',
+          'mcp__plugin_research-team_context7__query-docs',
+        ],
         model: 'inherit',
         systemPrompt:
           '당신은 리서처입니다. 주제에 대한 자료를 폭넓게 수집하고 출처를 함께 기록합니다. 출처 없는 단정은 피하세요.',
@@ -107,7 +119,11 @@ export const PRESETS = [
       {
         name: 'analyst',
         description: '수집한 자료를 정리·종합할 때',
-        allowedTools: ['Read', 'Write', 'mcp__plugin_research-team_context7__*'],
+        allowedTools: [
+          'Read', 'Write',
+          'mcp__plugin_research-team_context7__resolve-library-id',
+          'mcp__plugin_research-team_context7__query-docs',
+        ],
         model: 'inherit',
         systemPrompt:
           '당신은 분석가입니다. 수집된 자료를 구조화해 핵심과 시사점을 뽑아냅니다. 가설과 사실을 분리해 표시하세요.',
