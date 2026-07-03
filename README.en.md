@@ -10,6 +10,16 @@
 > - **Product / repository name = `SoDam-Agent`** (marketplace address: `sodam-ai/SoDam-Agent`)
 > - **The `@sodamagent-marketplace` in install commands = the marketplace's internal id.** The letters differ from the product name, but that's **normal** — just type it as-is.
 
+> 📋 **Current version status (update summary · as of 2026-07-04)**
+> - **Available now**: 5 teams (web app · docs · research · marketing · data) + the agent-management tool (`sodam-agent`) + Codex role translation (beta)
+> - **Recent major changes**
+>   - 2026-07-04: Fixed subagent tool permissions (allow/deny lists) so they're applied correctly on the direct-CLI install path too (the marketplace-plugin install path was already correct). Corrected the "verified on Pro+" wording to "expected, not yet verified."
+>   - 2026-07-03: Fixed subagents not inheriting a team's bundled tool (MCP, e.g. context7).
+>   - 2026-06-29: Added the marketing team and data team — 5 teams complete.
+>   - 2026-06-23: Added Codex (another AI coding tool) role translation (beta).
+>   - 2026-06-21: Introduced marketplace-based install + the agent-management tool (`sodam-agent`).
+> - This is a human-readable summary. For the full, itemized history see the [GitHub commit log](https://github.com/sodam-ai/SoDam-Agent/commits/).
+
 ---
 
 ## 📑 Table of Contents

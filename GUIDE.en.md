@@ -22,6 +22,8 @@
 
 > 📛 **Naming note**: the product is named **SoDam-Agent**. But the `@sodamagent-marketplace` after a team name in install commands is the *store's internal id* — the letters differ, but **type it as-is** (it's normal).
 
+> 📋 **What does this version do? (as of 2026-07-04)**: You can install all 5 teams (web app · docs · research · marketing · data) + the agent-management tool + Codex role translation (beta). For the full change history, see the "Current version status" note at the top of [README.en.md](./README.en.md).
+
 ---
 
 ## 1. Get ready (just two things)
