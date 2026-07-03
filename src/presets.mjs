@@ -1,4 +1,4 @@
-// SoDam-Agent 기본 프리셋 3종 (02_DATA_MODEL "프리셋 3종 라인업").
+// SoDam-Agent 기본 프리셋 5종 (02_DATA_MODEL "프리셋 5종 라인업").
 // 역할 1개 = .claude/agents/<name>.md 1개. tools=최소권한, model=inherit(사용자 플랜/기본 모델 따름).
 // MCP는 recommendedTools 형태로, requirement=optional(없어도 동작).
 

@@ -409,10 +409,13 @@ sodam-ai/SoDam-Agent (GitHub)
 > SoDam-Agent itself is **free** (Apache-2.0 open source). However, **Claude Code subscription fees** follow Anthropic's pricing, and **connected MCP services** (e.g., context7/Upstash) have their own pricing — check each service directly.
 
 **Q. Which Claude plan do I need?**
-> Plugin and subagent features are verified on **Pro or higher** plans. Behavior on the Free plan is unverified and may vary depending on Anthropic's policies.
+> Plugin and subagent features are expected to work on **Pro or higher** plans, but this has not yet been verified through actual testing. Behavior on the Free plan is likewise unverified, and may vary depending on Anthropic's policies.
 
 **Q. Can I use it offline?**
 > The initial install requires an internet connection. After installing, the agents themselves work as long as the Claude API is reachable. However, **context7 MCP** (doc search) requires online access.
+
+**Q. Do employee agents always use MCP tools like context7 directly?**
+> Usually yes, but in real-world testing we've seen cases where an employee agent can't reach an MCP tool directly. When that happens, the **agent honestly says it can't access the tool, and the orchestrator (manager) looks it up instead and passes along the result** — instead of silently guessing, you always get an actual lookup result. Note that in this case the work was done by the manager, not the employee directly, so check the response for that indication.
 
 **Q. How do I update?**
 > Check for updates in the `/plugin` manager, or remove and re-add the marketplace to pull the latest version. Since agent files are overwritten on updates, **keep customized copies using `pick-agent`** before updating.

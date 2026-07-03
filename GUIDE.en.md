@@ -220,8 +220,9 @@ You can **register a downloaded folder as a "store"** (inside Claude Code, no te
 | Question | Answer |
 |---|---|
 | **Is SoDam-Agent free?** | SoDam-Agent is free (Apache-2.0). Claude Code subscription and connected tools (e.g., context7) have their own pricing — check each service. |
-| **Which Claude plan do I need?** | Pro or higher is recommended. Free plan behavior is unverified. |
+| **Which Claude plan do I need?** | Pro or higher is recommended (expected, not yet verified). Free plan behavior is unverified. |
 | **Can I use it offline?** | Install needs internet. After that, agents work with a Claude API connection. context7 doc-search needs internet. |
+| **Do employees always use MCP (e.g. context7) directly?** | Usually, but real-world testing shows an employee may not have direct access. When that happens, it says so honestly and the manager looks it up instead — results stay accurate, but the response shows who actually did the work. |
 | **How do I update?** | In `/plugin` manager, or remove and re-add the marketplace. Keep custom copies with `pick-agent` before updating. |
 | **Is my data sent anywhere?** | No. SoDam-Agent has no server. Everything runs on your computer. |
 | **Can I make my own team?** | Yes. Use the 5 `sodam-agent` commands for your own agents. To build a full team, see [DEVELOPMENT.md](./DEVELOPMENT.md). |
