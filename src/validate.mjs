@@ -27,6 +27,21 @@ export function toSafeName(input) {
     .slice(0, 50);
 }
 
+// 역할 1개 → agents/<name>.md에 쓸 권한 frontmatter 한 줄(또는 없음).
+// disallowedTools(금지목록)가 있으면 그 줄만, 없고 allowedTools(허용목록)가 있으면
+// tools: 줄만 쓴다. 둘 다 없으면 null(권한 줄 생략 — 상위 세션을 제한 없이 상속).
+// install.mjs(CLI 직접 설치)·plugin-sync.mjs(마켓플레이스 플러그인) 두 곳이 이 함수를
+// 공유해야 한다 — 각자 따로 구현하면 한쪽만 고쳤을 때 조용히 어긋난다(2026-07-04 실측 버그).
+export function agentPermissionLine(role) {
+  if (Array.isArray(role.disallowedTools) && role.disallowedTools.length) {
+    return `disallowedTools: ${role.disallowedTools.join(', ')}`;
+  }
+  if (Array.isArray(role.allowedTools) && role.allowedTools.length) {
+    return `tools: ${role.allowedTools.join(', ')}`;
+  }
+  return null;
+}
+
 // 프리셋(또는 가져온 팀)의 기본 구조를 검증한다. 신뢰 못 할 입력 전제.
 export function validatePreset(p) {
   if (!p || typeof p !== 'object') throw new Error('프리셋 형식이 올바르지 않습니다.');

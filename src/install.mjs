@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createBackup } from './backup.mjs';
-import { validatePreset, assertSafeName } from './validate.mjs';
+import { validatePreset, assertSafeName, agentPermissionLine } from './validate.mjs';
 import { color, line } from './ui.mjs';
 
 // 역할 1개 → .claude/agents/<name>.md 본문(frontmatter + 시스템 프롬프트)
@@ -11,7 +11,7 @@ export function agentFileContent(role) {
     '---',
     `name: ${role.name}`,
     `description: ${role.description}`,
-    role.allowedTools && role.allowedTools.length ? `tools: ${role.allowedTools.join(', ')}` : null,
+    agentPermissionLine(role),
     `model: ${role.model || 'inherit'}`,
     '---',
     '',
