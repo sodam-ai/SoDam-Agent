@@ -1,7 +1,7 @@
 ---
 name: analyst
 description: 수집한 자료를 정리·종합할 때
-tools: Read, Write, mcp__plugin_research-team_context7__resolve-library-id, mcp__plugin_research-team_context7__query-docs
+disallowedTools: Bash, Edit
 model: inherit
 ---
 

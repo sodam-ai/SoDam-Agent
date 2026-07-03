@@ -39,7 +39,7 @@ export function validatePreset(p) {
     if (!r.description || !r.systemPrompt) {
       throw new Error(`역할 "${r.name}"에 description/systemPrompt가 필요합니다.`);
     }
-    for (const t of (r.allowedTools || [])) {
+    for (const t of [...(r.allowedTools || []), ...(r.disallowedTools || [])]) {
       // 하이픈·끝 와일드카드(*) 허용: 플러그인 MCP 도구명 형식(mcp__plugin_<팀>_<mcp>__*)을
       // 포함하되, 줄바꿈·콜론·따옴표 등 frontmatter 주입에 쓰일 문자는 계속 차단.
       if (typeof t !== 'string' || !/^[A-Za-z0-9_*-]+$/.test(t)) {

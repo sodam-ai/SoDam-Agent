@@ -119,11 +119,11 @@ export const PRESETS = [
       {
         name: 'analyst',
         description: '수집한 자료를 정리·종합할 때',
-        allowedTools: [
-          'Read', 'Write',
-          'mcp__plugin_research-team_context7__resolve-library-id',
-          'mcp__plugin_research-team_context7__query-docs',
-        ],
+        // [2026-07-03 실험] allowedTools(허용목록)에 MCP 도구명을 명시해도 실사용에서
+        // 연결 안 되는 문제가 있어, disallowedTools(금지목록) 방식으로 시험 전환.
+        // 이 방식은 상위 대화의 모든 도구(다른 MCP 서버 포함)를 상속하므로 최소권한이
+        // 약화된다 — 검증 완료 전까지 이 역할 하나로만 범위를 좁혀 시험한다.
+        disallowedTools: ['Bash', 'Edit'],
         model: 'inherit',
         systemPrompt:
           '당신은 분석가입니다. 수집된 자료를 구조화해 핵심과 시사점을 뽑아냅니다. 가설과 사실을 분리해 표시하세요.',
