@@ -1,7 +1,7 @@
 ---
 name: researcher
 description: 자료를 수집할 때
-tools: Read, WebSearch, WebFetch
+tools: Read, WebSearch, WebFetch, mcp__plugin_research-team_context7__*
 model: inherit
 ---
 

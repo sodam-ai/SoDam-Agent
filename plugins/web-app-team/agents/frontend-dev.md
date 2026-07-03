@@ -1,7 +1,7 @@
 ---
 name: frontend-dev
 description: 화면(UI)을 구현할 때
-tools: Read, Edit, Write, Bash
+tools: Read, Edit, Write, Bash, mcp__plugin_web-app-team_context7__*
 model: inherit
 ---
 
