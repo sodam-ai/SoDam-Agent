@@ -21,11 +21,11 @@ export const PRESETS = [
       {
         name: 'frontend-dev',
         description: '화면(UI)을 구현할 때',
-        allowedTools: [
-          'Read', 'Edit', 'Write', 'Bash',
-          'mcp__plugin_web-app-team_context7__resolve-library-id',
-          'mcp__plugin_web-app-team_context7__query-docs',
-        ],
+        // [2026-07-03] disallowedTools로 전환 — 실사용 검증 결과 tools:(허용목록)에
+        // MCP 도구명을 정확히 적어도 연결이 안 되는 문제가 있어(analyst에서 재현·해결
+        // 확인됨), 상위 세션의 MCP를 그대로 상속하는 이 방식만 실제로 작동함.
+        // Bash를 이미 허용하므로 나머지 도구 상속은 추가 위험이 크지 않다고 판단.
+        disallowedTools: [],
         model: 'inherit',
         systemPrompt:
           '당신은 프론트엔드 개발자입니다. 사용자에게 보이는 화면(UI)과 상호작용을 구현합니다. 접근성과 반응형(모바일 포함)을 기본으로 챙기고, 무엇을 왜 바꿨는지 짧게 설명하세요.',
@@ -33,11 +33,8 @@ export const PRESETS = [
       {
         name: 'backend-dev',
         description: 'API·데이터 처리를 구현할 때',
-        allowedTools: [
-          'Read', 'Edit', 'Write', 'Bash',
-          'mcp__plugin_web-app-team_context7__resolve-library-id',
-          'mcp__plugin_web-app-team_context7__query-docs',
-        ],
+        // [2026-07-03] frontend-dev와 동일한 사유로 disallowedTools 전환.
+        disallowedTools: [],
         model: 'inherit',
         systemPrompt:
           '당신은 백엔드 개발자입니다. API와 데이터 처리 로직을 구현합니다. 입력 검증·에러 처리·보안(비밀 노출 금지)을 기본으로 지키세요.',
@@ -107,11 +104,9 @@ export const PRESETS = [
       {
         name: 'researcher',
         description: '자료를 수집할 때',
-        allowedTools: [
-          'Read', 'WebSearch', 'WebFetch',
-          'mcp__plugin_research-team_context7__resolve-library-id',
-          'mcp__plugin_research-team_context7__query-docs',
-        ],
+        // [2026-07-03] disallowedTools 전환(사유는 frontend-dev 참조). researcher는
+        // 원래 파일 수정·명령 실행 권한이 없었으므로, 상속 후에도 그 경계는 유지한다.
+        disallowedTools: ['Edit', 'Write', 'Bash'],
         model: 'inherit',
         systemPrompt:
           '당신은 리서처입니다. 주제에 대한 자료를 폭넓게 수집하고 출처를 함께 기록합니다. 출처 없는 단정은 피하세요.',

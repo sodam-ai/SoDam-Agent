@@ -13,17 +13,21 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 export const PLUGINS_ROOT = path.join(here, '..', 'plugins');
 
 // 역할 1개 → agents/<name>.md 문자열(프론트매터 + 빈 줄 + 시스템 프롬프트 + 끝 줄바꿈).
-// allowedTools(허용목록)가 있으면 tools:, 없고 disallowedTools(금지목록)만 있으면
-// disallowedTools: 줄을 쓴다 — 후자는 상위 대화(MCP 포함)를 전부 상속하고 나열한 것만 뺀다.
+// disallowedTools(금지목록)에 항목이 있으면 그 줄만, allowedTools(허용목록)가 있으면
+// tools: 줄만 쓴다. disallowedTools가 빈 배열/없음 + allowedTools도 없으면 권한 줄
+// 자체를 생략 — 상위 대화(MCP 포함)를 전부, 아무 제한 없이 상속한다.
 export function generateAgentMd(role) {
-  const permissionLine = role.disallowedTools
-    ? `disallowedTools: ${role.disallowedTools.join(', ')}`
-    : `tools: ${role.allowedTools.join(', ')}`;
+  let permissionLine = null;
+  if (Array.isArray(role.disallowedTools) && role.disallowedTools.length) {
+    permissionLine = `disallowedTools: ${role.disallowedTools.join(', ')}`;
+  } else if (Array.isArray(role.allowedTools) && role.allowedTools.length) {
+    permissionLine = `tools: ${role.allowedTools.join(', ')}`;
+  }
   return [
     '---',
     `name: ${role.name}`,
     `description: ${role.description}`,
-    permissionLine,
+    ...(permissionLine ? [permissionLine] : []),
     `model: ${role.model}`,
     '---',
     '',
