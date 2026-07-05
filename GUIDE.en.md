@@ -5,6 +5,18 @@
 > This guide is written so that **someone installing an AI / program for the very first time** can just follow along.
 > Jargon is kept to a minimum, and any term is explained **in one line, right there**.
 
+<details>
+<summary>📋 <b>Update summary</b> (as of 2026-07-06 — click to expand)</summary>
+
+- **2026-07-06**: Install safety/security hardening (forced confirmation when installing a team file from someone else, more reliable rollback if install is interrupted, stronger confirmation for global operations)
+- **2026-07-04**: Fixed a tool-permission (allow/deny list) bug
+- **2026-06-29**: Added the marketing team and data team — 5 teams complete
+- **2026-06-21**: Introduced marketplace-based install + the agent-management tool (`sodam-agent`)
+
+See the update summary in [README](./README.en.md) or the [GitHub commit log](https://github.com/sodam-ai/SoDam-Agent/commits/) for details.
+
+</details>
+
 ---
 
 ## 0. First — what is this? (1 min)
