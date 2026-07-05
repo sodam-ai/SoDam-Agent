@@ -98,7 +98,7 @@ function printHelp() {
                    (한 번 깔면 어디서나 — install·custom·verify·rollback에 사용)
     --dir <폴더>   설치/확인할 프로젝트 폴더 (기본: 현재 폴더)
     --out <파일>   내보내기 파일 경로 (기본: <팀id>.agentroster.json)
-    --yes, -y      확인 질문 없이 진행
+    --yes, -y      확인 질문 없이 진행 (단, import는 외부 파일이라 항상 확인받습니다)
 `);
 }
 
@@ -483,12 +483,11 @@ async function cmdImport(opts) {
   const plan = buildPlan(preset, target);
   printPlan(plan);
 
-  if (!opts.yes) {
-    const go = await ui.confirm('위 내용을 신뢰하고 설치할까요? (기존 설정은 먼저 백업됩니다)', false);
-    if (!go) {
-      ui.info('취소했습니다. 아무것도 바꾸지 않았습니다.');
-      return;
-    }
+  // 가져온 파일은 '신뢰 못 할 입력' 전제(01_PRD §8 Must-Have) — --yes로도 확인을 건너뛰지 않는다.
+  const go = await ui.confirm('위 내용을 신뢰하고 설치할까요? (기존 설정은 먼저 백업됩니다)', false);
+  if (!go) {
+    ui.info('취소했습니다. 아무것도 바꾸지 않았습니다.');
+    return;
   }
   const { backup } = applyPlan(plan);
   ui.success(`'${preset.name}' 팀을 가져와 설치했습니다.`);

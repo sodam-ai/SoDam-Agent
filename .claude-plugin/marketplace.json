@@ -9,7 +9,7 @@
       "name": "web-app-team",
       "source": "./plugins/web-app-team",
       "description": "웹앱 빌드팀 — 기획·프론트·백엔드·리뷰 (context7 MCP 포함)",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": { "name": "SoDam AI Studio" }
     },
     {
@@ -23,14 +23,14 @@
       "name": "research-team",
       "source": "./plugins/research-team",
       "description": "리서치팀 — 수집·분석·반증 (context7 MCP 포함)",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": { "name": "SoDam AI Studio" }
     },
     {
       "name": "sodam-agent",
       "source": "./plugins/sodam-agent",
       "description": "직원 관리 도구 — 팀 설치 후에도 /명령으로 새 직원을 직접 만들고 관리",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "author": { "name": "SoDam AI Studio" }
     },
     {

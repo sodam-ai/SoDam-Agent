@@ -1,7 +1,7 @@
 {
   "name": "research-team",
   "description": "리서치팀 — 수집(researcher) → 분석(analyst) → 반증(critic). SoDam-Agent 자체 큐레이션.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": { "name": "SoDam AI Studio" },
   "license": "Apache-2.0"
 }

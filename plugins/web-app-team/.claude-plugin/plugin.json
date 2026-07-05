@@ -1,7 +1,7 @@
 {
   "name": "web-app-team",
   "description": "웹앱 빌드팀 — 기획(planner) → 프론트(frontend-dev) → 백엔드(backend-dev) → 리뷰(reviewer). SoDam-Agent 자체 큐레이션.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": { "name": "SoDam AI Studio" },
   "license": "Apache-2.0"
 }
