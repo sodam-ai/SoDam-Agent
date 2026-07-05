@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>SoDam-Agent Beginner Guide</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">SoDam-Agent Beginner Guide</h1>
+</header>
+<h1 id="sodam-agent--beginner-guide-english">SoDam-Agent — Beginner
+Guide (English)</h1>
+<p><a href="./GUIDE.md">한국어 가이드</a> · <a
+href="./README.en.md">README (reference)</a></p>
+<blockquote>
+<p>This guide is written so that <strong>someone installing an AI /
+program for the very first time</strong> can just follow along. Jargon
+is kept to a minimum, and any term is explained <strong>in one line,
+right there</strong>.</p>
+</blockquote>
+<details>
+<summary>📋 <b>Update summary</b> (as of 2026-07-06 — click to expand)</summary>
+
+<ul>
+<li><strong>2026-07-06</strong>: Install safety/security hardening
+(forced confirmation when installing a team file from someone else, more
+reliable rollback if install is interrupted, stronger confirmation for
+global operations)</li>
+<li><strong>2026-07-04</strong>: Fixed a tool-permission (allow/deny
+list) bug</li>
+<li><strong>2026-06-29</strong>: Added the marketing team and data team
+— 5 teams complete</li>
+<li><strong>2026-06-21</strong>: Introduced marketplace-based install +
+the agent-management tool (<code>sodam-agent</code>)</li>
+</ul>
+<p>See the update summary in <a href="./README.en.md">README</a> or the
+<a href="https://github.com/sodam-ai/SoDam-Agent/commits/">GitHub commit
+log</a> for details.</p>
+</details>
+
+<hr />
+<h2 id="0-first--what-is-this-1-min">0. First — what is this? (1
+min)</h2>
+<ul>
+<li><strong>Claude Code</strong>: a program that lets you give tasks to
+an AI. Normally you talk to <strong>one AI</strong>.</li>
+<li><strong>SoDam-Agent</strong>: a tool that adds <strong>several AI
+teammates (a team)</strong> to Claude Code at once, and lets you
+<strong>create and train your own agents even after installing</strong>.
+e.g., it "hires" a <em>planner · frontend developer · backend developer
+· reviewer</em> all together — and lets you <em>hire and train
+more</em>.</li>
+<li>What you'll do: type <strong>a few commands</strong> into Claude
+Code. That's it.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>One-line glossary</strong></p>
+<ul>
+<li><strong>Plugin</strong>: a <em>part you snap into</em> a program.
+(SoDam-Agent is that part.)</li>
+<li><strong>Marketplace</strong>: a <em>store that collects parts</em>.
+Register it, then you can grab parts.</li>
+<li><strong>Agent (subagent)</strong>: one AI teammate.</li>
+<li><strong>Input box</strong>: the field at the bottom of Claude Code
+where you type.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>📛 <strong>Naming note</strong>: the product is named
+<strong>SoDam-Agent</strong>. But the
+<code>@sodamagent-marketplace</code> after a team name in install
+commands is the <em>store's internal id</em> — the letters differ, but
+<strong>type it as-is</strong> (it's normal).</p>
+</blockquote>
+<blockquote>
+<p>📋 <strong>What does this version do? (as of 2026-07-04)</strong>:
+You can install all 5 teams (web app · docs · research · marketing ·
+data) + the agent-management tool + Codex role translation (beta). For
+the full change history, see the "Current version status" note at the
+top of <a href="./README.en.md">README.en.md</a>.</p>
+</blockquote>
+<hr />
+<h2 id="1-get-ready-just-two-things">1. Get ready (just two things)</h2>
+<ol type="1">
+<li><strong>Claude Code must be installed.</strong> (If not, install it
+first: search "Claude Code" → official site claude.com/claude-code)</li>
+<li><strong>An internet connection.</strong></li>
+</ol>
+<blockquote>
+<p>(Optional) To also use the <em>doc-search tool</em> of
+<code>web-app-team</code>·<code>research-team</code>, you need
+<strong>Node.js</strong>. Without it the teammates still work; only that
+tool is missing. If needed, get the "LTS" build from nodejs.org.</p>
+</blockquote>
+<hr />
+<h2 id="2-install-follow-along-exactly">2. Install (follow along
+exactly)</h2>
+<blockquote>
+<p>Type the text below into the <strong>Claude Code "input
+box"</strong>, not a black terminal.</p>
+</blockquote>
+<h3 id="step-1--open-claude-code">Step 1 · Open Claude Code</h3>
+<ul>
+<li>Open it the way you normally do. (When you see the input box, you're
+ready.)</li>
+</ul>
+<h3 id="step-2--register-the-store-marketplace--once-only">Step 2 ·
+Register the store (marketplace) — once only</h3>
+<p>👉 Type this <strong>exactly</strong> in the input box and press
+Enter:</p>
+<pre><code>/plugin marketplace add sodam-ai/SoDam-Agent</code></pre>
+<p>🖥️ Success when you see a "marketplace added" message.</p>
+<blockquote>
+<p>⚠️ If it says <code>Marketplace file not found</code>: GitHub may
+need <strong>1–2 minutes</strong> to propagate. Wait a moment and try
+again.</p>
+</blockquote>
+<h3 id="step-3--install-a-team">Step 3 · Install a team</h3>
+<p>👉 Type your chosen team and Enter (one is fine):</p>
+<pre><code>/plugin install web-app-team@sodamagent-marketplace</code></pre>
+<ul>
+<li>Docs team:
+<code>/plugin install docs-team@sodamagent-marketplace</code></li>
+<li>Research team:
+<code>/plugin install research-team@sodamagent-marketplace</code></li>
+<li>Marketing team:
+<code>/plugin install marketing-team@sodamagent-marketplace</code></li>
+<li>Data team:
+<code>/plugin install data-team@sodamagent-marketplace</code></li>
+</ul>
+<h3 id="step-4--optional-install-the-management-tool">Step 4 ·
+(Optional) Install the management tool</h3>
+<p>To <strong>create and train your own agents</strong>, also
+install:</p>
+<pre><code>/plugin install sodam-agent@sodamagent-marketplace</code></pre>
+<h3 id="step-5--star-restart--the-most-important-step">Step 5 · ⭐
+Restart — the most important step!</h3>
+<p>👉 Type <code>/exit</code> to quit, then open <code>claude</code>
+again. (Or fully close and reopen the window.)</p>
+<blockquote>
+<p><strong>Why?</strong> Plugins are <strong>loaded once when Claude
+Code starts</strong>. So <strong>before a restart</strong>, the
+agents/commands you just installed <strong>won't appear.</strong> (This
+is the most common gotcha!)</p>
+</blockquote>
+<hr />
+<h2 id="3-verify-it-worked">3. Verify it worked</h2>
+<p>👉 Type and Enter:</p>
+<pre><code>/agents</code></pre>
+<p>🖥️ A list of AI teammates appears. Find a name like
+<strong><code>web-app-team:reviewer</code></strong>.</p>
+<ul>
+<li>The name starts with <strong><code>team:</code></strong> → <em>your
+installed teammates are clearly distinguishable</em>. (This is the key
+point!)</li>
+<li>If you see it, <strong>success</strong>. (Press <strong>Esc</strong>
+to exit the list.)</li>
+</ul>
+<hr />
+<h2 id="4-give-a-teammate-a-task-example">4. Give a teammate a task
+(example)</h2>
+<p>The easiest way is <strong>plain language</strong>. In the input
+box:</p>
+<pre><code>Ask web-app-team:reviewer to review this code</code></pre>
+<p>Or for a writing team:</p>
+<pre><code>Ask docs-team:editor to make this text smoother</code></pre>
+<p>🖥️ Claude calls that teammate (subagent), hands off the task, and
+brings back the result.</p>
+<blockquote>
+<p>💡 Type <code>@</code> in the input box to <strong>pick</strong> a
+teammate from a list.</p>
+</blockquote>
+<hr />
+<h2 id="5-create--train-your-own-agents-sodam-agent-tool">5. Create
+&amp; train your own agents (sodam-agent tool)</h2>
+<p>If you installed <code>sodam-agent</code> in Step 4 and restarted,
+type <code>/sodam-agent:</code> to see these commands.</p>
+<h3 id="heavy_plus_sign-create-a-new-agent">➕ Create a new agent</h3>
+<pre><code>/sodam-agent:new-agent</code></pre>
+<p>🖥️ It asks for name·job·personality. Answer, and <strong>your
+agent</strong> is created. (e.g., "a friendly helper that explains
+things in Korean")</p>
+<h3 id="mortar_board-train-an-agent">🎓 Train an agent</h3>
+<pre><code>/sodam-agent:training-agent</code></pre>
+<p>🖥️ It edits the agent's <strong>instructions</strong> to change
+behavior. e.g.,
+<code>Train the helper I just made to answer more briefly</code></p>
+<blockquote>
+<p><strong>What is "training"?</strong> Not re-training the AI — it
+<strong>changes the instructions</strong> you give the agent. (Like
+updating a note that says "from now on, do it this way.")</p>
+</blockquote>
+<h3 id="clipboard-copy-a-team-agent-into-yours">📋 Copy a team agent
+into yours</h3>
+<pre><code>/sodam-agent:pick-agent</code></pre>
+<blockquote>
+<p><strong>Why copy?</strong> Team agents
+(<code>web-app-team:reviewer</code>, etc.) <strong>can't be edited
+directly</strong> (your edits vanish on update). So you make a
+<strong>copy</strong> and train that. (Like copying a library book into
+your own notebook to mark it up.)</p>
+</blockquote>
+<h3 id="floppy_disk-save--wastebasket-delete-an-agent">💾 Save · 🗑️
+Delete an agent</h3>
+<pre><code>/sodam-agent:save-agent     ← save your agent so every project can use it
+/sodam-agent:remove-agent   ← delete an agent (backs up first, then asks &quot;delete for sure?&quot;)</code></pre>
+<blockquote>
+<p>⚠️ <strong>Deletion caution</strong>: the list may include agents
+<strong>you actually use</strong>. To practice, create a
+<strong>throwaway</strong> agent with <code>new-agent</code> and delete
+that one.</p>
+</blockquote>
+<hr />
+<h2 id="6-when-you-no-longer-need-it-remove">6. When you no longer need
+it (remove)</h2>
+<p>👉 Type and Enter:</p>
+<pre><code>/plugin</code></pre>
+<p>🖥️ Your installed plugins are listed. Select the team/tool and choose
+<strong>uninstall</strong>.</p>
+<blockquote>
+<p>Removal is handled safely by Claude Code — if you remove it by
+mistake, just install it again.</p>
+</blockquote>
+<hr />
+<h2 id="7-when-you-get-stuck-common-cases">7. When you get stuck (common
+cases)</h2>
+<table>
+<thead>
+<tr>
+<th>If this happens</th>
+<th>Why?</th>
+<th>Do this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Installed but <code>/agents</code>·<code>/sodam-agent:</code> show
+<strong>nobody</strong></td>
+<td>You <strong>didn't restart</strong></td>
+<td><strong>Quit and reopen Claude Code</strong> (<code>/exit</code> →
+<code>claude</code>). Still missing? <code>/reload-plugins</code></td>
+</tr>
+<tr>
+<td><code>/sodam-agent</code> shows <strong>unrelated stuff</strong>
+(team-agents, etc.)</td>
+<td><code>sodam-agent</code> not installed or no restart</td>
+<td><code>/plugin install sodam-agent@sodamagent-marketplace</code> →
+<strong>restart</strong>. Type <code>/sodam-agent:</code> with the
+colon</td>
+</tr>
+<tr>
+<td><code>marketplace add</code> says "not found"</td>
+<td>GitHub propagation delay / typo</td>
+<td>Retry in <strong>1–2 min</strong>. Still failing?
+<code>/plugin marketplace remove sodam-ai</code> then add again</td>
+</tr>
+<tr>
+<td><code>/plugin</code> does nothing</td>
+<td>Old Claude Code</td>
+<td><strong>Update Claude Code</strong> to the latest</td>
+</tr>
+<tr>
+<td>Pasting a path gives an <code>Invalid ... format</code> error</td>
+<td>The path <strong>includes quotes (")</strong></td>
+<td><strong>Remove the quotes</strong> — path only. Use a space-free
+folder</td>
+</tr>
+<tr>
+<td>Added but <code>/agents</code> shows <strong>nobody</strong></td>
+<td>You did <code>marketplace add</code> but <strong>not
+<code>install</code></strong></td>
+<td>Run <code>/plugin install &lt;team&gt;@sodamagent-marketplace</code>
+<strong>once more</strong></td>
+</tr>
+<tr>
+<td>Trained a team agent but it reverted</td>
+<td>You <strong>edited a team agent directly</strong> (overwritten on
+update)</td>
+<td>Use <code>/sodam-agent:pick-agent</code> to make a
+<strong>copy</strong>, then train the copy</td>
+</tr>
+<tr>
+<td>The doc-search tool errors</td>
+<td>No Node.js / blocked internet</td>
+<td>Install LTS from nodejs.org / try another network</td>
+</tr>
+<tr>
+<td>Want to use it on a phone</td>
+<td>—</td>
+<td>This tool is <strong>for Claude Code on a computer</strong> (no
+standalone phone use)</td>
+</tr>
+<tr>
+<td>Want to use it on macOS / Linux</td>
+<td>—</td>
+<td>The <code>/plugin</code> commands work the same on macOS/Linux with
+Claude Code installed. However, SoDam-Agent is
+<strong>Windows-first</strong> for development/testing — minor
+differences may occur. Report issues at <a
+href="https://github.com/sodam-ai/SoDam-Agent/issues">GitHub
+Issues</a>.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-safety--cost-must-know">8. Safety &amp; cost (must know)</h2>
+<ul>
+<li><strong>Safe to remove.</strong> Install/uninstall is managed by
+Claude Code. Agent deletion also goes through backup + confirm.</li>
+<li><strong>Passwords/keys are not stored in files.</strong> (Tool
+config &amp; agent creation hold only the key <em>name</em>.)</li>
+<li>This tool is provided <strong>"AS IS" with no warranty.</strong> You
+are responsible for its use.</li>
+<li>For any external tool (e.g., context7 doc search) or service you
+install, <strong>check its pricing/terms yourself.</strong> (Most have a
+free tier, but policies can change.)</li>
+</ul>
+<hr />
+<h2 id="9-license-short">9. License (short)</h2>
+<ul>
+<li><strong>Apache License 2.0</strong> — commercial use, modification,
+copying, and redistribution allowed (keep copyright notices, state
+changes, preserve NOTICE). See
+<code>LICENSE</code>·<code>NOTICE</code>.</li>
+<li>"Claude Code/Anthropic/Context7" etc. are their companies' names
+(trademarks); <strong>SoDam-Agent is unofficial and not
+affiliated.</strong> Whether the name "SoDam-Agent" is registrable as a
+trademark is undetermined — verify before commercial use.</li>
+<li>Agent instructions/templates are <strong>self-authored</strong> and
+some text may be <strong>AI-generated</strong>. Review before sensitive
+commercial use.</li>
+</ul>
+<hr />
+<h2
+id="optional-using-it-in-codex-too--role-translation-beta">(Optional)
+Using it in Codex too — role translation (beta)</h2>
+<p>If you also use <strong>Codex</strong> (another AI coding tool), you
+can build the same team for Codex too.</p>
+<blockquote>
+<p>Honestly: Codex isn't a "several agents working separately as a team"
+style. So instead of the same team, it <strong>"translates" each role
+into instructions Codex understands</strong> (beta).</p>
+</blockquote>
+<blockquote>
+<p>⚠️ This <strong>one</strong> thing needs a <strong>black
+terminal</strong> (unlike plugin install). Codex users are usually
+comfortable with a terminal.</p>
+</blockquote>
+<p><strong>Prerequisites</strong>: ① a downloaded copy of this project
+(see section 10) ② <strong>Node.js</strong> (LTS from nodejs.org)</p>
+<p><strong>How</strong> — from the downloaded SoDam-Agent folder, in a
+terminal, one line (put your Codex project folder in
+<code>--dir</code>):</p>
+<pre><code>node bin/cli.mjs install web-app-team --target codex --dir &quot;C:\my_codex_project_folder&quot;</code></pre>
+<p>🖥️ It previews what will be created and asks → say yes, and that
+folder gets <strong><code>AGENTS.md</code></strong> (role instructions)
+and <code>.agents/skills/...</code>.</p>
+<ul>
+<li>Swap the team for
+<code>docs-team</code>·<code>research-team</code>.</li>
+<li>If you need the doc-search tool (context7), paste the <strong>few
+TOML lines shown into <code>~/.codex/config.toml</code> and restart
+Codex</strong>.</li>
+</ul>
+<p><strong>How to use</strong>: open <strong>Codex in that
+folder</strong>; it reads <code>AGENTS.md</code> and works by the
+roles.</p>
+<blockquote>
+<p>If it doesn't work: make sure you opened Codex <strong>in that
+folder</strong> (elsewhere it can't read <code>AGENTS.md</code>). And
+Codex follows the roles as "instructions" — it's not several agents
+running at once (that's normal).</p>
+</blockquote>
+<hr />
+<h2
+id="10-advanced-instead-of-the-marketplace--run-it-from-your-folder">10.
+(Advanced) Instead of the marketplace — run it from your folder</h2>
+<p>You can <strong>register a downloaded folder as a "store"</strong>
+(inside Claude Code, no terminal).</p>
+<ol type="1">
+<li>Download this project (ZIP from GitHub → unzip).</li>
+<li>In the Claude Code <strong>input box</strong> (⚠️ <strong>no
+quotes</strong>, a space-free path):
+<pre><code>/plugin marketplace add C:\downloaded-folder\SoDam-Agent</code></pre></li>
+<li>Then install teams/tool — <strong>skip this and you'll see no
+teammates</strong>:
+<pre><code>/plugin install web-app-team@sodamagent-marketplace
+/plugin install sodam-agent@sodamagent-marketplace</code></pre></li>
+<li><strong>Restart</strong> to apply. The rest is the same as
+<strong>Steps 3·4·5</strong> above.</li>
+</ol>
+<blockquote>
+<p>💡 If you prefer a terminal:
+<code>claude --plugin-dir "downloaded-folder\plugins\web-app-team"</code>
+also works.</p>
+</blockquote>
+<hr />
+<h2 id="11-frequently-asked-questions-faq">11. Frequently asked
+questions (FAQ)</h2>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Is SoDam-Agent free?</strong></td>
+<td>SoDam-Agent is free (Apache-2.0). Claude Code subscription and
+connected tools (e.g., context7) have their own pricing — check each
+service.</td>
+</tr>
+<tr>
+<td><strong>Which Claude plan do I need?</strong></td>
+<td>Pro or higher is recommended (expected, not yet verified). Free plan
+behavior is unverified.</td>
+</tr>
+<tr>
+<td><strong>Can I use it offline?</strong></td>
+<td>Install needs internet. After that, agents work with a Claude API
+connection. context7 doc-search needs internet.</td>
+</tr>
+<tr>
+<td><strong>Do employees always use MCP (e.g. context7)
+directly?</strong></td>
+<td>Usually, but real-world testing shows an employee may not have
+direct access. When that happens, it says so honestly and the manager
+looks it up instead — results stay accurate, but the response shows who
+actually did the work.</td>
+</tr>
+<tr>
+<td><strong>How do I update?</strong></td>
+<td>In <code>/plugin</code> manager, or remove and re-add the
+marketplace. Keep custom copies with <code>pick-agent</code> before
+updating.</td>
+</tr>
+<tr>
+<td><strong>Is my data sent anywhere?</strong></td>
+<td>No. SoDam-Agent has no server. Everything runs on your
+computer.</td>
+</tr>
+<tr>
+<td><strong>Can I make my own team?</strong></td>
+<td>Yes. Use the 5 <code>sodam-agent</code> commands for your own
+agents. To build a full team, see <a
+href="./DEVELOPMENT.md">DEVELOPMENT.md</a>.</td>
+</tr>
+<tr>
+<td><strong>What if context7 is missing?</strong></td>
+<td>Agents still work — only live library doc lookup is
+unavailable.</td>
+</tr>
+<tr>
+<td><strong>Can I share my agents?</strong></td>
+<td>Yes — share the <code>.md</code> file. Check for personal info or
+API keys first.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<blockquote>
+<p>Full reference: <a href="./README.en.md">README.en.md</a> · 🇰🇷 <a
+href="./GUIDE.md">한국어 가이드</a> · <a
+href="./README.en.md#16-faq-frequently-asked-questions">FAQ &amp;
+Architecture →</a></p>
+</blockquote>
+</body>
+</html>
