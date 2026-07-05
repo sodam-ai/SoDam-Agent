@@ -14,6 +14,6 @@ node_modules/
 .pair-programming-session.md
 .plugin-config/
 
-# PDF는 빌드 산출물 — 저장소에 올리지 않음(2026-07-06 결정, 기존 4개는 git 추적 해제 필요)
-# HTML(docs/*.html)은 2026-07-06부터 PDF 대체용 공개 문서로 추적함(더 이상 제외 안 함)
+# docs/ 산출물(PDF·HTML)은 빌드 결과물 — 저장소에 올리지 않음(2026-07-06 최종 결정)
 docs/*.pdf
+docs/*.html
