@@ -14,8 +14,6 @@ node_modules/
 .pair-programming-session.md
 .plugin-config/
 
-# PDF 생성 중 임시 HTML (빌드 산출물 — 제품 아님)
-docs/*.html
-
 # PDF는 빌드 산출물 — 저장소에 올리지 않음(2026-07-06 결정, 기존 4개는 git 추적 해제 필요)
+# HTML(docs/*.html)은 2026-07-06부터 PDF 대체용 공개 문서로 추적함(더 이상 제외 안 함)
 docs/*.pdf
