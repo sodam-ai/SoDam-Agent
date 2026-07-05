@@ -38,6 +38,15 @@ export async function confirm(question, def = false) {
   return a === 'y' || a === 'yes' || a === '예' || a === 'ㅇ';
 }
 
+// 비가역(전역) 작업 전용 게이트 — y/n이 아니라 정확히 "YES"를 입력해야 진행.
+// 전역(~/.claude 등) 변경은 모든 프로젝트에 영향을 주고 되돌리기 부담이 커서
+// 일반 확인보다 더 무겁게 만든다(01_PRD §8 Should-Have: 비가역 작업 게이트).
+export async function confirmYes(question) {
+  danger(question);
+  const a = await ask(color.gray('   계속하려면 정확히 ') + color.bold('YES') + color.gray(' 라고 입력하세요(취소하려면 Enter): '));
+  return a === 'YES';
+}
+
 // 번호로 고르는 메뉴. items: [{ label, value, hint }]
 export async function selectFromList(title, items) {
   line('\n' + color.bold(title));

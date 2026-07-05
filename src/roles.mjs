@@ -1,5 +1,9 @@
 // 내 역할(에이전트) 라이브러리 — 사용자가 직접 만든 역할을 홈 폴더에 보관해 어느 프로젝트에서나 재사용.
 // 저장 형식 = 설치되는 에이전트 .md와 동일(그대로 팀에 쓸 수 있음).
+// ⚠️ 저장 위치가 plugins/sodam-agent/commands(/sodam-agent:new-agent 등)와 다르다(의도된 분리, 06_AGENT_MANAGEMENT §6):
+//   - 여기(~/.agentroster/roles/)는 이 CLI 도구(sodam-agent custom 마법사)만 읽는다.
+//   - 플러그인 커맨드는 Claude Code의 .claude/agents/ 에 직접 쓴다(별개 시스템).
+//   두 경로는 서로 안 보인다 — README가 CLI의 roles 명령을 안내하지 않아 실사용 혼란은 낮지만, 착각하지 말 것.
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';

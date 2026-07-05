@@ -166,7 +166,9 @@ async function cmdInstall(opts) {
   printPlan(plan);
 
   if (!opts.yes) {
-    const go = await ui.confirm('위 내용으로 설치할까요? (기존 설정은 먼저 백업됩니다)', false);
+    const go = target.scope === 'global'
+      ? await ui.confirmYes('전역 설치 — 모든 프로젝트에 영향을 줍니다. 위 내용으로 설치할까요? (기존 설정은 먼저 백업됩니다)')
+      : await ui.confirm('위 내용으로 설치할까요? (기존 설정은 먼저 백업됩니다)', false);
     if (!go) {
       ui.info('취소했습니다. 아무것도 바꾸지 않았습니다.');
       return;
@@ -288,7 +290,9 @@ async function cmdRollback(opts) {
       backups.map((b) => ({ label: b.id, value: b.id, hint: `${(b.files || []).length}개 원본 보관` }))
     );
     chosen = backups.find((b) => b.id === id);
-    const go = await ui.confirm(`'${chosen.id}' 시점으로 되돌릴까요?`, false);
+    const go = opts.global
+      ? await ui.confirmYes(`전역 되돌리기 — 모든 프로젝트에 영향을 줍니다. '${chosen.id}' 시점으로 되돌릴까요?`)
+      : await ui.confirm(`'${chosen.id}' 시점으로 되돌릴까요?`, false);
     if (!go) {
       ui.info('취소했습니다.');
       return;
@@ -332,7 +336,9 @@ async function cmdCustom(opts) {
   const plan = buildPlan(preset, target);
   printPlan(plan);
   if (!opts.yes) {
-    const go = await ui.confirm('이 팀으로 설치할까요? (기존 설정은 먼저 백업됩니다)', false);
+    const go = target.scope === 'global'
+      ? await ui.confirmYes('전역 설치 — 모든 프로젝트에 영향을 줍니다. 이 팀으로 설치할까요? (기존 설정은 먼저 백업됩니다)')
+      : await ui.confirm('이 팀으로 설치할까요? (기존 설정은 먼저 백업됩니다)', false);
     if (!go) {
       ui.info('취소했습니다. 아무것도 바꾸지 않았습니다.');
       return;
