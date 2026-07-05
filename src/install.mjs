@@ -126,33 +126,18 @@ function ensureGitignore(root) {
   fs.appendFileSync(gi, banner + '.agentroster/\n');
 }
 
-// 실제 적용: 백업 → 에이전트 쓰기 → MCP 병합 → 설치기록 저장.
+// 실제 적용: 백업 → 설치기록 먼저 저장 → 에이전트 쓰기 → MCP 병합.
+// (설치기록을 파일 쓰기 '전'에 남기는 이유: 여러 파일을 쓰는 도중 프로세스가 죽어도
+//  되돌리기가 '이번 설치가 무엇을 추가/덮어쓰려 했는지'를 알 수 있어야 안전하게 정리된다.)
 export function applyPlan(plan) {
   const { target, agents, newServers, preset } = plan;
   // 전역은 같은 폴더에 에이전트가 매우 많을 수 있으니 '건드리는 파일'만 백업한다.
   const onlyAgents = target.scope === 'global' ? agents.map((a) => `${a.name}.md`) : null;
   const backup = createBackup(target, onlyAgents ? { onlyAgents } : {});
 
-  fs.mkdirSync(target.agentDir, { recursive: true });
-  const added = [];
-  const overwritten = [];
-  for (const a of agents) {
-    (a.exists ? overwritten : added).push(`${a.name}.md`);
-    writeAtomic(a.file, a.content);
-  }
-
-  let mcpExistedBefore = false;
-  if (target.mcpPath) {
-    mcpExistedBefore = fs.existsSync(target.mcpPath);
-    if (Object.keys(newServers).length > 0) {
-      const cur = mcpExistedBefore ? JSON.parse(fs.readFileSync(target.mcpPath, 'utf8')) : {};
-      cur.mcpServers = cur.mcpServers || {};
-      for (const [id, spec] of Object.entries(newServers)) {
-        if (!cur.mcpServers[id]) cur.mcpServers[id] = spec; // 기존 서버는 절대 덮지 않음
-      }
-      writeAtomic(target.mcpPath, JSON.stringify(cur, null, 2) + '\n');
-    }
-  }
+  const added = agents.filter((a) => !a.exists).map((a) => `${a.name}.md`);
+  const overwritten = agents.filter((a) => a.exists).map((a) => `${a.name}.md`);
+  const mcpExistedBefore = target.mcpPath ? fs.existsSync(target.mcpPath) : false;
 
   const record = {
     presetId: preset.id,
@@ -164,6 +149,20 @@ export function applyPlan(plan) {
     mcpExistedBefore,
   };
   fs.writeFileSync(path.join(backup.dest, 'install-record.json'), JSON.stringify(record, null, 2));
+
+  fs.mkdirSync(target.agentDir, { recursive: true });
+  for (const a of agents) {
+    writeAtomic(a.file, a.content);
+  }
+
+  if (target.mcpPath && Object.keys(newServers).length > 0) {
+    const cur = mcpExistedBefore ? JSON.parse(fs.readFileSync(target.mcpPath, 'utf8')) : {};
+    cur.mcpServers = cur.mcpServers || {};
+    for (const [id, spec] of Object.entries(newServers)) {
+      if (!cur.mcpServers[id]) cur.mcpServers[id] = spec; // 기존 서버는 절대 덮지 않음
+    }
+    writeAtomic(target.mcpPath, JSON.stringify(cur, null, 2) + '\n');
+  }
 
   // 전역은 홈 폴더에 .gitignore를 만들지 않는다(프로젝트만 백업 폴더 Git 제외).
   if (target.scope !== 'global') ensureGitignore(target.projectRoot);

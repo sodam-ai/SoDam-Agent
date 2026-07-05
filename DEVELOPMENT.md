@@ -57,7 +57,7 @@ agentroster/
 
 ## 보안 감사 — install.mjs/share.mjs/paths.mjs/backup.mjs/writers/codex.mjs (2026-07-06)
 - **[HIGH, 수정 완료]** `sodam-agent import <파일> --yes`가 확인(confirm) 게이트를 건너뛰던 문제 수정. 외부에서 가져온 팀 파일은 01_PRD §8 Must-Have("사용자 미확인 상태로 실행형 명령이 설정에 안 써짐")에 따라 `--yes`로도 항상 확인받도록 `src/main.mjs#cmdImport` 변경(`test/e2e.mjs`는 CLI가 아닌 `readImport()`를 직접 호출해 영향 없음, 28건 전체 재통과 확인).
-- **[MEDIUM, 미수정]** `install.mjs#applyPlan`의 다중 파일 쓰기 루프는 파일 단위로만 원자적 — 설치 중간에 프로세스가 죽으면 `install-record.json`이 아직 없어 되돌리기가 그 사이 추가된 파일을 못 지운다. 향후 개선 후보.
+- **[MEDIUM, 수정 완료]** `install.mjs#applyPlan`이 `install-record.json`을 파일 쓰기 **전**에 먼저 기록하도록 순서 변경 — 설치 중간에 프로세스가 죽어도 되돌리기가 '무엇을 추가/덮어쓰려 했는지' 항상 알 수 있음(28건 재통과 확인).
 - **[LOW, 미수정]** 전역(`--global`) 설치·되돌리기가 프로젝트와 동일한 confirm() 사용 — PRD Should-Have의 "더 강한 YES 확인"까지는 아님(백업+경고+confirm 자체는 있어 실질 위험 낮음).
 - 나머지(경로조작·비밀키 제거·import 스키마 화이트리스트·원자적 파일쓰기)는 직접 코드 대조 결과 견고함을 확인.
 
