@@ -86,18 +86,18 @@ export function syncToDisk() {
 }
 
 // 현재 커밋된 .mcp.json 포맷(args를 한 줄 배열로)에 맞춘 직렬화.
+// ⚠️ 서버가 여러 개일 수 있으므로 전부 순회한다 — 첫 번째만 쓰면 두 번째부터
+// 조용히 빠진다(현재 팀은 전부 MCP 0~1개라 안 드러났던 잠재 버그, 2026-07-06 발견).
 export function serializeMcpJson(obj) {
-  const [id, srv] = Object.entries(obj.mcpServers)[0];
-  // 현재 커밋된 포맷에 맞춰 콤마 뒤 공백 포함: ["-y", "@upstash/context7-mcp"]
-  const argsLine = '[' + srv.args.map((a) => JSON.stringify(a)).join(', ') + ']';
-  return (
-    '{\n' +
-    '  "mcpServers": {\n' +
-    `    ${JSON.stringify(id)}: {\n` +
-    `      "command": ${JSON.stringify(srv.command)},\n` +
-    `      "args": ${argsLine}\n` +
-    '    }\n' +
-    '  }\n' +
-    '}\n'
-  );
+  const blocks = Object.entries(obj.mcpServers).map(([id, srv]) => {
+    // 현재 커밋된 포맷에 맞춰 콤마 뒤 공백 포함: ["-y", "@upstash/context7-mcp"]
+    const argsLine = '[' + srv.args.map((a) => JSON.stringify(a)).join(', ') + ']';
+    return (
+      `    ${JSON.stringify(id)}: {\n` +
+      `      "command": ${JSON.stringify(srv.command)},\n` +
+      `      "args": ${argsLine}\n` +
+      '    }'
+    );
+  });
+  return '{\n  "mcpServers": {\n' + blocks.join(',\n') + '\n  }\n}\n';
 }
