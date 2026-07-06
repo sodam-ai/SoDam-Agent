@@ -7,6 +7,7 @@ node_modules/
 .PRD/
 .omc/
 *.bak
+CHECKPOINT.md
 
 # 플러그인이 만든 세션 산출물 (제품 아님 — 공개 제외)
 .complexity-log.md
