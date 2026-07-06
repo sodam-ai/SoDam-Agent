@@ -12,7 +12,24 @@
 ## 사람이 아직 안 한 것 (코드 문제 아님)
 
 - [ ] 실제 Claude Code 라이브 세션 재시작 후 agent 호출·MCP 연결 최종 확인 (여러 세션 있었음, 재시작 후 재확인 안 됨)
-- [ ] 저작권 개인 실명 전환 여부 (현재 "SoDam AI Studio" 유지 중, 사용자가 "나중에 결정"이라고 명시)
+- [ ] 저작권 개인 실명 전환 여부 (현재 "SoDam AI Studio" 유지 중, 사용자가 "나중에 결정"이라고 명시 — 바꾸려면 `LICENSE`·`NOTICE`·`README.md/.en.md` §13/§Copyright 4곳 동시 수정 필요)
+- [ ] (구조적으로 항상 열림, 지금 못 고침) AI 생성 콘텐츠 저작권 리스크 — 법 자체가 유동적이라 상업화 본격화 시점에 재검토
+
+## 현재 저장소 상태 (사실관계 — 다음 세션이 재확인 없이 바로 신뢰 가능)
+
+- GitHub `sodam-ai/SoDam-Agent` = **PUBLIC** (2026-07-06 전환 완료)
+- **기본 브랜치 = `feat/plugin-marketplace`**(main/master 아님). 로컬도 이 브랜치에서 작업 중이면 이게 이미 "기본 브랜치"라 PR/merge 불필요 — push만 하면 GitHub 메인 화면에 바로 반영됨
+- MD 문서(`README.md/.en.md`, `GUIDE.md/.en.md`)와 HTML 문서(동일 파일명 `.html`)는 **프로젝트 최상위 폴더**에 있음 — `docs/` 폴더가 아님(이번 세션에 여러 번 오갔던 결정, 최종 확정: 최상위). `docs/*.pdf`·`docs/*.html`은 `.gitignore`에 등록되어 있고, PDF는 완전히 제거됨(재생성 금지 방침)
+- 마지막 안전 점검(비밀정보 스캔·npm audit·e2e) 전부 통과 상태에서 세션 종료 — Phase 3 시작 전 재실행해서 베이스라인 깨끗한지 한 번 확인 권장(`npm test && npm audit`)
+
+## 이번 세션에서 실제로 부딪힌 함정 (반복하면 시간 낭비 — 꼭 읽기)
+
+1. **`rm`/`git rm`은 에이전트가 실행하면 무조건 차단됨** — 파일 1개만 지워도, `--cached`(실제 삭제 없이 추적만 해제)를 써도 동일하게 막힘. 우회 시도하지 말 것(안전장치임). 파일 삭제가 필요하면 **사용자에게 `!` 접두사로 직접 명령을 실행해달라고 요청**하거나, 사용자가 직접 탐색기/터미널에서 지우게 안내.
+2. **`claude plugin update`는 버전 번호만 봄** — `plugins/*/agents/*.md`나 `commands/*.md` 내용을 바꿨는데 `plugin.json`의 `version`을 안 올리면, 이미 설치한 사용자는 `update`를 실행해도 절대 갱신 안 됨(콘텐츠 비교 안 하고 "이미 최신"이라 판단). **`plugins/<팀>/agents/*.md` 또는 `commands/*.md`를 고치면 반드시 그 팀의 `plugin.json` 버전 + `marketplace.json`의 대응 버전을 함께 올릴 것.**
+3. **`src/presets.mjs`가 유일한 정본** — `plugins/<팀>/agents/*.md`·`.mcp.json`을 손으로 고치면 안 됨(e2e "프리셋 정본" 드리프트 테스트가 실패함). `presets.mjs` 수정 → `src/plugin-sync.mjs`의 `syncToDisk()` 호출로 재생성.
+4. **권한줄(`disallowedTools`/`tools`) 로직은 `validate.mjs#agentPermissionLine()` 한 곳에만 존재해야 함** — `install.mjs`(CLI 경로)와 `plugin-sync.mjs`(마켓 경로)가 각자 구현했다가 한쪽만 고쳐서 조용히 어긋난 사고가 실제로 있었음(2026-07-04).
+5. **이 PC에는 Claude Code 라이브 세션이 여러 개 동시에 떠 있을 수 있음**(한때 9개 확인됨) — 플러그인을 재설치/업데이트해도, 이미 켜져 있던 다른 세션은 재시작 전까지 구버전 캐시를 계속 씀.
+6. **내부 이름 이중성은 의도적** — `AGENTROSTER_HOME`, `~/.agentroster/`, `*.agentroster.json` 같은 옛 이름 문자열은 사용자 노출면(`sodam-agent`)과 다르지만 **일부러 유지**하는 것(바꾸면 기존 사용자 백업 경로·export 파일이 깨짐). "정합화"랍시고 고치지 말 것.
 
 ## 다음 작업: Phase 3 (멀티 도구 확대 + 커뮤니티 디렉터리)
 
