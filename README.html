@@ -196,13 +196,16 @@ href="./GUIDE.md">왕초보 가이드(GUIDE)</a></p>
 </ul>
 </blockquote>
 <details>
-<summary>📋 <b>현재 버전 상태 · 업데이트 요약</b> (2026-07-06 기준 — 눌러서 펼치기)</summary>
+<summary>📋 <b>현재 버전 상태 · 업데이트 요약</b> (2026-07-11 기준 — 눌러서 펼치기)</summary>
 
 <p><strong>지금 설치할 수 있는 것</strong>: 팀
-5종(웹앱·문서·리서치·마케팅·데이터) + 직원 관리
-도구(<code>sodam-agent</code>) + Codex 역할 번역(베타)</p>
+7종(웹앱·문서·리서치·마케팅·데이터·보안 감사·DevOps) + 직원 관리
+도구(<code>sodam-agent</code>) + Codex/Gemini CLI/Cursor 역할
+번역(베타)</p>
 <p><strong>최근 주요 변경</strong></p>
 <ul>
+<li><strong>2026-07-11</strong>: 보안 감사팀 · DevOps/배포팀 추가 — 팀
+7종 완성.</li>
 <li><strong>2026-07-06</strong>: 실사용 중이던 설치본이 최신 수정을 못
 받던 문제 발견·수정 + 플러그인 버전 관리 규칙 정비(앞으로 업데이트가
 실제로 반영되도록) · 남이 준 팀 파일을 설치할 때 확인을 건너뛸 수 있던
@@ -238,8 +241,8 @@ href="https://github.com/sodam-ai/SoDam-Agent/commits/">GitHub 커밋
 프로그램</a></li>
 <li><a href="#3-다운로드--설치-방법">다운로드 · 설치 방법</a></li>
 <li><a href="#4-빠른-시작-3단계">빠른 시작 (3단계)</a></li>
-<li><a href="#5-설치할-수-있는-것-팀-5종--관리-도구">설치할 수 있는 것
-(팀 5종 + 관리 도구)</a></li>
+<li><a href="#5-설치할-수-있는-것-팀-7종--관리-도구">설치할 수 있는 것
+(팀 7종 + 관리 도구)</a></li>
 <li><a href="#6-사용--작동-방법">사용 · 작동 방법</a></li>
 <li><a href="#7-설치-후-내-직원-직접-관리하기-sodam-agent">설치 후 내
 직원 직접 관리하기 (sodam-agent)</a></li>
@@ -391,8 +394,8 @@ B — 내 컴퓨터 폴더로 써 보기 (클로드 안에서 · 검은창 불�
 쓰려면 4번에서 <code>sodam-agent</code>도 설치)</p>
 </blockquote>
 <hr />
-<h2 id="5-설치할-수-있는-것-팀-5종--관리-도구">5. 설치할 수 있는 것 (팀
-5종 + 관리 도구)</h2>
+<h2 id="5-설치할-수-있는-것-팀-7종--관리-도구">5. 설치할 수 있는 것 (팀
+7종 + 관리 도구)</h2>
 <p><strong>① 팀 플러그인 (AI 직원 묶음)</strong></p>
 <table>
 <thead>
@@ -435,6 +438,21 @@ social-manager(SNS 관리)</td>
 <td>데이터팀</td>
 <td>data-engineer(수집·정제) · data-analyst(분석) ·
 data-viz(시각화)</td>
+<td>없음</td>
+</tr>
+<tr>
+<td><code>security-audit-team</code></td>
+<td>보안 감사팀</td>
+<td>security-auditor(취약점 점검) ·
+vulnerability-analyst(위험도 분석) · compliance-reviewer(규정 준수
+검토)</td>
+<td>없음</td>
+</tr>
+<tr>
+<td><code>devops-team</code></td>
+<td>DevOps/배포팀</td>
+<td>deploy-engineer(배포 설계) · cicd-manager(CI/CD 구성) ·
+infra-troubleshooter(장애 진단)</td>
 <td>없음</td>
 </tr>
 </tbody>
@@ -1007,6 +1025,8 @@ context7 MCP가 연결됩니다.</li>
 │   ├── research-team/  (같은 구조)
 │   ├── marketing-team/  (같은 구조)
 │   ├── data-team/  (같은 구조)
+│   ├── security-audit-team/  (같은 구조, MCP 없음)
+│   ├── devops-team/  (같은 구조, MCP 없음)
 │   └── sodam-agent/
 │       └── commands/
 │           ├── new-agent.md          ← 슬래시 명령 (1개)

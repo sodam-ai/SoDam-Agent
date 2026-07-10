@@ -198,13 +198,17 @@ as-is.</li>
 </ul>
 </blockquote>
 <details>
-<summary>📋 <b>Current version status · update summary</b> (as of 2026-07-06 — click to expand)</summary>
+<summary>📋 <b>Current version status · update summary</b> (as of 2026-07-11 — click to expand)</summary>
 
-<p><strong>Available now</strong>: 5 teams (web app · docs · research ·
-marketing · data) + the agent-management tool (<code>sodam-agent</code>)
-+ Codex role translation (beta)</p>
+<p><strong>Available now</strong>: 7 teams (web app · docs · research ·
+marketing · data · security audit · devops) + the agent-management tool
+(<code>sodam-agent</code>) + Codex / Gemini CLI / Cursor role
+translation (beta)</p>
 <p><strong>Recent major changes</strong></p>
 <ul>
+<li><strong>2026-07-11</strong>: Added the security-audit team and
+devops team — 7 teams complete. Also added Gemini CLI and Cursor role
+translation (beta).</li>
 <li><strong>2026-07-06</strong>: Found and fixed installed copies
 silently running stale (pre-fix) code + repaired the plugin version-bump
 process so future updates actually take effect · closed a gap where
@@ -244,8 +248,8 @@ commit log</a>.</p>
 required programs</a></li>
 <li><a href="#3-download--install">Download &amp; install</a></li>
 <li><a href="#4-quick-start-3-steps">Quick start (3 steps)</a></li>
-<li><a href="#5-what-you-can-install-5-teams--management-tool">What you
-can install (5 teams + management tool)</a></li>
+<li><a href="#5-what-you-can-install-7-teams--management-tool">What you
+can install (7 teams + management tool)</a></li>
 <li><a href="#6-how-to-use-it">How to use it</a></li>
 <li><a href="#7-manage-your-own-agents-after-install-sodam-agent">Manage
 your own agents after install (sodam-agent)</a></li>
@@ -402,8 +406,8 @@ create/train agents, install <code>sodam-agent</code> in step 4
 above.)</p>
 </blockquote>
 <hr />
-<h2 id="5-what-you-can-install-5-teams--management-tool">5. What you can
-install (5 teams + management tool)</h2>
+<h2 id="5-what-you-can-install-7-teams--management-tool">5. What you can
+install (7 teams + management tool)</h2>
 <p><strong>① Team plugins (bundles of AI teammates)</strong></p>
 <table>
 <thead>
@@ -445,6 +449,20 @@ install (5 teams + management tool)</h2>
 <td>Data Team</td>
 <td>data-engineer (collect &amp; clean) · data-analyst (analysis) ·
 data-viz (visualization)</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>security-audit-team</code></td>
+<td>Security Audit Team</td>
+<td>security-auditor (vulnerability scan) · vulnerability-analyst (risk
+analysis) · compliance-reviewer (compliance check)</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>devops-team</code></td>
+<td>DevOps/Deployment Team</td>
+<td>deploy-engineer (deployment design) · cicd-manager (CI/CD setup) ·
+infra-troubleshooter (incident diagnosis)</td>
 <td>none</td>
 </tr>
 </tbody>
@@ -1000,6 +1018,8 @@ created in the same folder.</li>
 │   ├── research-team/   (same structure)
 │   ├── marketing-team/  (same structure)
 │   ├── data-team/       (same structure)
+│   ├── security-audit-team/  (same structure, no MCP)
+│   ├── devops-team/          (same structure, no MCP)
 │   └── sodam-agent/
 │       └── commands/
 │           ├── new-agent.md           ← slash command (1 command)
