@@ -250,6 +250,49 @@ node bin/cli.mjs install web-app-team --target gemini --dir "C:\my\project\folde
 
 ---
 
+## Using it in Cursor too (role translation · beta)
+
+Like Codex and Gemini CLI, you can also use the same team in **Cursor (another AI coding editor)**.
+Cursor's `.cursor/rules` isn't a "callable role (subagent)" concept like Claude Code — it's context injected automatically/manually based on conditions (confirmed from official docs). So, like Codex, this **"translates" each role into a "mode" description inside `AGENTS.md`** rather than "the same team" (beta).
+
+> ⚠️ **This feature alone needs a terminal** (unlike plugin install), same as Codex and Gemini CLI.
+
+**Prerequisites**
+- A downloaded copy of this repo
+- **Node.js 18+** (needed to run the CLI — [nodejs.org](https://nodejs.org) LTS)
+
+**How to install** — from the downloaded SoDam-Agent folder, targeting the project folder you'll use with Cursor:
+```
+node bin/cli.mjs install web-app-team --target cursor --dir "C:\my\project\folder"
+```
+- Omit `--dir` to use the **current folder**. · Swap the team for `docs-team`·`research-team`.
+- It shows a **preview of what will be created** and asks for confirmation (`--yes` to skip).
+
+**What gets created (file locations)**
+
+| File | Location | Role |
+|---|---|---|
+| `AGENTS.md` | project folder root | The **role descriptions** Cursor reads (roles = "modes") |
+| MCP config | `.cursor/mcp.json` | Tools like doc search (context7). **Unlike Codex/Gemini, this one connects automatically** (after your confirmation, existing config preserved) |
+
+> If an `AGENTS.md` already exists, it is **backed up to `AGENTS.md.bak`** before writing (safe).
+
+**How to use**
+- Run **Cursor in that folder**; it reads `AGENTS.md` and uses the role descriptions as context.
+- MCP is already connected in `.cursor/mcp.json` at install time — no extra step needed.
+
+**Troubleshooting**
+
+| Symptom | Fix |
+|---|---|
+| Cursor ignores the roles | Make sure you ran Cursor **in that folder** (elsewhere it can't read `AGENTS.md`) |
+| The doc-search tool is missing | Check `.cursor/mcp.json` has a context7 entry / verify Node.js is installed, then restart Cursor |
+| No callable "same team" subagents | That's normal — Cursor's rules are reference context, not callable roles (beta limitation) |
+
+> 🔎 Verify recognition in your actual Cursor runtime once (behavior may vary by tool/version).
+
+---
+
 ## 7. Manage your own agents after install (sodam-agent)
 
 With `sodam-agent` installed, you can create and manage agents **inside Claude Code with slash commands** — no terminal. (Claude Code's native `/agents` "Create" is hard for beginners to find, so this replaces it with **one command**.)

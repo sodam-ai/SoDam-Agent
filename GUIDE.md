@@ -232,6 +232,27 @@ node bin/cli.mjs install web-app-team --target gemini --dir "C:\Gemini로_쓸_�
 
 ---
 
+## (선택) Cursor에서도 쓰기 — 역할 번역 (베타)
+
+**Cursor**(다른 AI 코딩 에디터)도 쓰신다면, 같은 팀을 Cursor용으로도 만들 수 있어요.
+> 솔직히 말하면: Cursor의 규칙(`.cursor/rules`)은 "호출해서 부르는 직원" 개념이 아니에요. 그래서 Codex처럼, **똑같은 팀이 아니라 각 역할을 `AGENTS.md` 안의 설명으로 "번역"**해 드려요(베타).
+
+> ⚠️ 이것**만**은 **검은 터미널**이 필요해요(플러그인 설치와 달라요). Codex·Gemini CLI와 마찬가지예요.
+
+**준비물**: ① 이 프로젝트를 내려받은 폴더(아래 10번 참고) ② **Node.js** (nodejs.org 에서 LTS)
+
+**하는 법** — 내려받은 SoDam-Agent 폴더에서, 검은 터미널에 한 줄 (Cursor로 쓸 폴더를 `--dir` 에):
+```
+node bin/cli.mjs install web-app-team --target cursor --dir "C:\Cursor로_쓸_내_프로젝트_폴더"
+```
+🖥️ 무엇이 만들어질지 먼저 보여주고 물어봐요 → "예" 하면 그 폴더에 **`AGENTS.md`**(역할 설명서)가 생기고, **`.cursor/mcp.json`에 자료검색(context7) 도구가 자동으로 연결**돼요(Codex·Gemini와 달리 직접 붙여넣기 안 해도 됨).
+- 다른 팀은 `docs-team`·`research-team` 으로 바꾸면 돼요.
+
+**쓰는 법**: 그 폴더에서 **Cursor를 켜면** `AGENTS.md`를 읽고 역할 설명을 참고해요.
+> 잘 안 되면: 꼭 **그 폴더에서** Cursor를 켰는지 확인하세요(다른 폴더면 `AGENTS.md`를 못 읽어요). Cursor의 규칙은 "참고용"이라, Claude Code처럼 직원을 호출해서 부르는 방식은 아니에요(정상).
+
+---
+
 ## 10. (고급) 마켓플레이스 대신 — 내 폴더로 써 보기
 
 마켓 대신 **내려받은 폴더를 직접 "가게"로 등록**해도 됩니다. (검은 터미널 없이 클로드 안에서.)

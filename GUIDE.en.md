@@ -233,6 +233,27 @@ node bin/cli.mjs install web-app-team --target gemini --dir "C:\my_gemini_projec
 
 ---
 
+## (Optional) Using it in Cursor too — role translation (beta)
+
+If you also use **Cursor** (another AI coding editor), you can build the same team for it too.
+> Honestly: Cursor's rules (`.cursor/rules`) aren't a "call this employee" concept. So like Codex, this **"translates" each role into a description inside `AGENTS.md`** rather than the same team (beta).
+
+> ⚠️ This **one** thing needs a **black terminal** (unlike plugin install), same as Codex and Gemini CLI.
+
+**Prerequisites**: ① a downloaded copy of this project (see section 10) ② **Node.js** (LTS from nodejs.org)
+
+**How** — from the downloaded SoDam-Agent folder, in a terminal, one line (put your Cursor project folder in `--dir`):
+```
+node bin/cli.mjs install web-app-team --target cursor --dir "C:\my_cursor_project_folder"
+```
+🖥️ It previews what will be created and asks → say yes, and that folder gets **`AGENTS.md`** (role descriptions), and **`.cursor/mcp.json` gets the doc-search (context7) tool connected automatically** (unlike Codex/Gemini, no manual pasting needed).
+- Swap the team for `docs-team`·`research-team`.
+
+**How to use**: open **Cursor in that folder**; it reads `AGENTS.md` and refers to the role descriptions.
+> If it doesn't work: make sure you opened Cursor **in that folder** (elsewhere it can't read `AGENTS.md`). Cursor's rules are reference-only — unlike Claude Code, you don't call/summon an employee (that's normal).
+
+---
+
 ## 10. (Advanced) Instead of the marketplace — run it from your folder
 
 You can **register a downloaded folder as a "store"** (inside Claude Code, no terminal).

@@ -13,6 +13,7 @@ import { rolesDir, listPersonalRoles, saveRole, removeRole } from '../src/roles.
 import { expectedPluginFiles } from '../src/plugin-sync.mjs';
 import { agentsMd, skillMd, codexConfigToml, buildCodexPlan, applyCodexPlan } from '../src/writers/codex.mjs';
 import { geminiAgentMd, geminiMcpSnippet, buildGeminiPlan, applyGeminiPlan } from '../src/writers/gemini.mjs';
+import { cursorAgentsMd, buildCursorPlan, applyCursorPlan } from '../src/writers/cursor.mjs';
 import { presetsInCategory, groupPresetsByCategory } from '../src/main.mjs';
 
 let pass = 0;
@@ -337,7 +338,58 @@ try {
 assert.ok(gxBlocked, 'Gemini 역할 이름 경로조작 차단');
 ok('Gemini 보안: 역할 이름 경로조작 차단');
 
-// 18) 정합성 불변식: 여러 팀이 같은 MCP id를 선언하면 installSpec이 완전히 동일해야 한다.
+// 19) Cursor 역할 변환 (Phase 3 M2) — AGENTS.md(역할=모드, Codex 패턴 재사용) + .cursor/mcp.json 자동 병합
+const cm = cursorAgentsMd(wap);
+assert.ok(cm.includes('planner') && cm.includes('reviewer'), 'AGENTS.md에 역할 포함');
+assert.ok(/호출.*가능한 역할|서브에이전트/.test(cm), 'Cursor 한계(호출형 서브에이전트 아님) 정직 고지 포함');
+assert.ok(cm.includes('.cursor/mcp.json'), 'MCP 자동 연결 안내 포함');
+ok('Cursor: AGENTS.md에 역할(모드) + 정직한 한계 고지 + MCP 자동연결 안내');
+
+const crRoot = path.join(root, 'cursor-proj');
+const crPlan1 = buildCursorPlan(wap, crRoot);
+assert.equal(crPlan1.agentsExists, false, '첫 설치 전엔 AGENTS.md 없음');
+assert.equal(Object.keys(crPlan1.newServers).length, 1, 'context7 신규 연결 대상 1개');
+const crApplied1 = applyCursorPlan(crPlan1);
+assert.ok(fs.existsSync(path.join(crRoot, 'AGENTS.md')), 'AGENTS.md 생성');
+assert.equal(crApplied1.backup, null, '첫 설치는 백업 없음');
+const crMcp1 = JSON.parse(fs.readFileSync(path.join(crRoot, '.cursor', 'mcp.json'), 'utf8'));
+assert.equal(crMcp1.mcpServers.context7.command, 'npx', '.cursor/mcp.json에 context7 자동 기록');
+ok('Cursor: 첫 설치 — AGENTS.md 생성 + .cursor/mcp.json 자동 생성·연결');
+
+// 재설치: 기존 AGENTS.md 백업 + 기존 사용자 MCP 서버(myown)는 보존 + context7 중복 안 생김(멱등성)
+fs.writeFileSync(
+  path.join(crRoot, '.cursor', 'mcp.json'),
+  JSON.stringify({ mcpServers: { myown: { command: 'node', args: ['x.js'] } } }, null, 2)
+);
+const crApplied2 = applyCursorPlan(buildCursorPlan(wap, crRoot));
+assert.ok(crApplied2.backup && crApplied2.backup.endsWith('AGENTS.md.bak'), '재설치 시 기존 AGENTS.md 백업');
+const crMcp2 = JSON.parse(fs.readFileSync(path.join(crRoot, '.cursor', 'mcp.json'), 'utf8'));
+assert.ok(crMcp2.mcpServers.myown, '기존 사용자 MCP(myown) 보존됨');
+assert.ok(crMcp2.mcpServers.context7, 'context7도 함께 연결됨');
+assert.equal(Object.keys(crMcp2.mcpServers).length, 2, 'MCP 2개(중복 없이 병합)');
+ok('Cursor: 재설치 — AGENTS.md .bak 백업 + 기존 사용자 MCP 보존 + 새 MCP만 추가(안전 병합)');
+
+// 손상된 .cursor/mcp.json은 안전 중단(install.mjs와 동일 원칙)
+fs.writeFileSync(path.join(crRoot, '.cursor', 'mcp.json'), '{ 이건 깨진 JSON ');
+let crBlocked = false;
+try {
+  buildCursorPlan(wap, crRoot);
+} catch {
+  crBlocked = true;
+}
+assert.ok(crBlocked, '손상된 .cursor/mcp.json에서 설치 중단');
+ok('Cursor 안전: 손상된 .cursor/mcp.json은 덮어쓰지 않고 설치 중단');
+
+let crNameBlocked = false;
+try {
+  cursorAgentsMd({ id: 'x', name: 'x', description: 'd', roles: [{ name: '../evil', description: 'd', systemPrompt: 's' }] });
+} catch {
+  crNameBlocked = true;
+}
+assert.ok(crNameBlocked, 'Cursor 역할 이름 경로조작 차단');
+ok('Cursor 보안: 역할 이름 경로조작 차단');
+
+// 20) 정합성 불변식: 여러 팀이 같은 MCP id를 선언하면 installSpec이 완전히 동일해야 한다.
 //     (동일해야만 Claude Code dedup이 안전. 어긋나면 두 서버 동시 로드 → 이름 충돌·비결정. 07_ISSUE_context7-MCP-중복.md S1)
 const seenSpec = new Map();
 for (const p of PRESETS) {

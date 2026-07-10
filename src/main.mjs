@@ -6,6 +6,7 @@ import { resolveTarget } from './paths.mjs';
 import { buildPlan, printPlan, applyPlan, verifyInfo } from './install.mjs';
 import { buildCodexPlan, applyCodexPlan } from './writers/codex.mjs';
 import { buildGeminiPlan, applyGeminiPlan } from './writers/gemini.mjs';
+import { buildCursorPlan, applyCursorPlan } from './writers/cursor.mjs';
 import { listBackups, restoreBackup } from './backup.mjs';
 import { buildExport, writeExport, readImport, checkDangerousCommands } from './share.mjs';
 import { listPersonalRoles, saveRole, removeRole, rolesDir } from './roles.mjs';
@@ -106,6 +107,7 @@ function printHelp() {
     sodam-agent install <팀id>  팀 설치 (예: install web-app-team)
     sodam-agent install <팀id> --target codex   같은 팀을 Codex용으로 번역(베타)
     sodam-agent install <팀id> --target gemini  같은 팀을 Gemini CLI용으로 번역(베타)
+    sodam-agent install <팀id> --target cursor  같은 팀을 Cursor용으로 번역(베타, MCP 자동연결)
     sodam-agent custom          역할을 골라 나만의 팀 만들기(마법사)
     sodam-agent roles           내 역할 만들기/고치기/지우기
     sodam-agent verify          설치 상태 + Claude Code에서 확인하는 법 보기
@@ -185,12 +187,13 @@ async function cmdInstall(opts) {
   }
   if (!preset) preset = await pickPreset('어떤 팀을 설치할까요?');
 
-  if (opts.target && opts.target !== 'claude' && opts.target !== 'codex' && opts.target !== 'gemini') {
-    ui.warn(`모르는 대상: ${opts.target}. --target은 claude(기본)·codex·gemini만 됩니다.`);
+  if (opts.target && opts.target !== 'claude' && opts.target !== 'codex' && opts.target !== 'gemini' && opts.target !== 'cursor') {
+    ui.warn(`모르는 대상: ${opts.target}. --target은 claude(기본)·codex·gemini·cursor만 됩니다.`);
     return;
   }
   if (opts.target === 'codex') return cmdInstallCodex(opts, preset);
   if (opts.target === 'gemini') return cmdInstallGemini(opts, preset);
+  if (opts.target === 'cursor') return cmdInstallCursor(opts, preset);
 
   const useGlobal = await resolveScope(opts, resolveTarget(opts.dir).projectRoot);
   const target = resolveTarget(opts.dir, { global: useGlobal });
@@ -309,6 +312,49 @@ async function cmdInstallGemini(opts, preset) {
   line('   1) 이 폴더에서 Gemini CLI를 실행하면 ' + color.bold('.gemini/agents/') + ' 의 역할을 서브에이전트로 인식합니다.');
   if (plan.mcpSnippet) line('   2) MCP가 필요하면 위 스니펫을 원하는 역할 파일의 frontmatter에 직접 추가.');
   line(color.gray('   ※ 도구 권한은 이번 버전에서 전체 상속입니다(베타 한계). 실제 동작은 Gemini CLI에서 직접 확인하세요.'));
+  line('');
+}
+
+// Cursor 역할 변환 설치(Phase 3 M2, 베타) — 팀을 AGENTS.md(역할=모드)로 변환 + MCP는 .cursor/mcp.json에
+// 안전 병합(기존 서버 절대 안 덮음, install.mjs와 동일 원리) — writers/cursor.mjs 주석 참조.
+async function cmdInstallCursor(opts, preset) {
+  const plan = buildCursorPlan(preset, opts.dir);
+  line('\n' + color.bold('📋 Cursor 설치 미리보기 (아직 아무것도 바꾸지 않았습니다)'));
+  line(color.gray(`   대상 폴더: ${plan.root}`));
+  line(color.yellow('   ⚠️ Cursor는 멀티에이전트가 아니라 "역할 번역"입니다 — 똑같은 팀이 아니에요(베타).'));
+  line('\n' + color.bold('   ① 만들/덮을 파일:'));
+  line(`      ${plan.agentsExists ? color.yellow('[기존 덮어씀·.bak 백업]') : color.green('[새로 만듦]')} AGENTS.md`);
+  line('\n' + color.bold('   ② 연결할 MCP (.cursor/mcp.json, 확인 후 자동 병합):'));
+  const ids = Object.keys(plan.newServers);
+  if (ids.length === 0) {
+    const hasTools = (preset.tools || []).length > 0;
+    line(color.gray(hasTools ? '      (이미 모두 설치됨 — 추가할 것 없음)' : '      (이 팀은 MCP가 없습니다)'));
+  } else {
+    line(color.gray('      설치될 실제 명령(꼭 확인하세요):'));
+    for (const id of ids) {
+      const s = plan.newServers[id];
+      const cmd = [s.command, ...(s.args || [])].join(' ');
+      line(`      • ${color.cyan(id)} → ${color.bold(cmd)}`);
+    }
+  }
+  line('');
+
+  if (!opts.yes) {
+    const go = await ui.confirm('위 내용으로 Cursor용 파일을 만들까요? (기존 AGENTS.md는 .bak로 백업, MCP는 기존 설정 보존하며 병합)', false);
+    if (!go) {
+      ui.info('취소했습니다. 아무것도 바꾸지 않았습니다.');
+      return;
+    }
+  }
+
+  const res = applyCursorPlan(plan);
+  ui.success(`'${preset.name}' 팀을 Cursor용으로 번역했습니다(베타).`);
+  if (res.backup) line(color.gray(`   기존 AGENTS.md 백업: ${res.backup}`));
+  if (res.mcpAdded.length) line(color.gray(`   MCP 연결됨(.cursor/mcp.json): ${res.mcpAdded.join(', ')}`));
+  line('');
+  line(color.bold('   ✅ 다음 단계:'));
+  line('   1) 이 폴더에서 Cursor를 실행하면 AGENTS.md를 읽고 역할 설명을 컨텍스트로 활용합니다.');
+  line(color.gray('   ※ Cursor는 역할을 "설명"으로 참고합니다(호출형 서브에이전트 아님). 실제 동작은 Cursor에서 직접 확인하세요.'));
   line('');
 }
 
