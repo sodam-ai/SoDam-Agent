@@ -10,28 +10,10 @@
 > - **Product / repository name = `SoDam-Agent`** (marketplace address: `sodam-ai/SoDam-Agent`)
 > - **The `@sodamagent-marketplace` in install commands = the marketplace's internal id.** The letters differ from the product name, but that's **normal** — just type it as-is.
 
-<details id="update-summary" open>
-<summary>📋 <b>Current version status · update summary</b> (as of 2026-07-11 — click to collapse)</summary>
-
-**Available now**: 7 teams (web app · docs · research · marketing · data · security audit · devops) + the agent-management tool (`sodam-agent`) + Codex / Gemini CLI / Cursor role translation (beta)
-
-**Recent major changes**
-- **2026-07-11**: Added the security-audit team and devops team — 7 teams complete. Also added Gemini CLI and Cursor role translation (beta).
-- **2026-07-06**: Found and fixed installed copies silently running stale (pre-fix) code + repaired the plugin version-bump process so future updates actually take effect · closed a gap where installing a team file from someone else could skip confirmation · hardened rollback so it stays reliable even if the process is killed mid-install · added a typed-"YES" confirmation gate for global (all-folder) install/rollback · fixed `npm audit` so it can actually run (result: 0 vulnerabilities) · fixed a latent bug in the preset-sync tool (would silently drop MCP servers beyond the first) · resolved 3 of 5 legal-review items (trademark, preset provenance, trademark boundary)
-- **2026-07-04**: Fixed subagent tool permissions (allow/deny lists) so they're applied correctly on the direct-CLI install path too (the marketplace-plugin install path was already correct). Corrected the "verified on Pro+" wording to "expected, not yet verified."
-- **2026-07-03**: Fixed subagents not inheriting a team's bundled tool (MCP, e.g. context7).
-- **2026-06-29**: Added the marketing team and data team — 5 teams complete.
-- **2026-06-23**: Added Codex (another AI coding tool) role translation (beta).
-- **2026-06-21**: Introduced marketplace-based install + the agent-management tool (`sodam-agent`).
-
-This is a human-readable summary. For the full, itemized history see the [GitHub commit log](https://github.com/sodam-ai/SoDam-Agent/commits/).
-
-</details>
-
 ---
 
 ## 📑 Table of Contents
-- 📋 [Current version status · update summary](#update-summary)
+0. [Current version status · update summary](#0-current-version-status--update-summary)
 1. [What is SoDam-Agent? (in plain words)](#1-what-is-sodam-agent-in-plain-words)
 2. [Prerequisites & required programs](#2-prerequisites--required-programs)
 3. [Download & install](#3-download--install)
@@ -49,6 +31,29 @@ This is a human-readable summary. For the full, itemized history see the [GitHub
 15. [Architecture](#15-architecture)
 16. [FAQ (frequently asked questions)](#16-faq-frequently-asked-questions)
 - ✨ [Using it in Codex too (role translation · beta)](#using-it-in-codex-too-role-translation--beta)
+- ✨ [Using it in Gemini CLI too (role translation · beta)](#using-it-in-gemini-cli-too-role-translation--beta)
+- ✨ [Using it in Cursor too (role translation · beta)](#using-it-in-cursor-too-role-translation--beta)
+
+---
+
+<h2 id="0-current-version-status--update-summary">0. Current version status · update summary</h2>
+
+**Available now**: 7 teams (web app · docs · research · marketing · data · security audit · devops) + the agent-management tool (`sodam-agent`) + Codex / Gemini CLI / Cursor role translation (beta)
+
+<details open>
+<summary>📋 <b>Recent major changes</b> (as of 2026-07-11 — click to collapse)</summary>
+
+- **2026-07-11**: Added the security-audit team and devops team — 7 teams complete. Also added Gemini CLI and Cursor role translation (beta).
+- **2026-07-06**: Found and fixed installed copies silently running stale (pre-fix) code + repaired the plugin version-bump process so future updates actually take effect · closed a gap where installing a team file from someone else could skip confirmation · hardened rollback so it stays reliable even if the process is killed mid-install · added a typed-"YES" confirmation gate for global (all-folder) install/rollback · fixed `npm audit` so it can actually run (result: 0 vulnerabilities) · fixed a latent bug in the preset-sync tool (would silently drop MCP servers beyond the first) · resolved 3 of 5 legal-review items (trademark, preset provenance, trademark boundary)
+- **2026-07-04**: Fixed subagent tool permissions (allow/deny lists) so they're applied correctly on the direct-CLI install path too (the marketplace-plugin install path was already correct). Corrected the "verified on Pro+" wording to "expected, not yet verified."
+- **2026-07-03**: Fixed subagents not inheriting a team's bundled tool (MCP, e.g. context7).
+- **2026-06-29**: Added the marketing team and data team — 5 teams complete.
+- **2026-06-23**: Added Codex (another AI coding tool) role translation (beta).
+- **2026-06-21**: Introduced marketplace-based install + the agent-management tool (`sodam-agent`).
+
+</details>
+
+This is a human-readable summary. For the full, itemized history see the [GitHub commit log](https://github.com/sodam-ai/SoDam-Agent/commits/).
 
 ---
 
