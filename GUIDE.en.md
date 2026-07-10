@@ -5,8 +5,8 @@
 > This guide is written so that **someone installing an AI / program for the very first time** can just follow along.
 > Jargon is kept to a minimum, and any term is explained **in one line, right there**.
 
-<details>
-<summary>📋 <b>Update summary</b> (as of 2026-07-11 — click to expand)</summary>
+<details open>
+<summary>📋 <b>Update summary</b> (as of 2026-07-11 — click to collapse)</summary>
 
 - **2026-07-11**: Added the security-audit team and devops team — 7 teams complete. Added Gemini CLI and Cursor role translation (beta).
 - **2026-07-06**: Install safety/security hardening (forced confirmation when installing a team file from someone else, more reliable rollback if install is interrupted, stronger confirmation for global operations)

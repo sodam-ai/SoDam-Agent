@@ -10,8 +10,8 @@
 > - **Product / repository name = `SoDam-Agent`** (marketplace address: `sodam-ai/SoDam-Agent`)
 > - **The `@sodamagent-marketplace` in install commands = the marketplace's internal id.** The letters differ from the product name, but that's **normal** — just type it as-is.
 
-<details>
-<summary>📋 <b>Current version status · update summary</b> (as of 2026-07-11 — click to expand)</summary>
+<details id="update-summary" open>
+<summary>📋 <b>Current version status · update summary</b> (as of 2026-07-11 — click to collapse)</summary>
 
 **Available now**: 7 teams (web app · docs · research · marketing · data · security audit · devops) + the agent-management tool (`sodam-agent`) + Codex / Gemini CLI / Cursor role translation (beta)
 
@@ -31,6 +31,7 @@ This is a human-readable summary. For the full, itemized history see the [GitHub
 ---
 
 ## 📑 Table of Contents
+- 📋 [Current version status · update summary](#update-summary)
 1. [What is SoDam-Agent? (in plain words)](#1-what-is-sodam-agent-in-plain-words)
 2. [Prerequisites & required programs](#2-prerequisites--required-programs)
 3. [Download & install](#3-download--install)
