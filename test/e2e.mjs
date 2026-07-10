@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import { resolveTarget } from '../src/paths.mjs';
-import { getPreset, getRoleLibrary } from '../src/presets.mjs';
+import { PRESETS, getPreset, getRoleLibrary } from '../src/presets.mjs';
 import { buildPlan, applyPlan, verifyInfo } from '../src/install.mjs';
 import { listBackups, restoreBackup } from '../src/backup.mjs';
 import { isSafeName, toSafeName } from '../src/validate.mjs';
@@ -12,6 +12,8 @@ import { buildExport, writeExport, readImport } from '../src/share.mjs';
 import { rolesDir, listPersonalRoles, saveRole, removeRole } from '../src/roles.mjs';
 import { expectedPluginFiles } from '../src/plugin-sync.mjs';
 import { agentsMd, skillMd, codexConfigToml, buildCodexPlan, applyCodexPlan } from '../src/writers/codex.mjs';
+import { geminiAgentMd, geminiMcpSnippet, buildGeminiPlan, applyGeminiPlan } from '../src/writers/gemini.mjs';
+import { presetsInCategory, groupPresetsByCategory } from '../src/main.mjs';
 
 let pass = 0;
 const ok = (m) => {
@@ -270,6 +272,85 @@ try {
 }
 assert.ok(cxBlocked, 'Codex 스킬 역할 이름 경로조작 차단');
 ok('Codex 보안: 역할 이름 경로조작 차단');
+
+// 15) Phase 3 M1: 카테고리 필터/그룹핑 — 신규 프리셋 없이 기존 category 필드로 검색·표시
+assert.equal(presetsInCategory('개발').length, 1, '개발 카테고리 1건');
+assert.equal(presetsInCategory('개발')[0].id, 'web-app-team', '개발 카테고리=웹앱팀');
+assert.equal(presetsInCategory('없는카테고리').length, 0, '없는 카테고리는 빈 배열');
+ok('M1: 카테고리 필터(presetsInCategory)가 실제 프리셋을 정확히 좁힘');
+
+const synthetic = [
+  { id: 'a', category: 'X' },
+  { id: 'b', category: 'Y' },
+  { id: 'c', category: 'X' },
+];
+const grouped = groupPresetsByCategory(synthetic);
+assert.deepEqual([...grouped.keys()], ['X', 'Y'], '카테고리 등장 순서 유지');
+assert.deepEqual(grouped.get('X').map((p) => p.id), ['a', 'c'], '같은 카테고리는 순서대로 묶임(비연속이어도 정확)');
+ok('M1: 카테고리 그룹핑(groupPresetsByCategory)이 등장 순서를 보존하며 정확히 묶음');
+
+// 17) Gemini CLI 역할 변환 (Phase 3 M2) — 같은 팀 정의를 Gemini CLI 서브에이전트 형식(.gemini/agents/<role>.md)으로
+const gm = geminiAgentMd(wap.roles[0]); // planner (allowedTools만 있음, disallowedTools 없음)
+assert.ok(gm.startsWith('---\nname: planner\n'), 'Gemini frontmatter name');
+assert.ok(gm.includes('description:'), 'Gemini frontmatter description');
+assert.ok(gm.includes('model: inherit'), 'Gemini frontmatter model');
+assert.ok(!gm.includes('tools:'), 'Gemini 스키마엔 신뢰할 매핑표 없이 tools 필드를 안 만듦(정직한 한계)');
+assert.ok(gm.includes(wap.roles[0].systemPrompt.slice(0, 12)), 'Gemini 본문에 지시문');
+ok('Gemini: frontmatter 형식(name/description/model, tools 생략) + 지시문');
+
+const frontendDev = wap.roles.find((r) => r.name === 'frontend-dev'); // disallowedTools: [] (빈 배열=한계 문구 없음)
+assert.ok(!geminiAgentMd(frontendDev).includes('금지목록을 지원하지 않아'), 'disallowedTools 빈 배열이면 한계 문구 없음');
+const researcher = { name: 'researcher-x', description: 'd', systemPrompt: 's', disallowedTools: ['Edit', 'Write', 'Bash'] };
+assert.ok(geminiAgentMd(researcher).includes('Edit, Write, Bash'), 'disallowedTools 있으면 정직한 한계 문구에 그대로 나열');
+ok('Gemini: disallowedTools 역할은 "정직한 한계" 문구로 명시(전체 상속임을 숨기지 않음)');
+
+const gsnippet = geminiMcpSnippet(wap);
+assert.ok(gsnippet.includes('mcpServers:') && gsnippet.includes('context7:'), 'Gemini MCP 스니펫에 mcpServers 포함');
+assert.equal(geminiMcpSnippet(getPreset('docs-team')), '', 'MCP 없는 팀은 빈 스니펫');
+ok('Gemini: MCP 스니펫(YAML) 생성 + MCP 없으면 빈 값(자동 삽입은 안 함)');
+
+const gxRoot = path.join(root, 'gemini-proj');
+const gxPlan = buildGeminiPlan(wap, gxRoot);
+assert.equal(gxPlan.roles.length, 4, '역할 4개 파일 계획');
+assert.ok(gxPlan.roles.every((r) => r.file.includes(path.join('.gemini', 'agents'))), '경로 .gemini/agents');
+const gxApplied = applyGeminiPlan(gxPlan);
+for (const n of ['planner', 'frontend-dev', 'backend-dev', 'reviewer']) {
+  assert.ok(fs.existsSync(path.join(gxRoot, '.gemini', 'agents', `${n}.md`)), `Gemini ${n}.md 생성`);
+}
+assert.equal(gxApplied.backups.length, 0, '첫 설치는 백업 없음(기존 파일 없음)');
+fs.writeFileSync(path.join(gxRoot, '.gemini', 'agents', 'planner.md'), 'OLD-GEMINI-PLANNER');
+const gxApplied2 = applyGeminiPlan(buildGeminiPlan(wap, gxRoot));
+// 재설치 시점엔 첫 설치가 만든 4개 파일이 전부 "기존 파일"이라 4개 다 백업됨(빠짐없는 안전 백업 — 의도된 동작).
+assert.equal(gxApplied2.backups.length, 4, '재설치 시 이미 존재하던 역할 파일 4개 전부 백업');
+assert.ok(
+  fs.readFileSync(path.join(gxRoot, '.gemini', 'agents', 'planner.md.bak'), 'utf8').includes('OLD-GEMINI-PLANNER'),
+  '손대지 않은 파일도 백업되지만, 직접 고친 planner.md의 백업엔 그 내용이 그대로 담김'
+);
+ok('Gemini: 적용 — 역할 파일 4개 생성 + 재설치 시 기존 파일 전부 .bak 백업(빠짐없는 안전 백업)');
+
+let gxBlocked = false;
+try {
+  geminiAgentMd({ name: '../evil', description: 'd', systemPrompt: 's' });
+} catch {
+  gxBlocked = true;
+}
+assert.ok(gxBlocked, 'Gemini 역할 이름 경로조작 차단');
+ok('Gemini 보안: 역할 이름 경로조작 차단');
+
+// 18) 정합성 불변식: 여러 팀이 같은 MCP id를 선언하면 installSpec이 완전히 동일해야 한다.
+//     (동일해야만 Claude Code dedup이 안전. 어긋나면 두 서버 동시 로드 → 이름 충돌·비결정. 07_ISSUE_context7-MCP-중복.md S1)
+const seenSpec = new Map();
+for (const p of PRESETS) {
+  for (const t of p.tools || []) {
+    const spec = JSON.stringify({ c: t.installSpec.command, a: t.installSpec.args, e: t.installSpec.env || null });
+    if (seenSpec.has(t.id)) {
+      assert.equal(spec, seenSpec.get(t.id), `MCP "${t.id}" 스펙이 팀마다 다름(dedup 깨짐 위험)`);
+    } else {
+      seenSpec.set(t.id, spec);
+    }
+  }
+}
+ok('정합성: 공유 MCP(context7) 스펙이 모든 팀에서 동일(dedup 안전 불변식)');
 
 console.log(`\n🎉 모든 검증 통과: ${pass}건`);
 fs.rmSync(root, { recursive: true, force: true });

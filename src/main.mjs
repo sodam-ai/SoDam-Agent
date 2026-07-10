@@ -5,6 +5,7 @@ import { toSafeName } from './validate.mjs';
 import { resolveTarget } from './paths.mjs';
 import { buildPlan, printPlan, applyPlan, verifyInfo } from './install.mjs';
 import { buildCodexPlan, applyCodexPlan } from './writers/codex.mjs';
+import { buildGeminiPlan, applyGeminiPlan } from './writers/gemini.mjs';
 import { listBackups, restoreBackup } from './backup.mjs';
 import { buildExport, writeExport, readImport, checkDangerousCommands } from './share.mjs';
 import { listPersonalRoles, saveRole, removeRole, rolesDir } from './roles.mjs';
@@ -29,7 +30,7 @@ export async function main(argv) {
     case 'doctor':
       return runDoctor(resolveTarget(opts.dir));
     case 'list':
-      return cmdList();
+      return cmdList(opts);
     case 'install':
       return cmdInstall({ ...opts, preset: arg2 });
     case 'custom':
@@ -55,7 +56,7 @@ export async function main(argv) {
 }
 
 function parseArgs(argv) {
-  const opts = { dir: undefined, out: undefined, yes: false, global: false, target: 'claude' };
+  const opts = { dir: undefined, out: undefined, yes: false, global: false, target: 'claude', category: undefined };
   const positional = [];
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -67,9 +68,26 @@ function parseArgs(argv) {
     else if (a.startsWith('--out=')) opts.out = a.slice(6);
     else if (a === '--target') opts.target = argv[++i];
     else if (a.startsWith('--target=')) opts.target = a.slice(9);
+    else if (a === '--category') opts.category = argv[++i];
+    else if (a.startsWith('--category=')) opts.category = a.slice(11);
     else positional.push(a);
   }
   return { cmd: positional[0], arg2: positional[1], opts };
+}
+
+// 카테고리 필터(순수 함수 — e2e에서 직접 테스트하기 위해 분리)
+export function presetsInCategory(category) {
+  return PRESETS.filter((p) => p.category === category);
+}
+
+// PRESETS 등장 순서를 유지한 채 카테고리별로 묶는다.
+export function groupPresetsByCategory(presets) {
+  const byCategory = new Map();
+  for (const p of presets) {
+    if (!byCategory.has(p.category)) byCategory.set(p.category, []);
+    byCategory.get(p.category).push(p);
+  }
+  return byCategory;
 }
 
 function banner() {
@@ -84,8 +102,10 @@ function printHelp() {
     sodam-agent                대화형 메뉴 (가장 쉬움)
     sodam-agent doctor          환경 진단
     sodam-agent list            프리셋(팀) 목록
+    sodam-agent list --category <이름>   카테고리로 필터링해서 보기(예: 개발)
     sodam-agent install <팀id>  팀 설치 (예: install web-app-team)
     sodam-agent install <팀id> --target codex   같은 팀을 Codex용으로 번역(베타)
+    sodam-agent install <팀id> --target gemini  같은 팀을 Gemini CLI용으로 번역(베타)
     sodam-agent custom          역할을 골라 나만의 팀 만들기(마법사)
     sodam-agent roles           내 역할 만들기/고치기/지우기
     sodam-agent verify          설치 상태 + Claude Code에서 확인하는 법 보기
@@ -102,14 +122,26 @@ function printHelp() {
 `);
 }
 
-function cmdList() {
+function cmdList(opts = {}) {
   banner();
+
+  const presets = opts.category ? presetsInCategory(opts.category) : PRESETS;
+  if (opts.category && presets.length === 0) {
+    const categories = [...new Set(PRESETS.map((p) => p.category))];
+    ui.warn(`그런 카테고리가 없습니다: ${opts.category}`);
+    line(color.gray(`   가능한 카테고리: ${categories.join(', ')}`));
+    return;
+  }
+
   line(color.bold('  설치할 수 있는 팀(프리셋):\n'));
-  for (const p of PRESETS) {
-    line(`  • ${color.cyan(p.id)}  ${color.bold(p.name)}`);
-    line(color.gray(`      ${p.description}`));
-    line(color.gray(`      역할: ${p.roles.map((r) => r.name).join(', ')}`));
-    line('');
+  for (const [category, group] of groupPresetsByCategory(presets)) {
+    line(color.bold(`  [${category}]`));
+    for (const p of group) {
+      line(`  • ${color.cyan(p.id)}  ${color.bold(p.name)}`);
+      line(color.gray(`      ${p.description}`));
+      line(color.gray(`      역할: ${p.roles.map((r) => r.name).join(', ')}`));
+      line('');
+    }
   }
 }
 
@@ -153,11 +185,12 @@ async function cmdInstall(opts) {
   }
   if (!preset) preset = await pickPreset('어떤 팀을 설치할까요?');
 
-  if (opts.target && opts.target !== 'claude' && opts.target !== 'codex') {
-    ui.warn(`모르는 대상: ${opts.target}. --target은 claude(기본) 또는 codex만 됩니다.`);
+  if (opts.target && opts.target !== 'claude' && opts.target !== 'codex' && opts.target !== 'gemini') {
+    ui.warn(`모르는 대상: ${opts.target}. --target은 claude(기본)·codex·gemini만 됩니다.`);
     return;
   }
   if (opts.target === 'codex') return cmdInstallCodex(opts, preset);
+  if (opts.target === 'gemini') return cmdInstallGemini(opts, preset);
 
   const useGlobal = await resolveScope(opts, resolveTarget(opts.dir).projectRoot);
   const target = resolveTarget(opts.dir, { global: useGlobal });
@@ -237,6 +270,45 @@ function printAfterInstall(backup, target, sampleRole = 'reviewer') {
   line(`   3) 새 창에서 ${color.bold('/agents')} 또는 ${color.bold(`"${sampleRole} 에이전트 불러줘"`)} 로 확인.`);
   line('');
   line(color.gray(`   언제든 "sodam-agent verify${isGlobal ? ' --global' : ''}" 로 설치 상태와 확인법을 다시 볼 수 있어요.`));
+  line('');
+}
+
+// Gemini CLI 역할 변환 설치(Phase 3 M2, 베타) — 팀을 .gemini/agents/<role>.md 여러 개로 변환.
+// 도구 제한은 이번 버전에서 생성 안 함(전체 상속)·MCP는 자동 삽입 안 함(스니펫 안내) — writers/gemini.mjs 주석 참조.
+async function cmdInstallGemini(opts, preset) {
+  const plan = buildGeminiPlan(preset, opts.dir);
+  line('\n' + color.bold('📋 Gemini CLI 설치 미리보기 (아직 아무것도 바꾸지 않았습니다)'));
+  line(color.gray(`   대상 폴더: ${plan.agentsDir}`));
+  line(color.yellow('   ⚠️ 도구 제한은 이번 버전에 없습니다(전체 도구 상속) — Gemini CLI 도구 이름 체계가 달라 확실한 매핑표 없이 제한하면 깨질 위험이 있습니다(베타).'));
+  line('\n' + color.bold('   ① 만들/덮을 파일:'));
+  for (const r of plan.roles) {
+    line(`      ${r.exists ? color.yellow('[기존 덮어씀·.bak 백업]') : color.green('[새로 만듦]')} .gemini/agents/${r.name}.md`);
+  }
+  line('\n' + color.bold('   ② Gemini MCP (자동 수정 안 함 — 직접 추가):'));
+  if (plan.mcpSnippet) {
+    line(color.gray('      원하는 역할 파일의 frontmatter에 아래를 직접 추가하세요:'));
+    for (const ln of plan.mcpSnippet.split('\n')) line('      ' + color.cyan(ln));
+  } else {
+    line(color.gray('      (이 팀은 MCP가 없습니다.)'));
+  }
+  line('');
+
+  if (!opts.yes) {
+    const go = await ui.confirm('위 내용으로 Gemini CLI용 파일을 만들까요? (기존 파일은 .bak로 백업)', false);
+    if (!go) {
+      ui.info('취소했습니다. 아무것도 바꾸지 않았습니다.');
+      return;
+    }
+  }
+
+  const res = applyGeminiPlan(plan);
+  ui.success(`'${preset.name}' 팀을 Gemini CLI용으로 번역했습니다(베타).`);
+  if (res.backups.length) line(color.gray(`   백업: ${res.backups.join(', ')}`));
+  line('');
+  line(color.bold('   ✅ 다음 단계:'));
+  line('   1) 이 폴더에서 Gemini CLI를 실행하면 ' + color.bold('.gemini/agents/') + ' 의 역할을 서브에이전트로 인식합니다.');
+  if (plan.mcpSnippet) line('   2) MCP가 필요하면 위 스니펫을 원하는 역할 파일의 frontmatter에 직접 추가.');
+  line(color.gray('   ※ 도구 권한은 이번 버전에서 전체 상속입니다(베타 한계). 실제 동작은 Gemini CLI에서 직접 확인하세요.'));
   line('');
 }
 
