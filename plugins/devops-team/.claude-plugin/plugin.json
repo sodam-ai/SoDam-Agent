@@ -1,0 +1,7 @@
+{
+  "name": "devops-team",
+  "description": "DevOps/배포팀 — 배포 설계(deploy-engineer) → CI/CD 구성(cicd-manager) → 장애 진단(infra-troubleshooter). SoDam-Agent 자체 큐레이션.",
+  "version": "0.1.0",
+  "author": { "name": "SoDam AI Studio" },
+  "license": "Apache-2.0"
+}

@@ -6,8 +6,9 @@
 > Jargon is kept to a minimum, and any term is explained **in one line, right there**.
 
 <details>
-<summary>📋 <b>Update summary</b> (as of 2026-07-06 — click to expand)</summary>
+<summary>📋 <b>Update summary</b> (as of 2026-07-11 — click to expand)</summary>
 
+- **2026-07-11**: Added the security-audit team and devops team — 7 teams complete. Added Gemini CLI and Cursor role translation (beta).
 - **2026-07-06**: Install safety/security hardening (forced confirmation when installing a team file from someone else, more reliable rollback if install is interrupted, stronger confirmation for global operations)
 - **2026-07-04**: Fixed a tool-permission (allow/deny list) bug
 - **2026-06-29**: Added the marketing team and data team — 5 teams complete
@@ -34,7 +35,7 @@ See the update summary in [README](./README.en.md) or the [GitHub commit log](ht
 
 > 📛 **Naming note**: the product is named **SoDam-Agent**. But the `@sodamagent-marketplace` after a team name in install commands is the *store's internal id* — the letters differ, but **type it as-is** (it's normal).
 
-> 📋 **What does this version do? (as of 2026-07-04)**: You can install all 5 teams (web app · docs · research · marketing · data) + the agent-management tool + Codex role translation (beta). For the full change history, see the "Current version status" note at the top of [README.en.md](./README.en.md).
+> 📋 **What does this version do? (as of 2026-07-11)**: You can install all 7 teams (web app · docs · research · marketing · data · security audit · devops) + the agent-management tool + Codex/Gemini CLI/Cursor role translation (beta). For the full change history, see the "Current version status" note at the top of [README.en.md](./README.en.md).
 
 ---
 
@@ -71,6 +72,8 @@ See the update summary in [README](./README.en.md) or the [GitHub commit log](ht
 - Research team: `/plugin install research-team@sodamagent-marketplace`
 - Marketing team: `/plugin install marketing-team@sodamagent-marketplace`
 - Data team: `/plugin install data-team@sodamagent-marketplace`
+- Security audit team: `/plugin install security-audit-team@sodamagent-marketplace`
+- DevOps/deployment team: `/plugin install devops-team@sodamagent-marketplace`
 
 ### Step 4 · (Optional) Install the management tool
 To **create and train your own agents**, also install:

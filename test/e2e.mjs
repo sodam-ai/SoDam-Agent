@@ -404,6 +404,50 @@ for (const p of PRESETS) {
 }
 ok('정합성: 공유 MCP(context7) 스펙이 모든 팀에서 동일(dedup 안전 불변식)');
 
+// 21) Phase 3 M1: 신규 프리셋 2종(보안 감사팀·DevOps/배포팀) — 존재·카테고리·실제 설치까지 검증
+const sat = getPreset('security-audit-team');
+assert.ok(sat, '보안 감사팀 프리셋 존재');
+assert.equal(sat.roles.length, 3, '보안 감사팀 역할 3개');
+assert.deepEqual(
+  sat.roles.map((r) => r.name),
+  ['security-auditor', 'vulnerability-analyst', 'compliance-reviewer'],
+  '보안 감사팀 역할 이름·순서'
+);
+assert.equal(presetsInCategory('보안').length, 1, '보안 카테고리 1건');
+assert.equal(presetsInCategory('보안')[0].id, 'security-audit-team', '보안 카테고리=보안 감사팀');
+
+const dvt = getPreset('devops-team');
+assert.ok(dvt, 'DevOps/배포팀 프리셋 존재');
+assert.equal(dvt.roles.length, 3, 'DevOps/배포팀 역할 3개');
+assert.deepEqual(
+  dvt.roles.map((r) => r.name),
+  ['deploy-engineer', 'cicd-manager', 'infra-troubleshooter'],
+  'DevOps/배포팀 역할 이름·순서'
+);
+assert.equal(presetsInCategory('인프라').length, 1, '인프라 카테고리 1건');
+assert.equal(presetsInCategory('인프라')[0].id, 'devops-team', '인프라 카테고리=DevOps/배포팀');
+ok('M1 신규 프리셋: 보안 감사팀·DevOps/배포팀이 정본에 존재하고 카테고리로 정확히 조회됨');
+
+const satTarget = path.join(root, 'security-audit-install');
+fs.mkdirSync(satTarget, { recursive: true });
+applyPlan(buildPlan(sat, resolveTarget(satTarget)));
+for (const r of sat.roles) {
+  assert.ok(
+    fs.existsSync(path.join(satTarget, '.claude', 'agents', `${r.name}.md`)),
+    `보안 감사팀 설치: ${r.name}.md 실제 생성`
+  );
+}
+const dvtTarget = path.join(root, 'devops-install');
+fs.mkdirSync(dvtTarget, { recursive: true });
+applyPlan(buildPlan(dvt, resolveTarget(dvtTarget)));
+for (const r of dvt.roles) {
+  assert.ok(
+    fs.existsSync(path.join(dvtTarget, '.claude', 'agents', `${r.name}.md`)),
+    `DevOps/배포팀 설치: ${r.name}.md 실제 생성`
+  );
+}
+ok('M1 신규 프리셋: 실제 설치 시 두 팀 모두 .claude/agents/*.md가 빠짐없이 생성됨(목업 아님)');
+
 console.log(`\n🎉 모든 검증 통과: ${pass}건`);
 fs.rmSync(root, { recursive: true, force: true });
 console.log('임시 폴더 정리 완료.');

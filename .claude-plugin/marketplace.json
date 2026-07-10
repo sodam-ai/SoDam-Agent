@@ -46,6 +46,20 @@
       "description": "데이터팀 — 수집·정제(data-engineer) → 분석(data-analyst) → 시각화(data-viz)",
       "version": "0.1.0",
       "author": { "name": "SoDam AI Studio" }
+    },
+    {
+      "name": "security-audit-team",
+      "source": "./plugins/security-audit-team",
+      "description": "보안 감사팀 — 취약점 점검(security-auditor) → 위험도 분석(vulnerability-analyst) → 규정 준수 확인(compliance-reviewer)",
+      "version": "0.1.0",
+      "author": { "name": "SoDam AI Studio" }
+    },
+    {
+      "name": "devops-team",
+      "source": "./plugins/devops-team",
+      "description": "DevOps/배포팀 — 배포 설계(deploy-engineer) → CI/CD 구성(cicd-manager) → 장애 진단(infra-troubleshooter)",
+      "version": "0.1.0",
+      "author": { "name": "SoDam AI Studio" }
     }
   ]
 }

@@ -6,8 +6,9 @@
 > 어려운 말은 최대한 뺐고, 나오는 단어는 **그 자리에서 한 줄로** 풀이합니다.
 
 <details>
-<summary>📋 <b>업데이트 요약</b> (2026-07-06 기준 — 눌러서 펼치기)</summary>
+<summary>📋 <b>업데이트 요약</b> (2026-07-11 기준 — 눌러서 펼치기)</summary>
 
+- **2026-07-11**: 보안 감사팀·DevOps/배포팀 추가로 팀 7종 완성. Gemini CLI·Cursor 역할 번역(베타) 추가.
 - **2026-07-06**: 설치 안전성·보안 보강(남이 준 팀 파일 설치 시 확인 강제, 설치 중단 시 되돌리기 안정성, 전역 작업 확인 강화)
 - **2026-07-04**: 권한(도구 제한) 설정 버그 수정
 - **2026-06-29**: 마케팅팀·데이터팀 추가로 팀 5종 완성
@@ -34,7 +35,7 @@
 
 > 📛 **이름 안내**: 제품 이름은 **SoDam-Agent**예요. 그런데 설치할 때 팀 뒤에 붙는 `@sodamagent-marketplace`는 *가게의 내부 이름*이라 글자가 달라요. **그대로 입력**하면 됩니다(정상이에요).
 
-> 📋 **지금 버전으로 뭐가 되나요? (2026-07-04 기준)**: 팀 5종(웹앱·문서·리서치·마케팅·데이터) + 직원 관리 도구 + Codex 역할 번역(베타)까지 전부 설치 가능해요. 자세한 변경 이력은 [README.md](./README.md) 맨 위 "현재 버전 상태" 안내를 확인하세요.
+> 📋 **지금 버전으로 뭐가 되나요? (2026-07-11 기준)**: 팀 7종(웹앱·문서·리서치·마케팅·데이터·보안 감사·DevOps) + 직원 관리 도구 + Codex/Gemini CLI/Cursor 역할 번역(베타)까지 전부 설치 가능해요. 자세한 변경 이력은 [README.md](./README.md) 맨 위 "현재 버전 상태" 안내를 확인하세요.
 
 ---
 
@@ -71,6 +72,8 @@
 - 리서치 팀을 원하면: `/plugin install research-team@sodamagent-marketplace`
 - 마케팅 팀을 원하면: `/plugin install marketing-team@sodamagent-marketplace`
 - 데이터 팀을 원하면: `/plugin install data-team@sodamagent-marketplace`
+- 보안 감사팀을 원하면: `/plugin install security-audit-team@sodamagent-marketplace`
+- DevOps/배포팀을 원하면: `/plugin install devops-team@sodamagent-marketplace`
 
 ### 4단계 · (선택) 직원 관리 도구 설치
 새 직원을 **직접 만들고 가르치고** 싶다면 이것도 설치하세요:

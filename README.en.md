@@ -11,11 +11,12 @@
 > - **The `@sodamagent-marketplace` in install commands = the marketplace's internal id.** The letters differ from the product name, but that's **normal** — just type it as-is.
 
 <details>
-<summary>📋 <b>Current version status · update summary</b> (as of 2026-07-06 — click to expand)</summary>
+<summary>📋 <b>Current version status · update summary</b> (as of 2026-07-11 — click to expand)</summary>
 
-**Available now**: 5 teams (web app · docs · research · marketing · data) + the agent-management tool (`sodam-agent`) + Codex role translation (beta)
+**Available now**: 7 teams (web app · docs · research · marketing · data · security audit · devops) + the agent-management tool (`sodam-agent`) + Codex / Gemini CLI / Cursor role translation (beta)
 
 **Recent major changes**
+- **2026-07-11**: Added the security-audit team and devops team — 7 teams complete. Also added Gemini CLI and Cursor role translation (beta).
 - **2026-07-06**: Found and fixed installed copies silently running stale (pre-fix) code + repaired the plugin version-bump process so future updates actually take effect · closed a gap where installing a team file from someone else could skip confirmation · hardened rollback so it stays reliable even if the process is killed mid-install · added a typed-"YES" confirmation gate for global (all-folder) install/rollback · fixed `npm audit` so it can actually run (result: 0 vulnerabilities) · fixed a latent bug in the preset-sync tool (would silently drop MCP servers beyond the first) · resolved 3 of 5 legal-review items (trademark, preset provenance, trademark boundary)
 - **2026-07-04**: Fixed subagent tool permissions (allow/deny lists) so they're applied correctly on the direct-CLI install path too (the marketplace-plugin install path was already correct). Corrected the "verified on Pro+" wording to "expected, not yet verified."
 - **2026-07-03**: Fixed subagents not inheriting a team's bundled tool (MCP, e.g. context7).
@@ -34,7 +35,7 @@ This is a human-readable summary. For the full, itemized history see the [GitHub
 2. [Prerequisites & required programs](#2-prerequisites--required-programs)
 3. [Download & install](#3-download--install)
 4. [Quick start (3 steps)](#4-quick-start-3-steps)
-5. [What you can install (5 teams + management tool)](#5-what-you-can-install-5-teams--management-tool)
+5. [What you can install (7 teams + management tool)](#5-what-you-can-install-7-teams--management-tool)
 6. [How to use it](#6-how-to-use-it)
 7. [Manage your own agents after install (sodam-agent)](#7-manage-your-own-agents-after-install-sodam-agent)
 8. [Command reference](#8-command-reference)
@@ -128,7 +129,7 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
 
 ---
 
-## 5. What you can install (5 teams + management tool)
+## 5. What you can install (7 teams + management tool)
 
 **① Team plugins (bundles of AI teammates)**
 
@@ -139,6 +140,8 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
 | `research-team` | Research Team | researcher · analyst · critic | context7 |
 | `marketing-team` | Marketing Team | copywriter (copy & content) · seo-analyst (SEO) · social-manager (social media) | none |
 | `data-team` | Data Team | data-engineer (collect & clean) · data-analyst (analysis) · data-viz (visualization) | none |
+| `security-audit-team` | Security Audit Team | security-auditor (vulnerability scan) · vulnerability-analyst (risk analysis) · compliance-reviewer (compliance check) | none |
+| `devops-team` | DevOps/Deployment Team | deploy-engineer (deployment design) · cicd-manager (CI/CD setup) · infra-troubleshooter (incident diagnosis) | none |
 
 > Each teammate gets **least-privilege tools** (e.g., the reviewer is read-only). Model is `inherit` (follows your default model).
 
@@ -466,6 +469,8 @@ sodam-ai/SoDam-Agent (GitHub)
 │   ├── research-team/   (same structure)
 │   ├── marketing-team/  (same structure)
 │   ├── data-team/       (same structure)
+│   ├── security-audit-team/  (same structure, no MCP)
+│   ├── devops-team/          (same structure, no MCP)
 │   └── sodam-agent/
 │       └── commands/
 │           ├── new-agent.md           ← slash command (1 command)

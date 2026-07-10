@@ -1,0 +1,7 @@
+{
+  "name": "security-audit-team",
+  "description": "보안 감사팀 — 취약점 점검(security-auditor) → 위험도 분석(vulnerability-analyst) → 규정 준수 확인(compliance-reviewer). SoDam-Agent 자체 큐레이션.",
+  "version": "0.1.0",
+  "author": { "name": "SoDam AI Studio" },
+  "license": "Apache-2.0"
+}

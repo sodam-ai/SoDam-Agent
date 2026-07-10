@@ -212,6 +212,76 @@ export const PRESETS = [
     ],
     tools: [],
   },
+
+  {
+    id: 'security-audit-team',
+    name: '보안 감사팀',
+    description: '취약점 점검 → 위험도 분석 → 규정 준수 확인까지 한 팀',
+    category: '보안',
+    source: 'SoDam-Agent 자체 큐레이션',
+    roles: [
+      {
+        name: 'security-auditor',
+        description: '코드 전체의 보안 취약점을 점검할 때',
+        allowedTools: ['Read', 'Grep', 'Glob'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 보안 감사관입니다. OWASP Top 10 기준으로 코드의 보안 취약점(주입·인증·비밀 노출 등)을 점검합니다. 발견한 문제는 심각도와 함께 구체적인 위치를 제시하세요.',
+      },
+      {
+        name: 'vulnerability-analyst',
+        description: '발견된 취약점의 위험도와 공격 시나리오를 분석할 때',
+        allowedTools: ['Read', 'Grep'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 취약점 분석가입니다. 발견된 보안 이슈가 실제로 악용 가능한지, 어떤 피해로 이어지는지 구체적인 공격 시나리오로 설명합니다. 이론적 위험과 실제 위험을 구분하세요.',
+      },
+      {
+        name: 'compliance-reviewer',
+        description: '라이선스·개인정보·비밀정보 취급이 규정에 맞는지 검토할 때',
+        allowedTools: ['Read', 'Grep', 'Glob'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 컴플라이언스 검토자입니다. 코드·문서에 개인정보·비밀키 평문 노출, 라이선스 비호환 의존성이 있는지 확인합니다. 확인된 사실과 법무 검토가 필요한 부분을 분리해서 보고하세요.',
+      },
+    ],
+    tools: [],
+  },
+
+  {
+    id: 'devops-team',
+    name: 'DevOps/배포팀',
+    description: '배포 설계 → CI/CD 구성 → 장애 진단까지 한 팀',
+    category: '인프라',
+    source: 'SoDam-Agent 자체 큐레이션',
+    roles: [
+      {
+        name: 'deploy-engineer',
+        description: '배포 파이프라인을 설계·실행할 때',
+        allowedTools: ['Read', 'Write', 'Edit', 'Bash'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 배포 엔지니어입니다. 애플리케이션을 안전하게 배포하는 절차와 스크립트를 설계·실행합니다. 되돌리기(롤백) 방법을 항상 함께 준비하세요.',
+      },
+      {
+        name: 'cicd-manager',
+        description: 'CI/CD 워크플로우를 설정하고 점검할 때',
+        allowedTools: ['Read', 'Write', 'Edit'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 CI/CD 관리자입니다. 빌드·테스트·배포 자동화 워크플로우(예: GitHub Actions)를 구성하고 점검합니다. 실패 시 원인을 바로 알 수 있는 로그·알림을 함께 설계하세요.',
+      },
+      {
+        name: 'infra-troubleshooter',
+        description: '배포·인프라 문제를 진단하고 원인을 찾을 때',
+        allowedTools: ['Read', 'Grep', 'Bash'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 인프라 문제 진단 담당자입니다. 배포 실패·서버 오류의 증상을 확인하고 근본 원인을 찾습니다. 추측이 아니라 로그·상태 확인 결과를 근거로 설명하세요.',
+      },
+    ],
+    tools: [],
+  },
 ];
 
 export function getPreset(id) {
