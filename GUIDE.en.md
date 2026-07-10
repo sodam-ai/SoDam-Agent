@@ -211,6 +211,28 @@ node bin/cli.mjs install web-app-team --target codex --dir "C:\my_codex_project_
 
 ---
 
+## (Optional) Using it in Gemini CLI too — role translation (beta)
+
+If you also use **Gemini CLI** (Google's AI coding tool), you can build the same team for it too.
+> Honestly: Gemini CLI uses a different tool-name scheme than Claude Code (e.g. `read_file` vs `Read`). Mapping them without a verified table risks breaking things, so this version generates roles with **full tool inheritance, no restrictions** (beta).
+
+> ⚠️ This **one** thing needs a **black terminal** (unlike plugin install), same as Codex.
+
+**Prerequisites**: ① a downloaded copy of this project (see section 10) ② **Node.js** (LTS from nodejs.org)
+
+**How** — from the downloaded SoDam-Agent folder, in a terminal, one line (put your Gemini CLI project folder in `--dir`):
+```
+node bin/cli.mjs install web-app-team --target gemini --dir "C:\my_gemini_project_folder"
+```
+🖥️ It previews what will be created and asks → say yes, and that folder gets **`.gemini/agents/<role>.md`** files (one per role).
+- Swap the team for `docs-team`·`research-team`.
+- If you need the doc-search tool (context7), paste the **mcpServers snippet shown at install into whichever role file you want**.
+
+**How to use**: open **Gemini CLI in that folder**; it recognizes the roles under `.gemini/agents/` as subagents.
+> If it doesn't work: make sure you opened Gemini CLI **in that folder** (elsewhere it can't read them). Tools/permissions being wide open is expected — this version doesn't add restrictions (beta limitation).
+
+---
+
 ## 10. (Advanced) Instead of the marketplace — run it from your folder
 
 You can **register a downloaded folder as a "store"** (inside Claude Code, no terminal).
@@ -241,6 +263,7 @@ You can **register a downloaded folder as a "store"** (inside Claude Code, no te
 | **Is my data sent anywhere?** | No. SoDam-Agent has no server. Everything runs on your computer. |
 | **Can I make my own team?** | Yes. Use the 5 `sodam-agent` commands for your own agents. To build a full team, see [DEVELOPMENT.md](./DEVELOPMENT.md). |
 | **What if context7 is missing?** | Agents still work — only live library doc lookup is unavailable. |
+| **`/doctor` shows `context7 skipped` — is that OK?** | Yes. Multiple teams bundle the same tool; only one gets activated. No functional impact. |
 | **Can I share my agents?** | Yes — share the `.md` file. Check for personal info or API keys first. |
 
 ---

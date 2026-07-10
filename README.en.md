@@ -207,6 +207,49 @@ node bin/cli.mjs install web-app-team --target codex --dir "C:\my\project\folder
 
 ---
 
+## Using it in Gemini CLI too (role translation · beta)
+
+Like Codex, you can also use the same team in **Gemini CLI (Google's AI coding tool)**.
+Gemini CLI's structure is closer to Claude Code's (one role = one file), so the mapping is more direct than Codex's — but **honestly**: this version generates roles with **full tool inheritance** (no restrictions), because Gemini's tool-name scheme differs from Claude Code's (e.g. `read_file` vs `Read`), and restricting tools without a verified mapping risks producing broken output.
+
+> ⚠️ **This feature alone needs a terminal** (unlike plugin install), same as Codex.
+
+**Prerequisites**
+- A downloaded copy of this repo
+- **Node.js 18+** (needed to run the CLI — [nodejs.org](https://nodejs.org) LTS)
+
+**How to install** — from the downloaded SoDam-Agent folder, targeting the project folder you'll use with Gemini CLI:
+```
+node bin/cli.mjs install web-app-team --target gemini --dir "C:\my\project\folder"
+```
+- Omit `--dir` to use the **current folder**. · Swap the team for `docs-team`·`research-team`.
+- It shows a **preview of what will be created** and asks for confirmation (`--yes` to skip).
+
+**What gets created (file locations)**
+
+| File | Location | Role |
+|---|---|---|
+| `<role>.md` | `.gemini/agents/<role>.md` | Per-role subagent Gemini CLI reads (one role = one file, similar to Claude Code) |
+| MCP config (mcpServers) | pasted into each role file yourself | Tools like doc search (context7). **Not touched automatically** — paste the printed snippet into whichever role file you want |
+
+> If a role file already exists, it is **backed up to `.bak`** before writing (safe).
+
+**How to use**
+- Run **Gemini CLI in that folder**; it recognizes the roles under `.gemini/agents/` as subagents.
+- For doc search (context7), paste the **mcpServers snippet shown at install into the frontmatter of whichever role file you want**.
+
+**Troubleshooting**
+
+| Symptom | Fix |
+|---|---|
+| Gemini CLI can't find the roles | Make sure you ran Gemini CLI **in that folder** (elsewhere it can't read `.gemini/agents/`) |
+| The doc-search tool is missing | Add the mcpServers snippet to a role file, then restart Gemini CLI / check Node.js is installed |
+| Tools/permissions are wide open | That's expected — this version doesn't generate tool restrictions (beta limitation, see above) |
+
+> 🔎 Verify recognition in your actual Gemini CLI runtime once (behavior may vary by tool/version).
+
+---
+
 ## 7. Manage your own agents after install (sodam-agent)
 
 With `sodam-agent` installed, you can create and manage agents **inside Claude Code with slash commands** — no terminal. (Claude Code's native `/agents` "Create" is hard for beginners to find, so this replaces it with **one command**.)
@@ -293,6 +336,7 @@ Add marketplace (once) → Install teams/tool (/plugin install) → Restart
 | Trained a team agent but it reverts | You **edited a team agent directly** (overwritten on update) | Use `/sodam-agent:pick-agent` to make a **copy**, then train the copy |
 | Names like `web-app-team:` look confusing | — | That's expected. The **`team:role`** naming makes *your* installs unambiguous |
 | context7 (doc search) errors | No Node.js / network blocked | Install **LTS** from [nodejs.org](https://nodejs.org) / try another network |
+| `/doctor` shows a `context7 ... skipped` warning | Multiple teams bundle the same tool (context7); only one gets loaded | **This is normal** — the duplicate tool is deduped to one active copy, no functional impact |
 | Install fails behind corporate proxy/firewall | Network blocked | Try another network / ask admin to unblock |
 | (Method B) Windows "blocked this app" | SmartScreen / antivirus | Right-click the file → Properties → "Unblock" / add AV exception |
 | MCP asks for an API key | Some tools need a key | Get a key from the provider → store it in an **OS environment variable** (never in files) |

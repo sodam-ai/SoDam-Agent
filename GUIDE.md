@@ -210,6 +210,28 @@ node bin/cli.mjs install web-app-team --target codex --dir "C:\Codex로_쓸_내_
 
 ---
 
+## (선택) Gemini CLI에서도 쓰기 — 역할 번역 (베타)
+
+**Gemini CLI**(Google의 AI 코딩 도구)도 쓰신다면, 같은 팀을 Gemini CLI용으로도 만들 수 있어요.
+> 솔직히 말하면: Gemini CLI는 도구(권한) 이름 체계가 Claude Code와 달라요(예: `read_file` vs `Read`). 확실한 매핑표 없이 함부로 옮기면 오히려 깨질 수 있어서, 이번 버전은 **도구 제한 없이 전체 상속**으로 만들어요(베타).
+
+> ⚠️ 이것**만**은 **검은 터미널**이 필요해요(플러그인 설치와 달라요). Codex와 마찬가지예요.
+
+**준비물**: ① 이 프로젝트를 내려받은 폴더(아래 10번 참고) ② **Node.js** (nodejs.org 에서 LTS)
+
+**하는 법** — 내려받은 SoDam-Agent 폴더에서, 검은 터미널에 한 줄 (Gemini CLI로 쓸 폴더를 `--dir` 에):
+```
+node bin/cli.mjs install web-app-team --target gemini --dir "C:\Gemini로_쓸_내_프로젝트_폴더"
+```
+🖥️ 무엇이 만들어질지 먼저 보여주고 물어봐요 → "예" 하면 그 폴더에 **`.gemini/agents/<역할>.md`**(역할별 파일)가 생깁니다.
+- 다른 팀은 `docs-team`·`research-team` 으로 바꾸면 돼요.
+- 자료검색(context7) 도구가 필요하면, 화면에 나온 **mcpServers 스니펫을 원하는 역할 파일에 직접 붙여넣으세요**.
+
+**쓰는 법**: 그 폴더에서 **Gemini CLI를 켜면** `.gemini/agents/`의 역할을 서브에이전트로 인식해요.
+> 잘 안 되면: 꼭 **그 폴더에서** Gemini CLI를 켰는지 확인하세요(다른 폴더면 못 읽어요). 도구(권한)가 전부 열려 있는 건 정상이에요(이번 버전은 제한을 안 걸어요, 베타 한계).
+
+---
+
 ## 10. (고급) 마켓플레이스 대신 — 내 폴더로 써 보기
 
 마켓 대신 **내려받은 폴더를 직접 "가게"로 등록**해도 됩니다. (검은 터미널 없이 클로드 안에서.)
@@ -240,6 +262,7 @@ node bin/cli.mjs install web-app-team --target codex --dir "C:\Codex로_쓸_내_
 | **내 데이터가 어딘가로 전송되나요?** | 아니요. SoDam-Agent 서버 없음. 모든 처리는 내 컴퓨터에서 이뤄집니다. |
 | **직접 팀을 만들 수 있나요?** | 네. `sodam-agent` 5개 명령으로 내 에이전트 만들기 가능. 팀 전체 만들기는 [DEVELOPMENT.md](./DEVELOPMENT.md) 참고. |
 | **context7 없어도 되나요?** | 됩니다. 에이전트는 정상 동작하고, 실시간 라이브러리 문서 조회만 안 됩니다. |
+| **`/doctor`에 `context7 skipped`라고 뜨는데 괜찮나요?** | 괜찮습니다. 여러 팀이 같은 도구를 각자 들고 있어 하나만 켠 것뿐이고, 기능에는 영향이 없습니다. |
 | **만든 에이전트를 공유할 수 있나요?** | 네. `.md` 파일 공유. 공유 전 개인정보·API 키 포함 여부 확인 필수. |
 
 ---
