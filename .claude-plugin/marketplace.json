@@ -30,7 +30,7 @@
       "name": "sodam-agent",
       "source": "./plugins/sodam-agent",
       "description": "직원 관리 도구 — 팀 설치 후에도 /명령으로 새 직원을 직접 만들고 관리",
-      "version": "0.1.2",
+      "version": "0.1.3",
       "author": { "name": "SoDam AI Studio" }
     },
     {
