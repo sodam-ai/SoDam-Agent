@@ -15,19 +15,37 @@ export function info(s) { line(color.cyan('ℹ️  ' + s)); }
 export function warn(s) { line(color.yellow('⚠️  ' + s)); }
 export function danger(s) { line(color.red('🛑 ' + s)); }
 
-function makeRL() {
-  return readline.createInterface({ input: process.stdin, output: process.stdout });
+let _rl = null;
+function getRL() {
+  if (!_rl) {
+    _rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  }
+  return _rl;
+}
+
+// 세션 전체에서 readline 인터페이스 하나만 재사용한다.
+// (질문마다 새로 만들었다 닫으면, 파이프/리다이렉트된 비대화형 표준입력에서
+//  먼저 만든 인터페이스가 뒤쪽 줄까지 미리 버퍼링했다가 닫히며 유실하는 문제가 있었음.)
+// CLI 종료 시 closeUI()를 반드시 호출해야 프로세스가 정상 종료된다.
+// ⚠️ 정직한 한계(2026-07-12 확인, 완전 해결 아님): 이 재사용 구조로도
+// 파이프 입력이 한 번에 전부 도착해 스트림이 끝나버리면, 두 번째 이후
+// question()이 응답을 영영 못 받는 Node readline 자체의 더 근본적인 제약이
+// 남아있다(최소 재현 스크립트로 확인됨). 실제 사람이 터미널에 직접 타이핑하는
+// 주 사용 시나리오(및 플러그인 마켓플레이스 설치 경로)는 영향 밖으로 보이나
+// 확인은 못 했다. 비대화형/자동화 설치를 지원해야 한다면 프롬프트가 아니라
+// --yes 같은 명시적 CLI 플래그로 우회하는 것이 근본 해법이다(별도 작업 필요).
+export function closeUI() {
+  if (_rl) {
+    _rl.close();
+    _rl = null;
+  }
 }
 
 // 한 줄 입력 받기
 export async function ask(question, def = '') {
-  const rl = makeRL();
-  try {
-    const a = await new Promise((res) => rl.question(question, res));
-    return (a || '').trim() || def;
-  } finally {
-    rl.close();
-  }
+  const rl = getRL();
+  const a = await new Promise((res) => rl.question(question, res));
+  return (a || '').trim() || def;
 }
 
 // 예/아니오 확인 (위험 작업 게이트에 사용)
