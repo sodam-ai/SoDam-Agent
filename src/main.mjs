@@ -127,8 +127,8 @@ function printHelp() {
 function cmdList(opts = {}) {
   banner();
 
-  const presets = opts.category ? presetsInCategory(opts.category) : PRESETS;
-  if (opts.category && presets.length === 0) {
+  const presets = opts.category !== undefined ? presetsInCategory(opts.category) : PRESETS;
+  if (opts.category !== undefined && presets.length === 0) {
     const categories = [...new Set(PRESETS.map((p) => p.category))];
     ui.warn(`그런 카테고리가 없습니다: ${opts.category}`);
     line(color.gray(`   가능한 카테고리: ${categories.join(', ')}`));
