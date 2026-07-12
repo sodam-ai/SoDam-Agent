@@ -244,9 +244,18 @@ marketing · data · security audit · devops) + the agent-management tool
 (<code>sodam-agent</code>) + Codex / Gemini CLI / Cursor role
 translation (beta)</p>
 <details open>
-<summary>📋 <b>Recent major changes</b> (as of 2026-07-11 — click to
+<summary>📋 <b>Recent major changes</b> (as of 2026-07-12 — click to
 collapse)</summary>
 <ul>
+<li><strong>2026-07-12</strong>: Completed live verification —
+installed and called all 7 teams in a real Claude Code session,
+confirmed working (not a mockup). Fixed 3 bugs in
+<code>install</code>/<code>export</code>/<code>list</code> around
+empty-string input handling. Confirmed <code>/reload-plugins</code>
+applies new plugins without a full restart and updated the install
+steps accordingly. Corrected stale team-count wording across the docs.
+Ran a security review, pre-registered <code>.env</code> in
+<code>.gitignore</code>.</li>
 <li><strong>2026-07-11</strong>: Added the security-audit team and
 devops team — 7 teams complete. Also added Gemini CLI and Cursor role
 translation (beta).</li>
@@ -362,12 +371,16 @@ folder navigation.</p>
 <li><strong>(Optional) Install the agent-management tool</strong> — to
 create &amp; train your own agents:
 <pre><code>/plugin install sodam-agent@sodamagent-marketplace</code></pre></li>
-<li><strong>Restart Claude Code (quit and reopen).</strong>
+<li><strong>Load what you just installed.</strong>
 <ul>
+<li><strong>Try this first</strong>: <code>/reload-plugins</code> — no
+full quit/reopen needed, this alone applies it immediately (confirmed
+by real testing, 2026-07-12).</li>
 <li>⚠️ <strong>The most common gotcha</strong>: right after install,
 <code>/agents</code>·<code>/sodam-agent:</code> may <strong>not
-appear</strong> — plugins are <strong>loaded once when Claude Code
-starts</strong>. <strong>Restart and they show up.</strong></li>
+appear</strong> — plugins are <strong>loaded at startup or
+reload</strong>. If <code>/reload-plugins</code> doesn't help, fall
+back to <strong>fully quitting and reopening Claude Code</strong>.</li>
 </ul></li>
 </ol>
 <blockquote>
@@ -754,7 +767,7 @@ box</strong> (not a black terminal).</p>
 </tr>
 <tr>
 <td><code>/reload-plugins</code></td>
-<td>(Method B, during dev) reload after editing files</td>
+<td>Load newly installed/edited plugins without a full restart (try this first after the restart step)</td>
 </tr>
 </tbody>
 </table>
@@ -807,9 +820,9 @@ copies) · <code>LICENSE</code> · <code>NOTICE</code></li>
 <tr>
 <td>Installed but <code>/agents</code>·<code>/sodam-agent:</code> show
 <strong>nothing</strong></td>
-<td><strong>No restart</strong> (plugins load at startup)</td>
-<td><strong>Quit and reopen Claude Code</strong>. Still missing?
-<code>/reload-plugins</code></td>
+<td><strong>Didn't reload</strong> (plugins load at startup/reload)</td>
+<td>Try <code>/reload-plugins</code> first. Still missing?
+<strong>Quit and reopen Claude Code</strong></td>
 </tr>
 <tr>
 <td><code>/sodam-agent</code> shows <strong>unrelated stuff</strong>

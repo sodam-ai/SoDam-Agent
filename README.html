@@ -239,8 +239,14 @@ href="./GUIDE.md">왕초보 가이드(GUIDE)</a></p>
 도구(<code>sodam-agent</code>) + Codex/Gemini CLI/Cursor 역할
 번역(베타)</p>
 <details open>
-<summary>📋 <b>최근 주요 변경</b> (2026-07-11 기준 — 누르면 접기)</summary>
+<summary>📋 <b>최근 주요 변경</b> (2026-07-12 기준 — 누르면 접기)</summary>
 <ul>
+<li><strong>2026-07-12</strong>: 라이브 인식 검증 완료 — 실제 Claude
+Code에서 팀 7종 전부 설치·호출 성공(목업 아님). <code>install</code>·<code>export</code>·<code>list</code>
+명령의 빈 문자열 입력 처리 버그 3건 수정. <code>/reload-plugins</code>가
+완전 재시작 없이도 새 팀을 즉시 반영함을 확인해 설치 안내에 반영.
+문서 전반의 팀 개수 표기 오류 정정. 보안 점검(OWASP 기준) 수행,
+<code>.env</code> 사전 방어 등록.</li>
 <li><strong>2026-07-11</strong>: 보안 감사팀 · DevOps/배포팀 추가 — 팀
 7종 완성. HTML 문서를 MD 원본과 동기화.</li>
 <li><strong>2026-07-06</strong>: 실사용 중이던 설치본이 최신 수정을 못
@@ -348,12 +354,17 @@ href="https://nodejs.org">nodejs.org</a>에서 <strong>LTS</strong>
 <li><strong>(선택) 직원 관리 도구도 설치</strong> — 새 직원을 직접
 만들고 가르치고 싶다면:
 <pre><code>/plugin install sodam-agent@sodamagent-marketplace</code></pre></li>
-<li><strong>Claude Code를 껐다 켭니다(재시작).</strong>
+<li><strong>새로 설치한 걸 불러옵니다.</strong>
 <ul>
+<li><strong>먼저 이 명령부터 입력</strong>: <code>/reload-plugins</code>
+— 완전히 껐다 켜지 않아도 이 명령 한 줄로 바로 반영됩니다(실제
+확인됨, 2026-07-12).</li>
 <li>⚠️ <strong>가장 흔한 막힘 지점</strong>: 설치 직후엔
 <code>/agents</code>·<code>/sodam-agent:</code>가 <strong>안 보일 수
-있습니다.</strong> 플러그인은 <strong>켤 때 한 번 로드</strong>되기
-때문입니다. <strong>재시작하면 보입니다.</strong></li>
+있습니다.</strong> 플러그인은 <strong>켤 때(또는 재로드할 때) 한 번
+로드</strong>되기 때문입니다. <code>/reload-plugins</code>로도 안
+보이면, Claude Code를 <strong>완전히 껐다 켜기</strong>(재시작)로
+넘어가세요.</li>
 </ul></li>
 </ol>
 <blockquote>
@@ -735,7 +746,7 @@ Claude Code 안에서</strong> 슬래시 명령으로 직원을 직접 만들고
 </tr>
 <tr>
 <td><code>/reload-plugins</code></td>
-<td>(방법 B 개발 중) 파일 수정 후 다시 불러오기</td>
+<td>새로 설치·수정한 플러그인을 완전 재시작 없이 바로 불러오기(설치 후 5단계에서 우선 시도)</td>
 </tr>
 </tbody>
 </table>
@@ -787,9 +798,9 @@ Claude Code 안에서</strong> 슬래시 명령으로 직원을 직접 만들고
 <tr>
 <td>설치했는데 <code>/agents</code>·<code>/sodam-agent:</code>에
 <strong>아무것도 안 보임</strong></td>
-<td><strong>재시작을 안 함</strong> (플러그인은 켤 때 로드)</td>
-<td><strong>Claude Code를 껐다 켜기</strong>. 그래도 없으면
-<code>/reload-plugins</code></td>
+<td><strong>새로 불러오기(reload)를 안 함</strong> (플러그인은 켤 때·재로드 시 로드)</td>
+<td>먼저 <code>/reload-plugins</code> 입력. 그래도 없으면
+<strong>Claude Code를 껐다 켜기</strong></td>
 </tr>
 <tr>
 <td><code>/sodam-agent</code> 쳤더니 <strong>엉뚱한 팀(team-agents

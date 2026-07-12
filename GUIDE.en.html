@@ -183,9 +183,14 @@ is kept to a minimum, and any term is explained <strong>in one line,
 right there</strong>.</p>
 </blockquote>
 <details open>
-<summary>📋 <b>Update summary</b> (as of 2026-07-11 — click to collapse)</summary>
+<summary>📋 <b>Update summary</b> (as of 2026-07-12 — click to collapse)</summary>
 
 <ul>
+<li><strong>2026-07-12</strong>: Confirmed all 7 teams install and
+respond correctly in a real Claude Code session (not a mockup). Found
+that <code>/reload-plugins</code> applies new plugins without a full
+restart, updated Step 5 accordingly. Fixed 3 minor bugs, ran a
+security review.</li>
 <li><strong>2026-07-11</strong>: Added the security-audit team and
 devops team — 7 teams complete. Added Gemini CLI and Cursor role
 translation (beta).</li>
@@ -305,15 +310,18 @@ again.</p>
 <p>To <strong>create and train your own agents</strong>, also
 install:</p>
 <pre><code>/plugin install sodam-agent@sodamagent-marketplace</code></pre>
-<h3 id="step-5--star-restart--the-most-important-step">Step 5 · ⭐
-Restart — the most important step!</h3>
-<p>👉 Type <code>/exit</code> to quit, then open <code>claude</code>
-again. (Or fully close and reopen the window.)</p>
+<h3 id="step-5--star-load-what-you-just-installed--the-most-important-step">Step
+5 · ⭐ Load what you just installed — the most important step!</h3>
+<p>👉 <strong>Type this first</strong> (no full quit/reopen needed —
+confirmed to work by real testing):</p>
+<pre><code>/reload-plugins</code></pre>
 <blockquote>
-<p><strong>Why?</strong> Plugins are <strong>loaded once when Claude
-Code starts</strong>. So <strong>before a restart</strong>, the
+<p><strong>Why?</strong> Plugins are <strong>loaded once at startup or
+reload</strong>. So <strong>before that</strong>, the
 agents/commands you just installed <strong>won't appear.</strong> (This
 is the most common gotcha!)</p>
+<p>Still nothing? Type <code>/exit</code> to quit, then open
+<code>claude</code> again (or fully close and reopen the window).</p>
 </blockquote>
 <hr />
 <h2 id="3-verify-it-worked">3. Verify it worked</h2>
@@ -408,9 +416,10 @@ cases)</h2>
 <tr>
 <td>Installed but <code>/agents</code>·<code>/sodam-agent:</code> show
 <strong>nobody</strong></td>
-<td>You <strong>didn't restart</strong></td>
-<td><strong>Quit and reopen Claude Code</strong> (<code>/exit</code> →
-<code>claude</code>). Still missing? <code>/reload-plugins</code></td>
+<td>You <strong>didn't reload</strong></td>
+<td>Try <code>/reload-plugins</code> first. Still missing?
+<strong>Quit and reopen Claude Code</strong> (<code>/exit</code> →
+<code>claude</code>)</td>
 </tr>
 <tr>
 <td><code>/sodam-agent</code> shows <strong>unrelated stuff</strong>
