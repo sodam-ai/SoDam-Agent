@@ -191,7 +191,7 @@ docs-team:editor 한테 이 글을 더 매끄럽게 다듬어 달라고 해줘
 ## 9. 라이선스 (짧게)
 
 - **Apache License 2.0** — 상업적 사용·수정·복제·재배포가 허용돼요(저작권 고지 유지·변경 표시·NOTICE 보존 조건). 자세한 건 `LICENSE`·`NOTICE` 파일.
-- "Claude Code/Anthropic/Context7" 등은 각 회사의 이름(상표)이고, **SoDam-Agent는 비공식·미제휴**예요. 제품명 "SoDam-Agent"의 상표 등록 여부도 확정 전이니, 상업적 사용 전 직접 확인하세요.
+- "Claude Code"·"Anthropic"·"Codex"·"OpenAI"·"Gemini"·"Google"·"Cursor"·"Context7" 등은 각 회사의 이름(상표)이고, **SoDam-Agent는 그 어느 회사와도 제휴·후원·보증 관계가 없는 비공식 도구**예요. 제품명 "SoDam-Agent"의 상표 등록 여부도 확정 전이니, 상업적 사용 전 직접 확인하세요.
 - 직원 지시문·템플릿은 **자체 제작**이며 일부 문구가 **AI 생성**일 수 있어요. 민감한 상업적 사용 전엔 검토를 권장합니다.
 
 ---

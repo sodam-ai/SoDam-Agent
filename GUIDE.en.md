@@ -192,7 +192,7 @@ If you installed `sodam-agent` in Step 4 and restarted, type `/sodam-agent:` to 
 ## 9. License (short)
 
 - **Apache License 2.0** — commercial use, modification, copying, and redistribution allowed (keep copyright notices, state changes, preserve NOTICE). See `LICENSE`·`NOTICE`.
-- "Claude Code/Anthropic/Context7" etc. are their companies' names (trademarks); **SoDam-Agent is unofficial and not affiliated.** Whether the name "SoDam-Agent" is registrable as a trademark is undetermined — verify before commercial use.
+- "Claude Code"·"Anthropic"·"Codex"·"OpenAI"·"Gemini"·"Google"·"Cursor"·"Context7" etc. are their companies' names (trademarks); **SoDam-Agent is unofficial, not affiliated with, sponsored by, or endorsed by any of them.** Whether the name "SoDam-Agent" is registrable as a trademark is undetermined — verify before commercial use.
 - Agent instructions/templates are **self-authored** and some text may be **AI-generated**. Review before sensitive commercial use.
 
 ---

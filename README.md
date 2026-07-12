@@ -419,7 +419,7 @@ node bin/cli.mjs install web-app-team --target cursor --dir "C:\내\프로젝트
 - **라이선스: Apache License 2.0.** 상업적 사용·수정·복제·재배포가 **허용**됩니다.
   - 조건: `LICENSE`·저작권 고지 **유지**, **변경 사실 표시**, `NOTICE` **보존**, **상표권은 부여되지 않음**, **보증 없음(AS IS)**. 전문은 [`LICENSE`](./LICENSE)·[`NOTICE`](./NOTICE).
 - **저작권**: © 2026 SoDam AI Studio.
-- **상표**: "Claude Code", "Claude", "Anthropic"은 Anthropic의, "Context7"·"Upstash"는 각 사의 상표입니다. **SoDam-Agent는 비공식이며 어느 회사와도 제휴/보증 관계가 아닙니다.** 상표는 **사실적 언급(nominative)** 으로만 사용합니다(로고 미사용). 또한 제품명 **"SoDam-Agent"** 자체의 상표 등록 여부는 확정 전이므로, 동일·유사 명칭과의 충돌 가능성은 사용자가 별도 확인하세요.
+- **상표**: "Claude Code"·"Claude"·"Anthropic"은 Anthropic, PBC의, "Codex"·"OpenAI"는 OpenAI의, "Gemini"·"Gemini CLI"·"Google"은 Google의, "Cursor"는 Cursor(Anysphere)의, "Context7"·"Upstash"는 각 사의 상표입니다. **그 외 이 문서에 언급된 모든 제품·서비스명도 각 소유자의 상표입니다.** **SoDam-Agent는 위 회사들과 제휴·후원·보증 관계가 없는 비공식 도구입니다.** 상표는 **사실적 언급(nominative)** 으로만 사용합니다(로고 미사용). 또한 제품명 **"SoDam-Agent"** 자체의 상표 등록 여부는 확정 전이므로, 동일·유사 명칭과의 충돌 가능성은 사용자가 별도 확인하세요.
 - **상업적 사용 범위**: Apache-2.0에 따라 **수정·복제·포크·재배포·판매·서비스 운영·교육 자료·회사/고객사 납품**이 대부분 허용됩니다. 단 **아래는 사용자 책임**입니다.
 - **사용자 책임(반드시 별도 확인)**: 설치하는 **MCP(예: context7/Upstash)·외부 API의 요금제·이용약관·모델 사용 정책·데이터 처리 정책**은 SoDam-Agent가 보장하지 않으며, 상업적 사용 전 **사용자가 직접 확인**해야 합니다.
 - **프리셋·생성물 출처**: 팀 직원의 지시문과 `sodam-agent`가 만드는 직원 템플릿은 **SoDam-Agent 자체 큐레이션**입니다(타인 저작물 미차용). 일부 문구가 **AI 생성**일 수 있으므로, 민감한 상업적 사용 전에는 **검토를 권장**합니다.
