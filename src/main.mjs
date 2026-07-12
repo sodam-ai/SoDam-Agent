@@ -180,8 +180,8 @@ async function resolveScope(opts, projectRoot) {
 }
 
 async function cmdInstall(opts) {
-  let preset = opts.preset ? getPreset(opts.preset) : null;
-  if (opts.preset && !preset) {
+  let preset = opts.preset !== undefined ? getPreset(opts.preset) : null;
+  if (opts.preset !== undefined && !preset) {
     ui.warn(`그런 팀이 없습니다: ${opts.preset}.  'sodam-agent list'로 목록을 보세요.`);
     return;
   }
@@ -572,8 +572,8 @@ async function roleRemove() {
 }
 
 async function cmdExport(opts) {
-  let preset = opts.preset ? getPreset(opts.preset) : null;
-  if (opts.preset && !preset) {
+  let preset = opts.preset !== undefined ? getPreset(opts.preset) : null;
+  if (opts.preset !== undefined && !preset) {
     ui.warn(`그런 팀이 없습니다: ${opts.preset}.  'sodam-agent list'로 목록을 보세요.`);
     return;
   }
