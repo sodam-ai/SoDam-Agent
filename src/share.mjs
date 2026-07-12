@@ -117,7 +117,8 @@ export function checkDangerousCommands(preset) {
   const warnings = [];
   for (const t of preset.tools || []) {
     const raw = (t?.installSpec?.command || '');
-    const cmd = raw.split('/').pop().split('\\').pop();
+    const base = raw.split('/').pop().split('\\').pop().toLowerCase();
+    const cmd = base.replace(/\.(exe|cmd|bat|com)$/, ''); // Windows 실행파일 확장자·대소문자 우회 방지
     if (DANGEROUS_CMDS.has(cmd)) {
       warnings.push(
         `MCP '${t.id}'의 command가 '${cmd}'입니다. 시스템에서 임의 코드를 실행할 수 있으니, 신뢰할 수 있는 출처의 파일인지 확인하세요.`
