@@ -239,8 +239,14 @@ href="./GUIDE.md">왕초보 가이드(GUIDE)</a></p>
 도구(<code>sodam-agent</code>) + Codex/Gemini CLI/Cursor 역할
 번역(베타)</p>
 <details open>
-<summary>📋 <b>최근 주요 변경</b> (2026-07-12 기준 — 누르면 접기)</summary>
+<summary>📋 <b>최근 주요 변경</b> (2026-07-13 기준 — 누르면 접기)</summary>
 <ul>
+<li><strong>2026-07-13</strong>: 완전히 별개의 새 Claude Code 세션에서 팀
+7종 전부 재확인(재현성 검증 완료 — 우연이 아님). 가져오기(import)
+기능의 위험 명령 탐지가 <code>.exe</code> 확장자·대문자 명령(예:
+<code>cmd.exe</code>)을 놓치던 버그 발견·수정. OWASP 기준 보안
+재점검(비밀정보·난수·에러노출·의존성 전수 확인) 및 합성 악성 파일로
+실제 CLI 실행 검증(안전성 재확인).</li>
 <li><strong>2026-07-12</strong>: 라이브 인식 검증 완료 — 실제 Claude
 Code에서 팀 7종 전부 설치·호출 성공(목업 아님). <code>install</code>·<code>export</code>·<code>list</code>
 명령의 빈 문자열 입력 처리 버그 3건 수정. <code>/reload-plugins</code>가
@@ -780,8 +786,10 @@ Claude Code 안에서</strong> 슬래시 명령으로 직원을 직접 만들고
 </ul></li>
 <li><strong>문서</strong>: <code>README.md</code>(한·이 문서) ·
 <code>README.en.md</code>(영) · <code>GUIDE.md</code>(한 왕초보) ·
-<code>GUIDE.en.md</code>(영) · <code>docs/*.pdf</code>(PDF 사본) ·
-<code>LICENSE</code> · <code>NOTICE</code></li>
+<code>GUIDE.en.md</code>(영) — 4개 모두 <code>.html</code> 동일 사본
+있음(내용 완전 동일) · <code>LICENSE</code> · <code>NOTICE</code>
+(PDF 사본은 제공하지 않습니다 — md/html로 충분하고 관리 부담을 줄이기
+위한 결정)</li>
 </ul>
 <hr />
 <h2 id="11-문제--오류-대처-증상--원인--해결">11. 문제 · 오류 대처 (증상
@@ -1172,8 +1180,8 @@ href="https://github.com/sodam-ai/SoDam-Agent/issues">GitHub 이슈</a>로
 <hr />
 <blockquote>
 <p>📘 더 쉬운 따라하기: <a href="./GUIDE.md">왕초보 가이드(GUIDE.md)</a>
-· 🇺🇸 <a href="./README.en.md">English</a> · 📄 PDF: <code>docs/</code>
-폴더 · <a href="#14-보안--데이터-흐름">보안·데이터 흐름</a> · <a
+· 🇺🇸 <a href="./README.en.md">English</a> · <a
+href="#14-보안--데이터-흐름">보안·데이터 흐름</a> · <a
 href="#16-faq-자주-묻는-질문">FAQ</a></p>
 </blockquote>
 </body>

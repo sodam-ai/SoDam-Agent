@@ -41,8 +41,9 @@
 **Available now**: 7 teams (web app · docs · research · marketing · data · security audit · devops) + the agent-management tool (`sodam-agent`) + Codex / Gemini CLI / Cursor role translation (beta)
 
 <details open>
-<summary>📋 <b>Recent major changes</b> (as of 2026-07-12 — click to collapse)</summary>
+<summary>📋 <b>Recent major changes</b> (as of 2026-07-13 — click to collapse)</summary>
 
+- **2026-07-13**: Reconfirmed all 7 teams in a completely separate, brand-new Claude Code session (reproducibility verified — not a fluke). Found and fixed a bug where the import feature's dangerous-command detector missed `.exe`-suffixed/uppercase commands (e.g. `cmd.exe`). Ran a follow-up OWASP-informed security review (secrets, randomness, error exposure, dependencies all checked) and re-confirmed safety with a live CLI run against a synthetic malicious file.
 - **2026-07-12**: Completed live verification — installed and called all 7 teams in a real Claude Code session, confirmed working (not a mockup; meets `01_PRD.md` success criterion #1). Fixed 3 bugs in `install`/`export`/`list` around empty-string input handling. Confirmed `/reload-plugins` applies new plugins without a full restart and updated Step 5 accordingly. Corrected stale team-count wording (5→7, 6→8) across the docs. Ran a security review (OWASP-informed) and pre-registered `.env` in `.gitignore`.
 - **2026-07-11**: Added the security-audit team and devops team — 7 teams complete. Also added Gemini CLI and Cursor role translation (beta).
 - **2026-07-06**: Found and fixed installed copies silently running stale (pre-fix) code + repaired the plugin version-bump process so future updates actually take effect · closed a gap where installing a team file from someone else could skip confirmation · hardened rollback so it stays reliable even if the process is killed mid-install · added a typed-"YES" confirmation gate for global (all-folder) install/rollback · fixed `npm audit` so it can actually run (result: 0 vulnerabilities) · fixed a latent bug in the preset-sync tool (would silently drop MCP servers beyond the first) · resolved 3 of 5 legal-review items (trademark, preset provenance, trademark boundary)
@@ -372,7 +373,7 @@ Add marketplace (once) → Install teams/tool (/plugin install) → Restart
   - `plugins/<team>/agents/<role>.md` — one AI teammate (description + instructions)
   - `plugins/<team>/.mcp.json` — the team's tool (MCP) config (web-app · research)
   - `plugins/sodam-agent/commands/*.md` — the 5 agent-management commands
-- **Docs**: `README.md` (KO) · `README.en.md` (EN, this file) · `GUIDE.md` (KO beginner) · `GUIDE.en.md` (EN) · `docs/*.pdf` (PDF copies) · `LICENSE` · `NOTICE`
+- **Docs**: `README.md` (KO) · `README.en.md` (EN, this file) · `GUIDE.md` (KO beginner) · `GUIDE.en.md` (EN) — all 4 also have an identical `.html` copy (same content) · `LICENSE` · `NOTICE` (No PDF copies are provided — md/html is sufficient and keeps maintenance overhead down)
 
 ---
 
@@ -557,4 +558,4 @@ sodam-ai/SoDam-Agent (GitHub)
 
 ---
 
-> 📘 Easier walkthrough: [Beginner Guide (GUIDE.en.md)](./GUIDE.en.md) · 🇰🇷 [한국어](./README.md) · 📄 PDF: `docs/` folder · [Security & Data Flow](#14-security--data-flow) · [FAQ](#16-faq-frequently-asked-questions)
+> 📘 Easier walkthrough: [Beginner Guide (GUIDE.en.md)](./GUIDE.en.md) · 🇰🇷 [한국어](./README.md) · [Security & Data Flow](#14-security--data-flow) · [FAQ](#16-faq-frequently-asked-questions)

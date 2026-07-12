@@ -244,9 +244,17 @@ marketing · data · security audit · devops) + the agent-management tool
 (<code>sodam-agent</code>) + Codex / Gemini CLI / Cursor role
 translation (beta)</p>
 <details open>
-<summary>📋 <b>Recent major changes</b> (as of 2026-07-12 — click to
+<summary>📋 <b>Recent major changes</b> (as of 2026-07-13 — click to
 collapse)</summary>
 <ul>
+<li><strong>2026-07-13</strong>: Reconfirmed all 7 teams in a
+completely separate, brand-new Claude Code session (reproducibility
+verified — not a fluke). Found and fixed a bug where the import
+feature's dangerous-command detector missed <code>.exe</code>-suffixed/uppercase
+commands (e.g. <code>cmd.exe</code>). Ran a follow-up OWASP-informed
+security review (secrets, randomness, error exposure, dependencies
+all checked) and re-confirmed safety with a live CLI run against a
+synthetic malicious file.</li>
 <li><strong>2026-07-12</strong>: Completed live verification —
 installed and called all 7 teams in a real Claude Code session,
 confirmed working (not a mockup). Fixed 3 bugs in
@@ -802,8 +810,10 @@ agent-management commands</li>
 </ul></li>
 <li><strong>Docs</strong>: <code>README.md</code> (KO) ·
 <code>README.en.md</code> (EN, this file) · <code>GUIDE.md</code> (KO
-beginner) · <code>GUIDE.en.md</code> (EN) · <code>docs/*.pdf</code> (PDF
-copies) · <code>LICENSE</code> · <code>NOTICE</code></li>
+beginner) · <code>GUIDE.en.md</code> (EN) — all 4 also have an
+identical <code>.html</code> copy (same content) · <code>LICENSE</code>
+· <code>NOTICE</code> (No PDF copies are provided — md/html is
+sufficient and keeps maintenance overhead down)</li>
 </ul>
 <hr />
 <h2 id="11-troubleshooting-symptom--cause--fix">11. Troubleshooting
@@ -1174,8 +1184,8 @@ even without Node.js or in offline environments.</p>
 <hr />
 <blockquote>
 <p>📘 Easier walkthrough: <a href="./GUIDE.en.md">Beginner Guide
-(GUIDE.en.md)</a> · 🇰🇷 <a href="./README.md">한국어</a> · 📄 PDF:
-<code>docs/</code> folder · <a href="#14-security--data-flow">Security
+(GUIDE.en.md)</a> · 🇰🇷 <a href="./README.md">한국어</a> · <a
+href="#14-security--data-flow">Security
 &amp; Data Flow</a> · <a
 href="#16-faq-frequently-asked-questions">FAQ</a></p>
 </blockquote>

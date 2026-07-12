@@ -42,8 +42,9 @@
 **지금 설치할 수 있는 것**: 팀 7종(웹앱·문서·리서치·마케팅·데이터·보안 감사·DevOps) + 직원 관리 도구(`sodam-agent`) + Codex/Gemini CLI/Cursor 역할 번역(베타)
 
 <details open>
-<summary>📋 <b>최근 주요 변경</b> (2026-07-12 기준 — 누르면 접기)</summary>
+<summary>📋 <b>최근 주요 변경</b> (2026-07-13 기준 — 누르면 접기)</summary>
 
+- **2026-07-13**: 완전히 별개의 새 Claude Code 세션에서 팀 7종 전부 재확인(재현성 검증 완료 — 우연이 아님). 가져오기(import) 기능의 위험 명령 탐지가 `.exe` 확장자·대문자 명령(예: `cmd.exe`)을 놓치던 버그 발견·수정. OWASP 기준 보안 재점검(비밀정보·난수·에러노출·의존성 전수 확인) 및 합성 악성 파일로 실제 CLI 실행 검증(안전성 재확인).
 - **2026-07-12**: 라이브 인식 검증 완료 — 실제 Claude Code에서 팀 7종 전부 설치·호출 성공(목업 아님, `01_PRD.md` 1번 성공 기준 충족). `install`·`export`·`list` 명령의 빈 문자열 입력 처리 버그 3건 수정. `/reload-plugins`가 완전 재시작 없이도 새 팀을 즉시 반영함을 확인해 5단계 안내에 반영. 문서 전반의 팀 개수 표기(5→7종, 6→8종) 오류 정정. 보안 점검(OWASP 기준) 수행, `.env` 사전 방어 등록.
 - **2026-07-11**: 보안 감사팀 · DevOps/배포팀 추가 — 팀 7종 완성. HTML 문서를 MD 원본과 동기화.
 - **2026-07-06**: 실사용 중이던 설치본이 최신 수정을 못 받던 문제 발견·수정 + 플러그인 버전 관리 규칙 정비(앞으로 업데이트가 실제로 반영되도록) · 남이 준 팀 파일을 설치할 때 확인을 건너뛸 수 있던 안전 구멍 차단 · 설치 도중 갑자기 꺼져도 되돌리기가 항상 되도록 보강 · 전역(모든 폴더 적용) 설치·되돌리기에 "YES" 직접 입력 확인 게이트 추가 · 의존성 취약점 점검(`npm audit`)이 실행되도록 수정(결과: 0건) · 프리셋 동기화 도구의 잠재 결함(MCP 2개 이상 시 일부 누락) 수정 · 법무 검토 3건 정리(상표·프리셋 출처·상표 경계)
@@ -373,7 +374,7 @@ node bin/cli.mjs install web-app-team --target cursor --dir "C:\내\프로젝트
   - `plugins/<팀>/agents/<역할>.md` — AI 직원 한 명(설명+지시문)
   - `plugins/<팀>/.mcp.json` — 그 팀이 쓰는 도구(MCP) 설정 (web-app·research)
   - `plugins/sodam-agent/commands/*.md` — 직원 관리 명령 5종
-- **문서**: `README.md`(한·이 문서) · `README.en.md`(영) · `GUIDE.md`(한 왕초보) · `GUIDE.en.md`(영) · `docs/*.pdf`(PDF 사본) · `LICENSE` · `NOTICE`
+- **문서**: `README.md`(한·이 문서) · `README.en.md`(영) · `GUIDE.md`(한 왕초보) · `GUIDE.en.md`(영) — 4개 모두 `.html` 동일 사본 있음(내용 완전 동일) · `LICENSE` · `NOTICE` (PDF 사본은 제공하지 않습니다 — md/html로 충분하고 관리 부담을 줄이기 위한 결정)
 
 ---
 
@@ -566,4 +567,4 @@ sodam-ai/SoDam-Agent (GitHub)
 
 ---
 
-> 📘 더 쉬운 따라하기: [왕초보 가이드(GUIDE.md)](./GUIDE.md) · 🇺🇸 [English](./README.en.md) · 📄 PDF: `docs/` 폴더 · [보안·데이터 흐름](#14-보안--데이터-흐름) · [FAQ](#16-faq-자주-묻는-질문)
+> 📘 더 쉬운 따라하기: [왕초보 가이드(GUIDE.md)](./GUIDE.md) · 🇺🇸 [English](./README.en.md) · [보안·데이터 흐름](#14-보안--데이터-흐름) · [FAQ](#16-faq-자주-묻는-질문)

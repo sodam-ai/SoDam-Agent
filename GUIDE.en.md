@@ -6,8 +6,9 @@
 > Jargon is kept to a minimum, and any term is explained **in one line, right there**.
 
 <details open>
-<summary>📋 <b>Update summary</b> (as of 2026-07-12 — click to collapse)</summary>
+<summary>📋 <b>Update summary</b> (as of 2026-07-13 — click to collapse)</summary>
 
+- **2026-07-13**: Reconfirmed all 7 teams in a completely separate, brand-new Claude Code session (reproducibility verified — not a fluke). Found and fixed a bug where the import feature's dangerous-command detector missed `.exe`-suffixed/uppercase commands. Ran a follow-up security review and re-confirmed safety via a live CLI run.
 - **2026-07-12**: Confirmed all 7 teams install and respond correctly in a real Claude Code session (not a mockup). Found that `/reload-plugins` applies new plugins without a full restart, updated Step 5 accordingly. Fixed 3 minor bugs, ran a security review.
 - **2026-07-11**: Added the security-audit team and devops team — 7 teams complete. Added Gemini CLI and Cursor role translation (beta).
 - **2026-07-06**: Install safety/security hardening (forced confirmation when installing a team file from someone else, more reliable rollback if install is interrupted, stronger confirmation for global operations)
