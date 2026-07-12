@@ -1,5 +1,9 @@
 node_modules/
 
+# 비밀정보(.env) — 현재 프로젝트는 미사용이지만 향후 실수 방지용 사전 등록
+.env
+.env.*
+
 # AgentRoster (백업·비밀 포함 가능 — Git에 올리지 않음)
 .agentroster/
 
