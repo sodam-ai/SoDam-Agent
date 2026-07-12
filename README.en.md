@@ -365,7 +365,7 @@ Add marketplace (once) → Install teams/tool (/plugin install) → Restart
 - **Installed plugin cache** (managed automatically by Claude Code): `~/.claude/plugins/cache/`
 - **Agents you create**: `<project>/.claude/agents/<name>.md` (global save: `~/.claude/agents/`)
 - **This repository's structure**:
-  - `.claude-plugin/marketplace.json` — marketplace catalog (6 teams, all registered)
+  - `.claude-plugin/marketplace.json` — marketplace catalog (8 plugins — 7 teams + the agent-management tool, all registered)
   - `plugins/<team>/.claude-plugin/plugin.json` — team metadata
   - `plugins/<team>/agents/<role>.md` — one AI teammate (description + instructions)
   - `plugins/<team>/.mcp.json` — the team's tool (MCP) config (web-app · research)
