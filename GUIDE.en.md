@@ -6,8 +6,9 @@
 > Jargon is kept to a minimum, and any term is explained **in one line, right there**.
 
 <details open>
-<summary>📋 <b>Update summary</b> (as of 2026-07-11 — click to collapse)</summary>
+<summary>📋 <b>Update summary</b> (as of 2026-07-12 — click to collapse)</summary>
 
+- **2026-07-12**: Confirmed all 7 teams install and respond correctly in a real Claude Code session (not a mockup). Found that `/reload-plugins` applies new plugins without a full restart, updated Step 5 accordingly. Fixed 3 minor bugs, ran a security review.
 - **2026-07-11**: Added the security-audit team and devops team — 7 teams complete. Added Gemini CLI and Cursor role translation (beta).
 - **2026-07-06**: Install safety/security hardening (forced confirmation when installing a team file from someone else, more reliable rollback if install is interrupted, stronger confirmation for global operations)
 - **2026-07-04**: Fixed a tool-permission (allow/deny list) bug
@@ -81,9 +82,13 @@ To **create and train your own agents**, also install:
 /plugin install sodam-agent@sodamagent-marketplace
 ```
 
-### Step 5 · ⭐ Restart — the most important step!
-👉 Type `/exit` to quit, then open `claude` again. (Or fully close and reopen the window.)
-> **Why?** Plugins are **loaded once when Claude Code starts**. So **before a restart**, the agents/commands you just installed **won't appear.** (This is the most common gotcha!)
+### Step 5 · ⭐ Load what you just installed — the most important step!
+👉 **Type this first** (no full quit/reopen needed — confirmed to work by real testing):
+```
+/reload-plugins
+```
+> **Why?** Plugins are **loaded once at startup or reload**. So **before that**, the agents/commands you just installed **won't appear.** (This is the most common gotcha!)
+> Still nothing? Type `/exit` to quit, then open `claude` again (or fully close and reopen the window).
 
 ---
 
@@ -162,7 +167,7 @@ If you installed `sodam-agent` in Step 4 and restarted, type `/sodam-agent:` to 
 
 | If this happens | Why? | Do this |
 |---|---|---|
-| Installed but `/agents`·`/sodam-agent:` show **nobody** | You **didn't restart** | **Quit and reopen Claude Code** (`/exit` → `claude`). Still missing? `/reload-plugins` |
+| Installed but `/agents`·`/sodam-agent:` show **nobody** | You **didn't reload** | Try `/reload-plugins` first. Still missing? **Quit and reopen Claude Code** (`/exit` → `claude`) |
 | `/sodam-agent` shows **unrelated stuff** (team-agents, etc.) | `sodam-agent` not installed or no restart | `/plugin install sodam-agent@sodamagent-marketplace` → **restart**. Type `/sodam-agent:` with the colon |
 | `marketplace add` says "not found" | GitHub propagation delay / typo | Retry in **1–2 min**. Still failing? `/plugin marketplace remove sodam-ai` then add again |
 | `/plugin` does nothing | Old Claude Code | **Update Claude Code** to the latest |

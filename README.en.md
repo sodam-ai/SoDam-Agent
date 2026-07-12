@@ -41,8 +41,9 @@
 **Available now**: 7 teams (web app · docs · research · marketing · data · security audit · devops) + the agent-management tool (`sodam-agent`) + Codex / Gemini CLI / Cursor role translation (beta)
 
 <details open>
-<summary>📋 <b>Recent major changes</b> (as of 2026-07-11 — click to collapse)</summary>
+<summary>📋 <b>Recent major changes</b> (as of 2026-07-12 — click to collapse)</summary>
 
+- **2026-07-12**: Completed live verification — installed and called all 7 teams in a real Claude Code session, confirmed working (not a mockup; meets `01_PRD.md` success criterion #1). Fixed 3 bugs in `install`/`export`/`list` around empty-string input handling. Confirmed `/reload-plugins` applies new plugins without a full restart and updated Step 5 accordingly. Corrected stale team-count wording (5→7, 6→8) across the docs. Ran a security review (OWASP-informed) and pre-registered `.env` in `.gitignore`.
 - **2026-07-11**: Added the security-audit team and devops team — 7 teams complete. Also added Gemini CLI and Cursor role translation (beta).
 - **2026-07-06**: Found and fixed installed copies silently running stale (pre-fix) code + repaired the plugin version-bump process so future updates actually take effect · closed a gap where installing a team file from someone else could skip confirmation · hardened rollback so it stays reliable even if the process is killed mid-install · added a typed-"YES" confirmation gate for global (all-folder) install/rollback · fixed `npm audit` so it can actually run (result: 0 vulnerabilities) · fixed a latent bug in the preset-sync tool (would silently drop MCP servers beyond the first) · resolved 3 of 5 legal-review items (trademark, preset provenance, trademark boundary)
 - **2026-07-04**: Fixed subagent tool permissions (allow/deny lists) so they're applied correctly on the direct-CLI install path too (the marketplace-plugin install path was already correct). Corrected the "verified on Pro+" wording to "expected, not yet verified."
@@ -103,8 +104,9 @@ There are two methods. **For most people, Method A (marketplace)** is all you ne
    ```
    /plugin install sodam-agent@sodamagent-marketplace
    ```
-5. **Restart Claude Code (quit and reopen).**
-   - ⚠️ **The most common gotcha**: right after install, `/agents`·`/sodam-agent:` may **not appear** — plugins are **loaded once when Claude Code starts**. **Restart and they show up.**
+5. **Load what you just installed.**
+   - **Try this first**: `/reload-plugins` — no full quit/reopen needed, this alone applies it immediately (confirmed by real testing, 2026-07-12).
+   - ⚠️ **The most common gotcha**: right after install, `/agents`·`/sodam-agent:` may **not appear** — plugins are **loaded at startup or reload**. If `/reload-plugins` doesn't help, fall back to **fully quitting and reopening Claude Code**.
 
 > 💡 `@sodamagent-marketplace` is the marketplace's internal id — type it as-is (it's fine that it differs from the product name SoDam-Agent).
 
@@ -344,7 +346,7 @@ With `sodam-agent` installed, you can create and manage agents **inside Claude C
 | `/sodam-agent:save-agent` | Save / reuse an agent |
 | `/sodam-agent:pick-agent` | Copy a team agent into yours |
 | `/sodam-agent:remove-agent` | Delete an agent (backup + confirm) |
-| `/reload-plugins` | (Method B, during dev) reload after editing files |
+| `/reload-plugins` | Load newly installed/edited plugins **without a full restart** (try this first after step 5) |
 
 ---
 
@@ -378,7 +380,7 @@ Add marketplace (once) → Install teams/tool (/plugin install) → Restart
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| Installed but `/agents`·`/sodam-agent:` show **nothing** | **No restart** (plugins load at startup) | **Quit and reopen Claude Code**. Still missing? `/reload-plugins` |
+| Installed but `/agents`·`/sodam-agent:` show **nothing** | **Didn't reload** (plugins load at startup/reload) | Try `/reload-plugins` first. Still missing? **Quit and reopen Claude Code** |
 | `/sodam-agent` shows **unrelated stuff** (team-agents, etc.) | `sodam-agent` not installed or no restart | `/plugin install sodam-agent@sodamagent-marketplace` → **restart**. Type `/sodam-agent:` with the colon |
 | `marketplace add` says `Marketplace file not found` | The repo's **default branch has no marketplace file** | The publisher must set the **default branch to the marketplace branch** (done for this repo). Retry shortly |
 | No `/plugin` command | Old Claude Code | **Update Claude Code** to the latest (docs: code.claude.com) |

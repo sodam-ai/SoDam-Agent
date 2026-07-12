@@ -42,8 +42,9 @@
 **지금 설치할 수 있는 것**: 팀 7종(웹앱·문서·리서치·마케팅·데이터·보안 감사·DevOps) + 직원 관리 도구(`sodam-agent`) + Codex/Gemini CLI/Cursor 역할 번역(베타)
 
 <details open>
-<summary>📋 <b>최근 주요 변경</b> (2026-07-11 기준 — 누르면 접기)</summary>
+<summary>📋 <b>최근 주요 변경</b> (2026-07-12 기준 — 누르면 접기)</summary>
 
+- **2026-07-12**: 라이브 인식 검증 완료 — 실제 Claude Code에서 팀 7종 전부 설치·호출 성공(목업 아님, `01_PRD.md` 1번 성공 기준 충족). `install`·`export`·`list` 명령의 빈 문자열 입력 처리 버그 3건 수정. `/reload-plugins`가 완전 재시작 없이도 새 팀을 즉시 반영함을 확인해 5단계 안내에 반영. 문서 전반의 팀 개수 표기(5→7종, 6→8종) 오류 정정. 보안 점검(OWASP 기준) 수행, `.env` 사전 방어 등록.
 - **2026-07-11**: 보안 감사팀 · DevOps/배포팀 추가 — 팀 7종 완성. HTML 문서를 MD 원본과 동기화.
 - **2026-07-06**: 실사용 중이던 설치본이 최신 수정을 못 받던 문제 발견·수정 + 플러그인 버전 관리 규칙 정비(앞으로 업데이트가 실제로 반영되도록) · 남이 준 팀 파일을 설치할 때 확인을 건너뛸 수 있던 안전 구멍 차단 · 설치 도중 갑자기 꺼져도 되돌리기가 항상 되도록 보강 · 전역(모든 폴더 적용) 설치·되돌리기에 "YES" 직접 입력 확인 게이트 추가 · 의존성 취약점 점검(`npm audit`)이 실행되도록 수정(결과: 0건) · 프리셋 동기화 도구의 잠재 결함(MCP 2개 이상 시 일부 누락) 수정 · 법무 검토 3건 정리(상표·프리셋 출처·상표 경계)
 - **2026-07-04**: 서브에이전트 권한(도구 제한) 설정이 CLI 직접 설치 경로에서도 정확히 적용되도록 수정(마켓플레이스 설치 경로는 기존부터 정상). "Pro 이상 플랜에서 검증됨" 표기를 "검증 전, 예상"으로 정정.
@@ -104,8 +105,9 @@ Claude Code 안에서 **명령 몇 줄**이면 끝납니다. 터미널·폴더 �
    ```
    /plugin install sodam-agent@sodamagent-marketplace
    ```
-5. **Claude Code를 껐다 켭니다(재시작).**
-   - ⚠️ **가장 흔한 막힘 지점**: 설치 직후엔 `/agents`·`/sodam-agent:`가 **안 보일 수 있습니다.** 플러그인은 **켤 때 한 번 로드**되기 때문입니다. **재시작하면 보입니다.**
+5. **새로 설치한 걸 불러옵니다.**
+   - **먼저 이 명령부터 입력**: `/reload-plugins` — 완전히 껐다 켜지 않아도 이 명령 한 줄로 바로 반영됩니다(실제 확인됨, 2026-07-12).
+   - ⚠️ **가장 흔한 막힘 지점**: 설치 직후엔 `/agents`·`/sodam-agent:`가 **안 보일 수 있습니다.** 플러그인은 **켤 때(또는 재로드할 때) 한 번 로드**되기 때문입니다. `/reload-plugins`로도 안 보이면, Claude Code를 **완전히 껐다 켜기**(재시작)로 넘어가세요.
 
 > 💡 `@sodamagent-marketplace`는 마켓의 내부 식별자라 그대로 입력하면 됩니다(제품명 SoDam-Agent와 글자가 달라도 정상).
 
@@ -345,7 +347,7 @@ node bin/cli.mjs install web-app-team --target cursor --dir "C:\내\프로젝트
 | `/sodam-agent:save-agent` | 직원 저장·재사용 |
 | `/sodam-agent:pick-agent` | 팀 직원을 내 직원으로 복사 |
 | `/sodam-agent:remove-agent` | 직원 삭제(백업+확인) |
-| `/reload-plugins` | (방법 B 개발 중) 파일 수정 후 다시 불러오기 |
+| `/reload-plugins` | 새로 설치·수정한 플러그인을 **완전 재시작 없이** 바로 불러오기(설치 후 5단계에서 우선 시도) |
 
 ---
 
@@ -379,7 +381,7 @@ node bin/cli.mjs install web-app-team --target cursor --dir "C:\내\프로젝트
 
 | 증상 | 원인 | 해결 |
 |---|---|---|
-| 설치했는데 `/agents`·`/sodam-agent:`에 **아무것도 안 보임** | **재시작을 안 함** (플러그인은 켤 때 로드) | **Claude Code를 껐다 켜기**. 그래도 없으면 `/reload-plugins` |
+| 설치했는데 `/agents`·`/sodam-agent:`에 **아무것도 안 보임** | **새로 불러오기(reload)를 안 함** (플러그인은 켤 때·재로드 시 로드) | 먼저 `/reload-plugins` 입력. 그래도 없으면 **Claude Code를 껐다 켜기** |
 | `/sodam-agent` 쳤더니 **엉뚱한 팀(team-agents 등)만** 뜸 | `sodam-agent` 미설치 또는 미재시작 | `/plugin install sodam-agent@sodamagent-marketplace` → **재시작** |
 | `marketplace add`가 `Marketplace file not found` | 저장소 **기본 브랜치에 마켓 파일이 없음** | 게시자가 **기본 브랜치를 마켓 브랜치로** 설정해야 함(이 저장소는 설정 완료). 잠시 후 재시도 |
 | `/plugin` 명령이 없음 | Claude Code 구버전 | Claude Code를 **최신으로 업데이트**(문서: code.claude.com) |
