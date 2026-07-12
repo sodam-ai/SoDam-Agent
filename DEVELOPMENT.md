@@ -21,7 +21,7 @@ node test/e2e.mjs           # 자동 e2e 검증(설치·형식·병합·멱등�
 
 ## 구조
 ```
-agentroster/
+SoDam-Agent/
 ├── bin/
 │   ├── cli.mjs            # 진입점
 │   └── 시작하기.bat        # Windows 더블클릭 진입(ASCII·CRLF)
@@ -30,12 +30,12 @@ agentroster/
 │   ├── ui.mjs            # 출력·입력(번호 메뉴) — 후속: @clack/prompts 화살표 메뉴
 │   ├── validate.mjs      # 이름 화이트리스트·프리셋 스키마 검증(보안)
 │   ├── paths.mjs         # 설치 대상 경로(프로젝트 스코프)
-│   ├── presets.mjs       # 프리셋 5종(web-app/docs/research/data/marketing)
+│   ├── presets.mjs       # 프리셋 7종(web-app/docs/research/data/marketing/security-audit/devops)
 │   ├── install.mjs       # 미리보기(plan) → 적용(apply), MCP 병합
 │   ├── backup.mjs        # 백업·되돌리기(추가 파일 정확 삭제)
 │   └── doctor.mjs        # 환경 진단
 ├── test/e2e.mjs
-└── .PRD/                 # 설계 문서(01_PRD ~ 04_PROJECT_SPEC)
+└── .PRD/                 # 설계 문서(01_PRD ~ 07_ISSUE, README·RESEARCH_SOURCES 포함, 9개)
 ```
 
 ## 설계 원칙 (PRD 발췌)
