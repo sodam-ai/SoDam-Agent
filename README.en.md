@@ -30,6 +30,7 @@
 14. [Security & data flow](#14-security--data-flow)
 15. [Architecture](#15-architecture)
 16. [FAQ (frequently asked questions)](#16-faq-frequently-asked-questions)
+17. [Community Sharing Directory (optional)](#17-community-sharing-directory-optional)
 - ✨ [Using it in Codex too (role translation · beta)](#using-it-in-codex-too-role-translation--beta)
 - ✨ [Using it in Gemini CLI too (role translation · beta)](#using-it-in-gemini-cli-too-role-translation--beta)
 - ✨ [Using it in Cursor too (role translation · beta)](#using-it-in-cursor-too-role-translation--beta)
@@ -41,8 +42,9 @@
 **Available now**: 7 teams (web app · docs · research · marketing · data · security audit · devops) + the agent-management tool (`sodam-agent`) + Codex / Gemini CLI / Cursor role translation (beta)
 
 <details open>
-<summary>📋 <b>Recent major changes</b> (as of 2026-07-13 — click to collapse)</summary>
+<summary>📋 <b>Recent major changes</b> (as of 2026-07-15 — click to collapse)</summary>
 
+- **2026-07-15**: Added Phase 1 of the community sharing directory (optional) — register and browse teams via a `community/index.json` catalog and GitHub Pull Requests, with no server or accounts. See [§17](#17-community-sharing-directory-optional).
 - **2026-07-13**: Reconfirmed all 7 teams in a completely separate, brand-new Claude Code session (reproducibility verified — not a fluke). Found and fixed a bug where the import feature's dangerous-command detector missed `.exe`-suffixed/uppercase commands (e.g. `cmd.exe`). Ran a follow-up OWASP-informed security review (secrets, randomness, error exposure, dependencies all checked) and re-confirmed safety with a live CLI run against a synthetic malicious file.
 - **2026-07-12**: Completed live verification — installed and called all 7 teams in a real Claude Code session, confirmed working (not a mockup; meets `01_PRD.md` success criterion #1). Fixed 3 bugs in `install`/`export`/`list` around empty-string input handling. Confirmed `/reload-plugins` applies new plugins without a full restart and updated Step 5 accordingly. Corrected stale team-count wording (5→7, 6→8) across the docs. Ran a security review (OWASP-informed) and pre-registered `.env` in `.gitignore`.
 - **2026-07-11**: Added the security-audit team and devops team — 7 teams complete. Also added Gemini CLI and Cursor role translation (beta).
@@ -555,6 +557,23 @@ sodam-ai/SoDam-Agent (GitHub)
 
 **Q. Is it OK if context7 is missing?**
 > Perfectly fine. Without context7, AI agents can't look up live library docs, but all other functions work normally. Agents are usable even without Node.js or in offline environments.
+
+---
+
+## 17. Community Sharing Directory (optional)
+
+The simplest way to browse teams other users have built, or share your own. **No server, no sign-up, no login** — just one catalog file in this GitHub repo and GitHub's own Pull Request feature.
+
+- **Browse**: open [`community/index.json`](./community/index.json) to see the list of registered teams (name, description, source link).
+- **Register**:
+  1. Run `node bin/cli.mjs export <team-name>` to export your team as a file (`*.agentroster.json`).
+  2. Upload that file to your own GitHub gist or repo (this repo does not store team files directly, to avoid accumulating files of unknown origin).
+  3. Send a **Pull Request** adding a name/description/link to your gist or repo in `community/index.json`.
+  4. The repo maintainer reviews and merges it.
+
+> ⚠️ Files behind these links were still made by someone else — SoDam-Agent automatically runs schema validation and dangerous-command warnings when you install (import) a team, but **always double-check what you're installing.**
+
+This is an early stage, so no teams are registered yet.
 
 ---
 
