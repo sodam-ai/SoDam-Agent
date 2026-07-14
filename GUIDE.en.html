@@ -186,17 +186,17 @@ right there</strong>.</p>
 <summary>📋 <b>Update summary</b> (as of 2026-07-13 — click to collapse)</summary>
 
 <ul>
-<li><strong>2026-07-13</strong>: Reconfirmed all 7 teams in a
-completely separate, brand-new Claude Code session (reproducibility
-verified — not a fluke). Found and fixed a bug where the import
-feature's dangerous-command detector missed <code>.exe</code>-suffixed/uppercase
-commands. Ran a follow-up security review and re-confirmed safety via
-a live CLI run.</li>
+<li><strong>2026-07-13</strong>: Reconfirmed all 7 teams in a completely
+separate, brand-new Claude Code session (reproducibility verified — not
+a fluke). Found and fixed a bug where the import feature's
+dangerous-command detector missed <code>.exe</code>-suffixed/uppercase
+commands. Ran a follow-up security review and re-confirmed safety via a
+live CLI run.</li>
 <li><strong>2026-07-12</strong>: Confirmed all 7 teams install and
 respond correctly in a real Claude Code session (not a mockup). Found
 that <code>/reload-plugins</code> applies new plugins without a full
-restart, updated Step 5 accordingly. Fixed 3 minor bugs, ran a
-security review.</li>
+restart, updated Step 5 accordingly. Fixed 3 minor bugs, ran a security
+review.</li>
 <li><strong>2026-07-11</strong>: Added the security-audit team and
 devops team — 7 teams complete. Added Gemini CLI and Cursor role
 translation (beta).</li>
@@ -316,18 +316,19 @@ again.</p>
 <p>To <strong>create and train your own agents</strong>, also
 install:</p>
 <pre><code>/plugin install sodam-agent@sodamagent-marketplace</code></pre>
-<h3 id="step-5--star-load-what-you-just-installed--the-most-important-step">Step
+<h3
+id="step-5--star-load-what-you-just-installed--the-most-important-step">Step
 5 · ⭐ Load what you just installed — the most important step!</h3>
 <p>👉 <strong>Type this first</strong> (no full quit/reopen needed —
 confirmed to work by real testing):</p>
 <pre><code>/reload-plugins</code></pre>
 <blockquote>
 <p><strong>Why?</strong> Plugins are <strong>loaded once at startup or
-reload</strong>. So <strong>before that</strong>, the
-agents/commands you just installed <strong>won't appear.</strong> (This
-is the most common gotcha!)</p>
-<p>Still nothing? Type <code>/exit</code> to quit, then open
-<code>claude</code> again (or fully close and reopen the window).</p>
+reload</strong>. So <strong>before that</strong>, the agents/commands
+you just installed <strong>won't appear.</strong> (This is the most
+common gotcha!) Still nothing? Type <code>/exit</code> to quit, then
+open <code>claude</code> again (or fully close and reopen the
+window).</p>
 </blockquote>
 <hr />
 <h2 id="3-verify-it-worked">3. Verify it worked</h2>
@@ -423,8 +424,8 @@ cases)</h2>
 <td>Installed but <code>/agents</code>·<code>/sodam-agent:</code> show
 <strong>nobody</strong></td>
 <td>You <strong>didn't reload</strong></td>
-<td>Try <code>/reload-plugins</code> first. Still missing?
-<strong>Quit and reopen Claude Code</strong> (<code>/exit</code> →
+<td>Try <code>/reload-plugins</code> first. Still missing? <strong>Quit
+and reopen Claude Code</strong> (<code>/exit</code> →
 <code>claude</code>)</td>
 </tr>
 <tr>
@@ -509,12 +510,12 @@ free tier, but policies can change.)</li>
 copying, and redistribution allowed (keep copyright notices, state
 changes, preserve NOTICE). See
 <code>LICENSE</code>·<code>NOTICE</code>.</li>
-<li>"Claude Code"·"Anthropic"·"Codex"·"OpenAI"·"Gemini"·"Google"·"Cursor"·"Context7"
-etc. are their companies' names (trademarks);
-<strong>SoDam-Agent is unofficial, not affiliated with, sponsored by,
-or endorsed by any of them.</strong> Whether the name "SoDam-Agent" is
-registrable as a trademark is undetermined — verify before commercial
-use.</li>
+<li>"Claude
+Code"·"Anthropic"·"Codex"·"OpenAI"·"Gemini"·"Google"·"Cursor"·"Context7"
+etc. are their companies' names (trademarks); <strong>SoDam-Agent is
+unofficial, not affiliated with, sponsored by, or endorsed by any of
+them.</strong> Whether the name "SoDam-Agent" is registrable as a
+trademark is undetermined — verify before commercial use.</li>
 <li>Agent instructions/templates are <strong>self-authored</strong> and
 some text may be <strong>AI-generated</strong>. Review before sensitive
 commercial use.</li>
@@ -559,6 +560,89 @@ roles.</p>
 folder</strong> (elsewhere it can't read <code>AGENTS.md</code>). And
 Codex follows the roles as "instructions" — it's not several agents
 running at once (that's normal).</p>
+</blockquote>
+<hr />
+<h2
+id="optional-using-it-in-gemini-cli-too--role-translation-beta">(Optional)
+Using it in Gemini CLI too — role translation (beta)</h2>
+<p>If you also use <strong>Gemini CLI</strong> (Google's AI coding
+tool), you can build the same team for it too.</p>
+<blockquote>
+<p>Honestly: Gemini CLI uses a different tool-name scheme than Claude
+Code (e.g. <code>read_file</code> vs <code>Read</code>). Mapping them
+without a verified table risks breaking things, so this version
+generates roles with <strong>full tool inheritance, no
+restrictions</strong> (beta).</p>
+</blockquote>
+<blockquote>
+<p>⚠️ This <strong>one</strong> thing needs a <strong>black
+terminal</strong> (unlike plugin install), same as Codex.</p>
+</blockquote>
+<p><strong>Prerequisites</strong>: ① a downloaded copy of this project
+(see section 10) ② <strong>Node.js</strong> (LTS from nodejs.org)</p>
+<p><strong>How</strong> — from the downloaded SoDam-Agent folder, in a
+terminal, one line (put your Gemini CLI project folder in
+<code>--dir</code>):</p>
+<pre><code>node bin/cli.mjs install web-app-team --target gemini --dir &quot;C:\my_gemini_project_folder&quot;</code></pre>
+<p>🖥️ It previews what will be created and asks → say yes, and that
+folder gets <strong><code>.gemini/agents/&lt;role&gt;.md</code></strong>
+files (one per role).</p>
+<ul>
+<li>Swap the team for
+<code>docs-team</code>·<code>research-team</code>.</li>
+<li>If you need the doc-search tool (context7), paste the
+<strong>mcpServers snippet shown at install into whichever role file you
+want</strong>.</li>
+</ul>
+<p><strong>How to use</strong>: open <strong>Gemini CLI in that
+folder</strong>; it recognizes the roles under
+<code>.gemini/agents/</code> as subagents.</p>
+<blockquote>
+<p>If it doesn't work: make sure you opened Gemini CLI <strong>in that
+folder</strong> (elsewhere it can't read them). Tools/permissions being
+wide open is expected — this version doesn't add restrictions (beta
+limitation).</p>
+</blockquote>
+<hr />
+<h2
+id="optional-using-it-in-cursor-too--role-translation-beta">(Optional)
+Using it in Cursor too — role translation (beta)</h2>
+<p>If you also use <strong>Cursor</strong> (another AI coding editor),
+you can build the same team for it too.</p>
+<blockquote>
+<p>Honestly: Cursor's rules (<code>.cursor/rules</code>) aren't a "call
+this employee" concept. So like Codex, this <strong>"translates" each
+role into a description inside <code>AGENTS.md</code></strong> rather
+than the same team (beta).</p>
+</blockquote>
+<blockquote>
+<p>⚠️ This <strong>one</strong> thing needs a <strong>black
+terminal</strong> (unlike plugin install), same as Codex and Gemini
+CLI.</p>
+</blockquote>
+<p><strong>Prerequisites</strong>: ① a downloaded copy of this project
+(see section 10) ② <strong>Node.js</strong> (LTS from nodejs.org)</p>
+<p><strong>How</strong> — from the downloaded SoDam-Agent folder, in a
+terminal, one line (put your Cursor project folder in
+<code>--dir</code>):</p>
+<pre><code>node bin/cli.mjs install web-app-team --target cursor --dir &quot;C:\my_cursor_project_folder&quot;</code></pre>
+<p>🖥️ It previews what will be created and asks → say yes, and that
+folder gets <strong><code>AGENTS.md</code></strong> (role descriptions),
+and <strong><code>.cursor/mcp.json</code> gets the doc-search (context7)
+tool connected automatically</strong> (unlike Codex/Gemini, no manual
+pasting needed).</p>
+<ul>
+<li>Swap the team for
+<code>docs-team</code>·<code>research-team</code>.</li>
+</ul>
+<p><strong>How to use</strong>: open <strong>Cursor in that
+folder</strong>; it reads <code>AGENTS.md</code> and refers to the role
+descriptions.</p>
+<blockquote>
+<p>If it doesn't work: make sure you opened Cursor <strong>in that
+folder</strong> (elsewhere it can't read <code>AGENTS.md</code>).
+Cursor's rules are reference-only — unlike Claude Code, you don't
+call/summon an employee (that's normal).</p>
 </blockquote>
 <hr />
 <h2
@@ -639,6 +723,12 @@ href="./DEVELOPMENT.md">DEVELOPMENT.md</a>.</td>
 <td><strong>What if context7 is missing?</strong></td>
 <td>Agents still work — only live library doc lookup is
 unavailable.</td>
+</tr>
+<tr>
+<td><strong><code>/doctor</code> shows <code>context7 skipped</code> —
+is that OK?</strong></td>
+<td>Yes. Multiple teams bundle the same tool; only one gets activated.
+No functional impact.</td>
 </tr>
 <tr>
 <td><strong>Can I share my agents?</strong></td>

@@ -199,10 +199,9 @@ as-is.</li>
 </blockquote>
 <hr />
 <h2 id="bookmark_tabs-table-of-contents">📑 Table of Contents</h2>
-<ol type="1" start="0">
-<li value="0"><a
-href="#0-current-version-status--update-summary">Current version status
-· update summary</a></li>
+<ol start="0" type="1">
+<li><a href="#0-current-version-status--update-summary">Current version
+status · update summary</a></li>
 <li><a href="#1-what-is-sodam-agent-in-plain-words">What is SoDam-Agent?
 (in plain words)</a></li>
 <li><a href="#2-prerequisites--required-programs">Prerequisites &amp;
@@ -227,43 +226,51 @@ Copyright · Commercial use</a></li>
 <li><a href="#15-architecture">Architecture</a></li>
 <li><a href="#16-faq-frequently-asked-questions">FAQ (frequently asked
 questions)</a></li>
+<li><a href="#17-community-sharing-directory-optional">Community Sharing
+Directory (optional)</a></li>
 </ol>
 <ul>
 <li>✨ <a href="#using-it-in-codex-too-role-translation--beta">Using it
 in Codex too (role translation · beta)</a></li>
-<li>✨ <a href="#using-it-in-gemini-cli-too-role-translation--beta">Using
-it in Gemini CLI too (role translation · beta)</a></li>
+<li>✨ <a
+href="#using-it-in-gemini-cli-too-role-translation--beta">Using it in
+Gemini CLI too (role translation · beta)</a></li>
 <li>✨ <a href="#using-it-in-cursor-too-role-translation--beta">Using it
 in Cursor too (role translation · beta)</a></li>
 </ul>
 <hr />
-<h2 id="0-current-version-status--update-summary">0. Current version
-status · update summary</h2>
+<h2 id="0-current-version-status--update-summary">0. Current version status · update summary</h2>
+
 <p><strong>Available now</strong>: 7 teams (web app · docs · research ·
 marketing · data · security audit · devops) + the agent-management tool
 (<code>sodam-agent</code>) + Codex / Gemini CLI / Cursor role
 translation (beta)</p>
 <details open>
-<summary>📋 <b>Recent major changes</b> (as of 2026-07-13 — click to
-collapse)</summary>
+<summary>📋 <b>Recent major changes</b> (as of 2026-07-15 — click to collapse)</summary>
+
 <ul>
-<li><strong>2026-07-13</strong>: Reconfirmed all 7 teams in a
-completely separate, brand-new Claude Code session (reproducibility
-verified — not a fluke). Found and fixed a bug where the import
-feature's dangerous-command detector missed <code>.exe</code>-suffixed/uppercase
+<li><strong>2026-07-15</strong>: Added Phase 1 of the community sharing
+directory (optional) — register and browse teams via a
+<code>community/index.json</code> catalog and GitHub Pull Requests, with
+no server or accounts. See <a
+href="#17-community-sharing-directory-optional">§17</a>.</li>
+<li><strong>2026-07-13</strong>: Reconfirmed all 7 teams in a completely
+separate, brand-new Claude Code session (reproducibility verified — not
+a fluke). Found and fixed a bug where the import feature's
+dangerous-command detector missed <code>.exe</code>-suffixed/uppercase
 commands (e.g. <code>cmd.exe</code>). Ran a follow-up OWASP-informed
-security review (secrets, randomness, error exposure, dependencies
-all checked) and re-confirmed safety with a live CLI run against a
-synthetic malicious file.</li>
-<li><strong>2026-07-12</strong>: Completed live verification —
-installed and called all 7 teams in a real Claude Code session,
-confirmed working (not a mockup). Fixed 3 bugs in
-<code>install</code>/<code>export</code>/<code>list</code> around
-empty-string input handling. Confirmed <code>/reload-plugins</code>
-applies new plugins without a full restart and updated the install
-steps accordingly. Corrected stale team-count wording across the docs.
-Ran a security review, pre-registered <code>.env</code> in
-<code>.gitignore</code>.</li>
+security review (secrets, randomness, error exposure, dependencies all
+checked) and re-confirmed safety with a live CLI run against a synthetic
+malicious file.</li>
+<li><strong>2026-07-12</strong>: Completed live verification — installed
+and called all 7 teams in a real Claude Code session, confirmed working
+(not a mockup; meets <code>01_PRD.md</code> success criterion #1). Fixed
+3 bugs in <code>install</code>/<code>export</code>/<code>list</code>
+around empty-string input handling. Confirmed
+<code>/reload-plugins</code> applies new plugins without a full restart
+and updated Step 5 accordingly. Corrected stale team-count wording (5→7,
+6→8) across the docs. Ran a security review (OWASP-informed) and
+pre-registered <code>.env</code> in <code>.gitignore</code>.</li>
 <li><strong>2026-07-11</strong>: Added the security-audit team and
 devops team — 7 teams complete. Also added Gemini CLI and Cursor role
 translation (beta).</li>
@@ -293,6 +300,7 @@ role translation (beta).</li>
 the agent-management tool (<code>sodam-agent</code>).</li>
 </ul>
 </details>
+
 <p>This is a human-readable summary. For the full, itemized history see
 the <a href="https://github.com/sodam-ai/SoDam-Agent/commits/">GitHub
 commit log</a>.</p>
@@ -382,13 +390,13 @@ create &amp; train your own agents:
 <li><strong>Load what you just installed.</strong>
 <ul>
 <li><strong>Try this first</strong>: <code>/reload-plugins</code> — no
-full quit/reopen needed, this alone applies it immediately (confirmed
-by real testing, 2026-07-12).</li>
+full quit/reopen needed, this alone applies it immediately (confirmed by
+real testing, 2026-07-12).</li>
 <li>⚠️ <strong>The most common gotcha</strong>: right after install,
 <code>/agents</code>·<code>/sodam-agent:</code> may <strong>not
 appear</strong> — plugins are <strong>loaded at startup or
-reload</strong>. If <code>/reload-plugins</code> doesn't help, fall
-back to <strong>fully quitting and reopening Claude Code</strong>.</li>
+reload</strong>. If <code>/reload-plugins</code> doesn't help, fall back
+to <strong>fully quitting and reopening Claude Code</strong>.</li>
 </ul></li>
 </ol>
 <blockquote>
@@ -642,6 +650,200 @@ Codex</strong> / check Node.js is installed</td>
 vary by tool/version).</p>
 </blockquote>
 <hr />
+<h2 id="using-it-in-gemini-cli-too-role-translation--beta">Using it in
+Gemini CLI too (role translation · beta)</h2>
+<p>Like Codex, you can also use the same team in <strong>Gemini CLI
+(Google's AI coding tool)</strong>. Gemini CLI's structure is closer to
+Claude Code's (one role = one file), so the mapping is more direct than
+Codex's — but <strong>honestly</strong>: this version generates roles
+with <strong>full tool inheritance</strong> (no restrictions), because
+Gemini's tool-name scheme differs from Claude Code's (e.g.
+<code>read_file</code> vs <code>Read</code>), and restricting tools
+without a verified mapping risks producing broken output.</p>
+<blockquote>
+<p>⚠️ <strong>This feature alone needs a terminal</strong> (unlike
+plugin install), same as Codex.</p>
+</blockquote>
+<p><strong>Prerequisites</strong></p>
+<ul>
+<li>A downloaded copy of this repo</li>
+<li><strong>Node.js 18+</strong> (needed to run the CLI — <a
+href="https://nodejs.org">nodejs.org</a> LTS)</li>
+</ul>
+<p><strong>How to install</strong> — from the downloaded SoDam-Agent
+folder, targeting the project folder you'll use with Gemini CLI:</p>
+<pre><code>node bin/cli.mjs install web-app-team --target gemini --dir &quot;C:\my\project\folder&quot;</code></pre>
+<ul>
+<li>Omit <code>--dir</code> to use the <strong>current folder</strong>.
+· Swap the team for
+<code>docs-team</code>·<code>research-team</code>.</li>
+<li>It shows a <strong>preview of what will be created</strong> and asks
+for confirmation (<code>--yes</code> to skip).</li>
+</ul>
+<p><strong>What gets created (file locations)</strong></p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Location</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;role&gt;.md</code></td>
+<td><code>.gemini/agents/&lt;role&gt;.md</code></td>
+<td>Per-role subagent Gemini CLI reads (one role = one file, similar to
+Claude Code)</td>
+</tr>
+<tr>
+<td>MCP config (mcpServers)</td>
+<td>pasted into each role file yourself</td>
+<td>Tools like doc search (context7). <strong>Not touched
+automatically</strong> — paste the printed snippet into whichever role
+file you want</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>If a role file already exists, it is <strong>backed up to
+<code>.bak</code></strong> before writing (safe).</p>
+</blockquote>
+<p><strong>How to use</strong></p>
+<ul>
+<li>Run <strong>Gemini CLI in that folder</strong>; it recognizes the
+roles under <code>.gemini/agents/</code> as subagents.</li>
+<li>For doc search (context7), paste the <strong>mcpServers snippet
+shown at install into the frontmatter of whichever role file you
+want</strong>.</li>
+</ul>
+<p><strong>Troubleshooting</strong></p>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gemini CLI can't find the roles</td>
+<td>Make sure you ran Gemini CLI <strong>in that folder</strong>
+(elsewhere it can't read <code>.gemini/agents/</code>)</td>
+</tr>
+<tr>
+<td>The doc-search tool is missing</td>
+<td>Add the mcpServers snippet to a role file, then restart Gemini CLI /
+check Node.js is installed</td>
+</tr>
+<tr>
+<td>Tools/permissions are wide open</td>
+<td>That's expected — this version doesn't generate tool restrictions
+(beta limitation, see above)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🔎 Verify recognition in your actual Gemini CLI runtime once
+(behavior may vary by tool/version).</p>
+</blockquote>
+<hr />
+<h2 id="using-it-in-cursor-too-role-translation--beta">Using it in
+Cursor too (role translation · beta)</h2>
+<p>Like Codex and Gemini CLI, you can also use the same team in
+<strong>Cursor (another AI coding editor)</strong>. Cursor's
+<code>.cursor/rules</code> isn't a "callable role (subagent)" concept
+like Claude Code — it's context injected automatically/manually based on
+conditions (confirmed from official docs). So, like Codex, this
+<strong>"translates" each role into a "mode" description inside
+<code>AGENTS.md</code></strong> rather than "the same team" (beta).</p>
+<blockquote>
+<p>⚠️ <strong>This feature alone needs a terminal</strong> (unlike
+plugin install), same as Codex and Gemini CLI.</p>
+</blockquote>
+<p><strong>Prerequisites</strong></p>
+<ul>
+<li>A downloaded copy of this repo</li>
+<li><strong>Node.js 18+</strong> (needed to run the CLI — <a
+href="https://nodejs.org">nodejs.org</a> LTS)</li>
+</ul>
+<p><strong>How to install</strong> — from the downloaded SoDam-Agent
+folder, targeting the project folder you'll use with Cursor:</p>
+<pre><code>node bin/cli.mjs install web-app-team --target cursor --dir &quot;C:\my\project\folder&quot;</code></pre>
+<ul>
+<li>Omit <code>--dir</code> to use the <strong>current folder</strong>.
+· Swap the team for
+<code>docs-team</code>·<code>research-team</code>.</li>
+<li>It shows a <strong>preview of what will be created</strong> and asks
+for confirmation (<code>--yes</code> to skip).</li>
+</ul>
+<p><strong>What gets created (file locations)</strong></p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Location</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AGENTS.md</code></td>
+<td>project folder root</td>
+<td>The <strong>role descriptions</strong> Cursor reads (roles =
+"modes")</td>
+</tr>
+<tr>
+<td>MCP config</td>
+<td><code>.cursor/mcp.json</code></td>
+<td>Tools like doc search (context7). <strong>Unlike Codex/Gemini, this
+one connects automatically</strong> (after your confirmation, existing
+config preserved)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>If an <code>AGENTS.md</code> already exists, it is <strong>backed up
+to <code>AGENTS.md.bak</code></strong> before writing (safe).</p>
+</blockquote>
+<p><strong>How to use</strong></p>
+<ul>
+<li>Run <strong>Cursor in that folder</strong>; it reads
+<code>AGENTS.md</code> and uses the role descriptions as context.</li>
+<li>MCP is already connected in <code>.cursor/mcp.json</code> at install
+time — no extra step needed.</li>
+</ul>
+<p><strong>Troubleshooting</strong></p>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cursor ignores the roles</td>
+<td>Make sure you ran Cursor <strong>in that folder</strong> (elsewhere
+it can't read <code>AGENTS.md</code>)</td>
+</tr>
+<tr>
+<td>The doc-search tool is missing</td>
+<td>Check <code>.cursor/mcp.json</code> has a context7 entry / verify
+Node.js is installed, then restart Cursor</td>
+</tr>
+<tr>
+<td>No callable "same team" subagents</td>
+<td>That's normal — Cursor's rules are reference context, not callable
+roles (beta limitation)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🔎 Verify recognition in your actual Cursor runtime once (behavior
+may vary by tool/version).</p>
+</blockquote>
+<hr />
 <h2 id="7-manage-your-own-agents-after-install-sodam-agent">7. Manage
 your own agents after install (sodam-agent)</h2>
 <p>With <code>sodam-agent</code> installed, you can create and manage
@@ -775,7 +977,8 @@ box</strong> (not a black terminal).</p>
 </tr>
 <tr>
 <td><code>/reload-plugins</code></td>
-<td>Load newly installed/edited plugins without a full restart (try this first after the restart step)</td>
+<td>Load newly installed/edited plugins <strong>without a full
+restart</strong> (try this first after step 5)</td>
 </tr>
 </tbody>
 </table>
@@ -798,7 +1001,7 @@ save: <code>~/.claude/agents/</code>)</li>
 <li><strong>This repository's structure</strong>:
 <ul>
 <li><code>.claude-plugin/marketplace.json</code> — marketplace catalog
-(6 teams, all registered)</li>
+(8 plugins — 7 teams + the agent-management tool, all registered)</li>
 <li><code>plugins/&lt;team&gt;/.claude-plugin/plugin.json</code> — team
 metadata</li>
 <li><code>plugins/&lt;team&gt;/agents/&lt;role&gt;.md</code> — one AI
@@ -810,10 +1013,10 @@ agent-management commands</li>
 </ul></li>
 <li><strong>Docs</strong>: <code>README.md</code> (KO) ·
 <code>README.en.md</code> (EN, this file) · <code>GUIDE.md</code> (KO
-beginner) · <code>GUIDE.en.md</code> (EN) — all 4 also have an
-identical <code>.html</code> copy (same content) · <code>LICENSE</code>
-· <code>NOTICE</code> (No PDF copies are provided — md/html is
-sufficient and keeps maintenance overhead down)</li>
+beginner) · <code>GUIDE.en.md</code> (EN) — all 4 also have an identical
+<code>.html</code> copy (same content) · <code>LICENSE</code> ·
+<code>NOTICE</code> (No PDF copies are provided — md/html is sufficient
+and keeps maintenance overhead down)</li>
 </ul>
 <hr />
 <h2 id="11-troubleshooting-symptom--cause--fix">11. Troubleshooting
@@ -831,8 +1034,8 @@ sufficient and keeps maintenance overhead down)</li>
 <td>Installed but <code>/agents</code>·<code>/sodam-agent:</code> show
 <strong>nothing</strong></td>
 <td><strong>Didn't reload</strong> (plugins load at startup/reload)</td>
-<td>Try <code>/reload-plugins</code> first. Still missing?
-<strong>Quit and reopen Claude Code</strong></td>
+<td>Try <code>/reload-plugins</code> first. Still missing? <strong>Quit
+and reopen Claude Code</strong></td>
 </tr>
 <tr>
 <td><code>/sodam-agent</code> shows <strong>unrelated stuff</strong>
@@ -900,6 +1103,14 @@ makes <em>your</em> installs unambiguous</td>
 href="https://nodejs.org">nodejs.org</a> / try another network</td>
 </tr>
 <tr>
+<td><code>/doctor</code> shows a <code>context7 ... skipped</code>
+warning</td>
+<td>Multiple teams bundle the same tool (context7); only one gets
+loaded</td>
+<td><strong>This is normal</strong> — the duplicate tool is deduped to
+one active copy, no functional impact</td>
+</tr>
+<tr>
 <td>Install fails behind corporate proxy/firewall</td>
 <td>Network blocked</td>
 <td>Try another network / ask admin to unblock</td>
@@ -958,17 +1169,16 @@ href="./NOTICE"><code>NOTICE</code></a>.</li>
 </ul></li>
 <li><strong>Copyright</strong>: © 2026 SoDam AI Studio.</li>
 <li><strong>Trademarks</strong>: "Claude Code"·"Claude"·"Anthropic" are
-trademarks of Anthropic, PBC; "Codex"·"OpenAI" are trademarks of
-OpenAI; "Gemini"·"Gemini CLI"·"Google" are trademarks of Google;
-"Cursor" is a trademark of Cursor (Anysphere); "Context7"·"Upstash"
-are trademarks of their respective owners. <strong>Any other
-product/service name mentioned in this document is also a trademark
-of its respective owner.</strong> <strong>SoDam-Agent is unofficial
-and not affiliated with, sponsored by, or endorsed by any of
-them.</strong> Trademarks are used
-<strong>nominatively</strong> only (no logos). Also, whether the name
-<strong>"SoDam-Agent"</strong> itself is registrable as a trademark is
-undetermined — check for conflicts with same/similar names
+trademarks of Anthropic, PBC; "Codex"·"OpenAI" are trademarks of OpenAI;
+"Gemini"·"Gemini CLI"·"Google" are trademarks of Google; "Cursor" is a
+trademark of Cursor (Anysphere); "Context7"·"Upstash" are trademarks of
+their respective owners. <strong>Any other product/service name
+mentioned in this document is also a trademark of its respective
+owner.</strong> <strong>SoDam-Agent is unofficial and not affiliated
+with, sponsored by, or endorsed by any of them.</strong> Trademarks are
+used <strong>nominatively</strong> only (no logos). Also, whether the
+name <strong>"SoDam-Agent"</strong> itself is registrable as a trademark
+is undetermined — check for conflicts with same/similar names
 yourself.</li>
 <li><strong>Commercial scope</strong>: under Apache-2.0,
 <strong>modification, copying, forking, redistribution, selling, running
@@ -1182,11 +1392,40 @@ library docs, but all other functions work normally. Agents are usable
 even without Node.js or in offline environments.</p>
 </blockquote>
 <hr />
+<h2 id="17-community-sharing-directory-optional">17. Community Sharing
+Directory (optional)</h2>
+<p>The simplest way to browse teams other users have built, or share
+your own. <strong>No server, no sign-up, no login</strong> — just one
+catalog file in this GitHub repo and GitHub's own Pull Request
+feature.</p>
+<ul>
+<li><strong>Browse</strong>: open <a
+href="./community/index.json"><code>community/index.json</code></a> to
+see the list of registered teams (name, description, source link).</li>
+<li><strong>Register</strong>:
+<ol type="1">
+<li>Run <code>node bin/cli.mjs export &lt;team-name&gt;</code> to export
+your team as a file (<code>*.agentroster.json</code>).</li>
+<li>Upload that file to your own GitHub gist or repo (this repo does not
+store team files directly, to avoid accumulating files of unknown
+origin).</li>
+<li>Send a <strong>Pull Request</strong> adding a name/description/link
+to your gist or repo in <code>community/index.json</code>.</li>
+<li>The repo maintainer reviews and merges it.</li>
+</ol></li>
+</ul>
+<blockquote>
+<p>⚠️ Files behind these links were still made by someone else —
+SoDam-Agent automatically runs schema validation and dangerous-command
+warnings when you install (import) a team, but <strong>always
+double-check what you're installing.</strong></p>
+</blockquote>
+<p>This is an early stage, so no teams are registered yet.</p>
+<hr />
 <blockquote>
 <p>📘 Easier walkthrough: <a href="./GUIDE.en.md">Beginner Guide
 (GUIDE.en.md)</a> · 🇰🇷 <a href="./README.md">한국어</a> · <a
-href="#14-security--data-flow">Security
-&amp; Data Flow</a> · <a
+href="#14-security--data-flow">Security &amp; Data Flow</a> · <a
 href="#16-faq-frequently-asked-questions">FAQ</a></p>
 </blockquote>
 </body>

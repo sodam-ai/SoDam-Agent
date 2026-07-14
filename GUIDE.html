@@ -188,14 +188,13 @@ href="./README.md">README(요약 설명서)</a></p>
 <li><strong>2026-07-13</strong>: 완전히 별개의 새 Claude Code 세션에서
 팀 7종 전부 재확인(재현성 검증 완료 — 우연이 아님). 가져오기(import)
 기능의 위험 명령 탐지가 <code>.exe</code> 확장자·대문자 명령을 놓치던
-버그 발견·수정. 보안 재점검 수행, 실제 CLI 실행으로 안전성
-재확인.</li>
+버그 발견·수정. 보안 재점검 수행, 실제 CLI 실행으로 안전성 재확인.</li>
 <li><strong>2026-07-12</strong>: 실제 Claude Code에서 팀 7종 전부
 설치·호출 성공 확인(목업 아님). <code>/reload-plugins</code>가 완전
-재시작 없이도 바로 반영됨을 확인해 5단계에 반영. 사소한 버그 3건
-수정, 보안 점검 수행.</li>
-<li><strong>2026-07-11</strong>: 보안 감사팀·DevOps/배포팀 추가로 팀
-7종 완성. Gemini CLI·Cursor 역할 번역(베타) 추가.</li>
+재시작 없이도 바로 반영됨을 확인해 5단계에 반영. 사소한 버그 3건 수정,
+보안 점검 수행.</li>
+<li><strong>2026-07-11</strong>: 보안 감사팀·DevOps/배포팀 추가로 팀 7종
+완성. Gemini CLI·Cursor 역할 번역(베타) 추가.</li>
 <li><strong>2026-07-06</strong>: 설치 안전성·보안 보강(남이 준 팀 파일
 설치 시 확인 강제, 설치 중단 시 되돌리기 안정성, 전역 작업 확인
 강화)</li>
@@ -246,8 +245,7 @@ href="./README.md">README(요약 설명서)</a></p>
 7종(웹앱·문서·리서치·마케팅·데이터·보안 감사·DevOps) + 직원 관리 도구 +
 Codex/Gemini CLI/Cursor 역할 번역(베타)까지 전부 설치 가능해요. 자세한
 변경 이력은 <a href="./README.md">README.md</a> 맨 위 "현재 버전 상태"
-안내를
-확인하세요.</p>
+안내를 확인하세요.</p>
 </blockquote>
 <hr />
 <h2 id="1-준비-딱-두-가지">1. 준비 (딱 두 가지)</h2>
@@ -307,15 +305,14 @@ GitHub 반영에 <strong>1~2분</strong> 걸릴 수 있어요. 잠깐 뒤 다시
 <pre><code>/plugin install sodam-agent@sodamagent-marketplace</code></pre>
 <h3 id="5단계--star-새로-설치한-걸-불러오기--가장-중요">5단계 · ⭐ 새로
 설치한 걸 불러오기 — 가장 중요!</h3>
-<p>👉 <strong>먼저 이걸 입력창에 치고 Enter</strong> (완전히 껐다
-켜지 않아도 바로 반영돼요, 실제 확인됨):</p>
+<p>👉 <strong>먼저 이걸 입력창에 치고 Enter</strong> (완전히 껐다 켜지
+않아도 바로 반영돼요, 실제 확인됨):</p>
 <pre><code>/reload-plugins</code></pre>
 <blockquote>
-<p><strong>왜?</strong> 플러그인은 <strong>켤 때(또는 다시 불러올
-때) 한 번</strong> 읽혀요. 그래서 <strong>그 전에는</strong> 방금 깐
-직원·명령이 <strong>안 보입니다.</strong> (가장 흔한 막힘
-지점이에요!)</p>
-<p>이래도 안 보이면: 입력창에 <code>/exit</code> 치고 나간 뒤 다시
+<p><strong>왜?</strong> 플러그인은 <strong>켤 때(또는 다시 불러올 때) 한
+번</strong> 읽혀요. 그래서 <strong>그 전에는</strong> 방금 깐
+직원·명령이 <strong>안 보입니다.</strong> (가장 흔한 막힘 지점이에요!)
+이래도 안 보이면: 입력창에 <code>/exit</code> 치고 나간 뒤 다시
 <code>claude</code> 로 켜세요(또는 창을 완전히 닫고 다시 열기).</p>
 </blockquote>
 <hr />
@@ -407,9 +404,8 @@ GitHub 반영에 <strong>1~2분</strong> 걸릴 수 있어요. 잠깐 뒤 다시
 <td>설치했는데 <code>/agents</code>·<code>/sodam-agent:</code>에
 <strong>아무도 안 보여요</strong></td>
 <td><strong>새로 불러오기(reload)를 안 함</strong></td>
-<td>먼저 <code>/reload-plugins</code> 입력. 그래도 없으면
-<strong>Claude Code를 껐다 켜기</strong>(<code>/exit</code> →
-<code>claude</code>)</td>
+<td>먼저 <code>/reload-plugins</code> 입력. 그래도 없으면 <strong>Claude
+Code를 껐다 켜기</strong>(<code>/exit</code> → <code>claude</code>)</td>
 </tr>
 <tr>
 <td><code>/sodam-agent</code> 쳤더니 <strong>엉뚱한
@@ -481,9 +477,10 @@ GitHub 반영에 <strong>1~2분</strong> 걸릴 수 있어요. 잠깐 뒤 다시
 <li><strong>Apache License 2.0</strong> — 상업적 사용·수정·복제·재배포가
 허용돼요(저작권 고지 유지·변경 표시·NOTICE 보존 조건). 자세한 건
 <code>LICENSE</code>·<code>NOTICE</code> 파일.</li>
-<li>"Claude Code"·"Anthropic"·"Codex"·"OpenAI"·"Gemini"·"Google"·"Cursor"·"Context7"
-등은 각 회사의 이름(상표)이고, <strong>SoDam-Agent는 그 어느
-회사와도 제휴·후원·보증 관계가 없는 비공식 도구</strong>예요. 제품명
+<li>"Claude
+Code"·"Anthropic"·"Codex"·"OpenAI"·"Gemini"·"Google"·"Cursor"·"Context7"
+등은 각 회사의 이름(상표)이고, <strong>SoDam-Agent는 그 어느 회사와도
+제휴·후원·보증 관계가 없는 비공식 도구</strong>예요. 제품명
 "SoDam-Agent"의 상표 등록 여부도 확정 전이니, 상업적 사용 전 직접
 확인하세요.</li>
 <li>직원 지시문·템플릿은 <strong>자체 제작</strong>이며 일부 문구가
@@ -527,6 +524,79 @@ Codex용으로도 만들 수 있어요.</p>
 확인하세요(다른 폴더면 <code>AGENTS.md</code>를 못 읽어요). 그리고
 Codex는 "지침"으로 따르는 거라, Claude Code처럼 여러 직원이 동시에 도는
 건 아니에요(정상).</p>
+</blockquote>
+<hr />
+<h2 id="선택-gemini-cli에서도-쓰기--역할-번역-베타">(선택) Gemini
+CLI에서도 쓰기 — 역할 번역 (베타)</h2>
+<p><strong>Gemini CLI</strong>(Google의 AI 코딩 도구)도 쓰신다면, 같은
+팀을 Gemini CLI용으로도 만들 수 있어요.</p>
+<blockquote>
+<p>솔직히 말하면: Gemini CLI는 도구(권한) 이름 체계가 Claude Code와
+달라요(예: <code>read_file</code> vs <code>Read</code>). 확실한 매핑표
+없이 함부로 옮기면 오히려 깨질 수 있어서, 이번 버전은 <strong>도구 제한
+없이 전체 상속</strong>으로 만들어요(베타).</p>
+</blockquote>
+<blockquote>
+<p>⚠️ 이것<strong>만</strong>은 <strong>검은 터미널</strong>이
+필요해요(플러그인 설치와 달라요). Codex와 마찬가지예요.</p>
+</blockquote>
+<p><strong>준비물</strong>: ① 이 프로젝트를 내려받은 폴더(아래 10번
+참고) ② <strong>Node.js</strong> (nodejs.org 에서 LTS)</p>
+<p><strong>하는 법</strong> — 내려받은 SoDam-Agent 폴더에서, 검은
+터미널에 한 줄 (Gemini CLI로 쓸 폴더를 <code>--dir</code> 에):</p>
+<pre><code>node bin/cli.mjs install web-app-team --target gemini --dir &quot;C:\Gemini로_쓸_내_프로젝트_폴더&quot;</code></pre>
+<p>🖥️ 무엇이 만들어질지 먼저 보여주고 물어봐요 → "예" 하면 그 폴더에
+<strong><code>.gemini/agents/&lt;역할&gt;.md</code></strong>(역할별
+파일)가 생깁니다.</p>
+<ul>
+<li>다른 팀은 <code>docs-team</code>·<code>research-team</code> 으로
+바꾸면 돼요.</li>
+<li>자료검색(context7) 도구가 필요하면, 화면에 나온 <strong>mcpServers
+스니펫을 원하는 역할 파일에 직접 붙여넣으세요</strong>.</li>
+</ul>
+<p><strong>쓰는 법</strong>: 그 폴더에서 <strong>Gemini CLI를
+켜면</strong> <code>.gemini/agents/</code>의 역할을 서브에이전트로
+인식해요.</p>
+<blockquote>
+<p>잘 안 되면: 꼭 <strong>그 폴더에서</strong> Gemini CLI를 켰는지
+확인하세요(다른 폴더면 못 읽어요). 도구(권한)가 전부 열려 있는 건
+정상이에요(이번 버전은 제한을 안 걸어요, 베타 한계).</p>
+</blockquote>
+<hr />
+<h2 id="선택-cursor에서도-쓰기--역할-번역-베타">(선택) Cursor에서도 쓰기
+— 역할 번역 (베타)</h2>
+<p><strong>Cursor</strong>(다른 AI 코딩 에디터)도 쓰신다면, 같은 팀을
+Cursor용으로도 만들 수 있어요.</p>
+<blockquote>
+<p>솔직히 말하면: Cursor의 규칙(<code>.cursor/rules</code>)은 "호출해서
+부르는 직원" 개념이 아니에요. 그래서 Codex처럼, **똑같은 팀이 아니라 각
+역할을 <code>AGENTS.md</code> 안의 설명으로 "번역"**해 드려요(베타).</p>
+</blockquote>
+<blockquote>
+<p>⚠️ 이것<strong>만</strong>은 <strong>검은 터미널</strong>이
+필요해요(플러그인 설치와 달라요). Codex·Gemini CLI와 마찬가지예요.</p>
+</blockquote>
+<p><strong>준비물</strong>: ① 이 프로젝트를 내려받은 폴더(아래 10번
+참고) ② <strong>Node.js</strong> (nodejs.org 에서 LTS)</p>
+<p><strong>하는 법</strong> — 내려받은 SoDam-Agent 폴더에서, 검은
+터미널에 한 줄 (Cursor로 쓸 폴더를 <code>--dir</code> 에):</p>
+<pre><code>node bin/cli.mjs install web-app-team --target cursor --dir &quot;C:\Cursor로_쓸_내_프로젝트_폴더&quot;</code></pre>
+<p>🖥️ 무엇이 만들어질지 먼저 보여주고 물어봐요 → "예" 하면 그 폴더에
+<strong><code>AGENTS.md</code></strong>(역할 설명서)가 생기고,
+<strong><code>.cursor/mcp.json</code>에 자료검색(context7) 도구가
+자동으로 연결</strong>돼요(Codex·Gemini와 달리 직접 붙여넣기 안 해도
+됨).</p>
+<ul>
+<li>다른 팀은 <code>docs-team</code>·<code>research-team</code> 으로
+바꾸면 돼요.</li>
+</ul>
+<p><strong>쓰는 법</strong>: 그 폴더에서 <strong>Cursor를 켜면</strong>
+<code>AGENTS.md</code>를 읽고 역할 설명을 참고해요.</p>
+<blockquote>
+<p>잘 안 되면: 꼭 <strong>그 폴더에서</strong> Cursor를 켰는지
+확인하세요(다른 폴더면 <code>AGENTS.md</code>를 못 읽어요). Cursor의
+규칙은 "참고용"이라, Claude Code처럼 직원을 호출해서 부르는 방식은
+아니에요(정상).</p>
 </blockquote>
 <hr />
 <h2 id="10-고급-마켓플레이스-대신--내-폴더로-써-보기">10. (고급)
@@ -601,6 +671,12 @@ context7 자료검색은 온라인 필요.</td>
 <td><strong>context7 없어도 되나요?</strong></td>
 <td>됩니다. 에이전트는 정상 동작하고, 실시간 라이브러리 문서 조회만 안
 됩니다.</td>
+</tr>
+<tr>
+<td><strong><code>/doctor</code>에 <code>context7 skipped</code>라고
+뜨는데 괜찮나요?</strong></td>
+<td>괜찮습니다. 여러 팀이 같은 도구를 각자 들고 있어 하나만 켠 것뿐이고,
+기능에는 영향이 없습니다.</td>
 </tr>
 <tr>
 <td><strong>만든 에이전트를 공유할 수 있나요?</strong></td>
