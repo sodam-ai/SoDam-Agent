@@ -54,6 +54,17 @@ export function validatePreset(p) {
     if (!r.description || !r.systemPrompt) {
       throw new Error(`역할 "${r.name}"에 description/systemPrompt가 필요합니다.`);
     }
+    // 🔒 frontmatter 주입 차단: description·model은 agents/<name>.md의 frontmatter에
+    // "한 줄"로 들어간다. 줄바꿈이 있으면 가져온(신뢰 못 할) 팀 파일이 임의의 frontmatter
+    // 줄(예: tools: Bash)을 몰래 주입해 미리보기와 다른 권한을 설치할 수 있다(01_PRD §8 1순위 위협).
+    // systemPrompt는 frontmatter 종료(---) 뒤 본문에 들어가고 Claude Code는 첫 블록만
+    // frontmatter로 읽으므로 여러 줄이어도 안전 — 여기서 막지 않는다.
+    if (typeof r.description !== 'string' || /[\r\n]/.test(r.description)) {
+      throw new Error(`역할 "${r.name}"의 설명(description)에 줄바꿈을 넣을 수 없습니다(frontmatter 주입 방지).`);
+    }
+    if (r.model != null && r.model !== '' && !/^[A-Za-z0-9._-]+$/.test(String(r.model))) {
+      throw new Error(`역할 "${r.name}"의 model 값이 올바르지 않습니다: ${r.model} (frontmatter 주입 방지).`);
+    }
     for (const t of [...(r.allowedTools || []), ...(r.disallowedTools || [])]) {
       // 하이픈·끝 와일드카드(*) 허용: 플러그인 MCP 도구명 형식(mcp__plugin_<팀>_<mcp>__*)을
       // 포함하되, 줄바꿈·콜론·따옴표 등 frontmatter 주입에 쓰일 문자는 계속 차단.
