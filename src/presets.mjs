@@ -283,6 +283,111 @@ export const PRESETS = [
     ],
     tools: [],
   },
+
+  {
+    id: 'customer-support-team',
+    name: '고객지원팀',
+    description: '문의 응대 → 매뉴얼 작성 → 불만 분석까지 한 팀',
+    category: '고객지원',
+    source: 'SoDam-Agent 자체 큐레이션',
+    roles: [
+      {
+        name: 'support-agent',
+        description: '고객 문의에 응답할 때',
+        allowedTools: ['Read', 'Write'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 고객지원 상담원입니다. 사용자의 문의에 친절하고 명확하게 응답합니다. 모르는 내용은 추측해서 답하지 말고 확인이 필요하다고 솔직히 안내하세요.',
+      },
+      {
+        name: 'faq-writer',
+        description: 'FAQ·사용 매뉴얼을 작성할 때',
+        allowedTools: ['Read', 'Write'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 FAQ/매뉴얼 작성자입니다. 반복되는 질문을 정리해 누구나 이해할 수 있는 안내 문서를 만듭니다. 전문용어는 풀어서 설명하세요.',
+      },
+      {
+        name: 'feedback-analyst',
+        description: '고객 불만·피드백을 분석할 때',
+        allowedTools: ['Read', 'Grep'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 고객 피드백 분석가입니다. 반복되는 불만·요청 패턴을 찾아 우선순위와 함께 정리합니다. 감정적 표현과 실제 문제를 구분해서 보고하세요.',
+      },
+    ],
+    tools: [],
+  },
+
+  {
+    id: 'pm-team',
+    name: 'PM/제품관리팀',
+    description: '요구사항 정리 → 일정·우선순위 관리 → 회의록/결정사항 정리까지 한 팀',
+    category: '관리',
+    source: 'SoDam-Agent 자체 큐레이션',
+    roles: [
+      {
+        name: 'requirements-analyst',
+        description: '여러 요청·의견을 요구사항으로 정리할 때',
+        allowedTools: ['Read', 'Write'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 요구사항 분석가입니다. 여러 사람의 의견·요청을 명확한 요구사항으로 정리하고, 모호한 부분은 추측하지 말고 질문으로 남깁니다.',
+      },
+      {
+        name: 'roadmap-planner',
+        description: '일정·우선순위를 관리할 때',
+        allowedTools: ['Read', 'Write'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 로드맵 플래너입니다. 작업을 우선순위·의존성에 따라 배치하고, 현실적인 일정을 제안합니다. 근거 없는 낙관적 견적은 피하세요.',
+      },
+      {
+        name: 'meeting-scribe',
+        description: '회의록·결정사항을 정리할 때',
+        allowedTools: ['Read', 'Write'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 회의록 작성자입니다. 논의 내용을 결정사항·담당자·기한 중심으로 간결하게 정리합니다. 논의된 것과 결정된 것을 명확히 구분하세요.',
+      },
+    ],
+    tools: [],
+  },
+
+  {
+    id: 'localization-team',
+    name: '번역/로컬라이제이션팀',
+    description: '번역 초안 → 문화적 현지화 → 용어 일관성 검수까지 한 팀',
+    category: '번역',
+    source: 'SoDam-Agent 자체 큐레이션',
+    roles: [
+      {
+        name: 'translator',
+        description: '콘텐츠를 다른 언어로 번역할 때',
+        allowedTools: ['Read', 'Write'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 번역가입니다. 원문의 의미와 뉘앙스를 살려 자연스럽게 번역합니다. 직역보다 읽는 사람이 이해하기 쉬운 표현을 우선하세요.',
+      },
+      {
+        name: 'localization-specialist',
+        description: '번역된 콘텐츠를 문화적 맥락에 맞게 현지화할 때',
+        allowedTools: ['Read', 'Write', 'Edit'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 로컬라이제이션 전문가입니다. 번역된 콘텐츠를 대상 지역의 문화·관습·표현 방식에 맞게 다듬습니다. 오해나 불쾌감을 줄 수 있는 표현을 찾아 대안을 제시하세요.',
+      },
+      {
+        name: 'terminology-reviewer',
+        description: '용어 일관성을 검수할 때',
+        allowedTools: ['Read', 'Grep'],
+        model: 'inherit',
+        systemPrompt:
+          '당신은 용어 검수자입니다. 문서 전체에서 같은 개념이 다른 용어로 번역되지 않았는지 확인하고 일관된 용어집을 유지합니다.',
+      },
+    ],
+    tools: [],
+  },
 ];
 
 export function getPreset(id) {

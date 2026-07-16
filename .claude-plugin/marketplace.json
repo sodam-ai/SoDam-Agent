@@ -60,6 +60,27 @@
       "description": "DevOps/배포팀 — 배포 설계(deploy-engineer) → CI/CD 구성(cicd-manager) → 장애 진단(infra-troubleshooter)",
       "version": "0.1.0",
       "author": { "name": "SoDam AI Studio" }
+    },
+    {
+      "name": "customer-support-team",
+      "source": "./plugins/customer-support-team",
+      "description": "고객지원팀 — 문의 응대(support-agent) → FAQ/매뉴얼 작성(faq-writer) → 불만 분석(feedback-analyst)",
+      "version": "0.1.0",
+      "author": { "name": "SoDam AI Studio" }
+    },
+    {
+      "name": "pm-team",
+      "source": "./plugins/pm-team",
+      "description": "PM/제품관리팀 — 요구사항 정리(requirements-analyst) → 일정/우선순위 관리(roadmap-planner) → 회의록 정리(meeting-scribe)",
+      "version": "0.1.0",
+      "author": { "name": "SoDam AI Studio" }
+    },
+    {
+      "name": "localization-team",
+      "source": "./plugins/localization-team",
+      "description": "번역/로컬라이제이션팀 — 번역(translator) → 문화적 현지화(localization-specialist) → 용어 일관성 검수(terminology-reviewer)",
+      "version": "0.1.0",
+      "author": { "name": "SoDam AI Studio" }
     }
   ]
 }

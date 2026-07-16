@@ -1,0 +1,7 @@
+{
+  "name": "localization-team",
+  "description": "번역/로컬라이제이션팀 — 번역(translator) → 문화적 현지화(localization-specialist) → 용어 일관성 검수(terminology-reviewer). SoDam-Agent 자체 큐레이션.",
+  "version": "0.1.0",
+  "author": { "name": "SoDam AI Studio" },
+  "license": "Apache-2.0"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "pm-team",
+  "description": "PM/제품관리팀 — 요구사항 정리(requirements-analyst) → 일정/우선순위 관리(roadmap-planner) → 회의록 정리(meeting-scribe). SoDam-Agent 자체 큐레이션.",
+  "version": "0.1.0",
+  "author": { "name": "SoDam AI Studio" },
+  "license": "Apache-2.0"
+}

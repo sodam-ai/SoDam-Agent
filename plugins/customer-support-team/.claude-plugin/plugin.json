@@ -1,0 +1,7 @@
+{
+  "name": "customer-support-team",
+  "description": "고객지원팀 — 문의 응대(support-agent) → FAQ/매뉴얼 작성(faq-writer) → 불만 분석(feedback-analyst). SoDam-Agent 자체 큐레이션.",
+  "version": "0.1.0",
+  "author": { "name": "SoDam AI Studio" },
+  "license": "Apache-2.0"
+}
