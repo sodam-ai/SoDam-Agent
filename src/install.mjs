@@ -148,7 +148,7 @@ export function applyPlan(plan) {
     mcpAdded: Object.keys(newServers),
     mcpExistedBefore,
   };
-  fs.writeFileSync(path.join(backup.dest, 'install-record.json'), JSON.stringify(record, null, 2));
+  writeAtomic(path.join(backup.dest, 'install-record.json'), JSON.stringify(record, null, 2));
 
   fs.mkdirSync(target.agentDir, { recursive: true });
   for (const a of agents) {

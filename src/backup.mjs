@@ -2,6 +2,20 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+// tmp→rename: 도중에 프로세스가 죽어도 manifest/기록 파일이 반쯤 써진 채로 남지 않는다.
+// (install.mjs의 writeAtomic과 동일 원리 — 백업/되돌리기 쪽에도 2026-07-16 동일 적용.)
+function writeAtomic(file, content) {
+  const tmp = file + '.tmp';
+  fs.writeFileSync(tmp, content);
+  fs.renameSync(tmp, file);
+}
+
+function copyAtomic(src, dest) {
+  const tmp = dest + '.tmp';
+  fs.copyFileSync(src, tmp);
+  fs.renameSync(tmp, dest);
+}
+
 function timestampId() {
   const d = new Date();
   const p = (n, l = 2) => String(n).padStart(l, '0');
@@ -43,7 +57,7 @@ export function createBackup(target, opts = {}) {
   }
 
   const manifest = { id, createdAt: new Date().toISOString(), files };
-  fs.writeFileSync(path.join(dest, 'manifest.json'), JSON.stringify(manifest, null, 2));
+  writeAtomic(path.join(dest, 'manifest.json'), JSON.stringify(manifest, null, 2));
   pruneBackups(target);
   return { id, dest, files };
 }
@@ -84,14 +98,14 @@ export function restoreBackup(target, id) {
     }
   }
 
-  // 2) 백업에 있던 원본 복원(덮어썼던 것)
+  // 2) 백업에 있던 원본 복원(덮어썼던 것) — tmp→rename으로 복원 도중 죽어도 원본이 반쯤 안 써짐.
   const bkMcp = path.join(dest, '.mcp.json');
-  if (mcpPath && fs.existsSync(bkMcp)) fs.copyFileSync(bkMcp, mcpPath);
+  if (mcpPath && fs.existsSync(bkMcp)) copyAtomic(bkMcp, mcpPath);
   const bkAgents = path.join(dest, 'agents');
   if (fs.existsSync(bkAgents)) {
     fs.mkdirSync(agentDir, { recursive: true });
     for (const a of fs.readdirSync(bkAgents)) {
-      fs.copyFileSync(path.join(bkAgents, a), path.join(agentDir, a));
+      copyAtomic(path.join(bkAgents, a), path.join(agentDir, a));
     }
   }
   return record || { id };
