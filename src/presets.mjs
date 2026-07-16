@@ -323,7 +323,7 @@ export const PRESETS = [
     id: 'pm-team',
     name: 'PM/제품관리팀',
     description: '요구사항 정리 → 일정·우선순위 관리 → 회의록/결정사항 정리까지 한 팀',
-    category: '관리',
+    category: '제품관리',
     source: 'SoDam-Agent 자체 큐레이션',
     roles: [
       {

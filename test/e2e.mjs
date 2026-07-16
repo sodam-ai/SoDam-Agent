@@ -451,7 +451,7 @@ ok('M1 신규 프리셋: 실제 설치 시 두 팀 모두 .claude/agents/*.md가
 // 22) 신규 프리셋 3종(고객지원팀·PM/제품관리팀·번역/로컬라이제이션팀) — 존재·카테고리·실제 설치까지 검증
 const newTeams = [
   { id: 'customer-support-team', category: '고객지원', roles: ['support-agent', 'faq-writer', 'feedback-analyst'] },
-  { id: 'pm-team', category: '관리', roles: ['requirements-analyst', 'roadmap-planner', 'meeting-scribe'] },
+  { id: 'pm-team', category: '제품관리', roles: ['requirements-analyst', 'roadmap-planner', 'meeting-scribe'] },
   { id: 'localization-team', category: '번역', roles: ['translator', 'localization-specialist', 'terminology-reviewer'] },
 ];
 for (const t of newTeams) {
@@ -462,7 +462,7 @@ for (const t of newTeams) {
   assert.equal(presetsInCategory(t.category).length, 1, `${t.category} 카테고리 1건`);
   assert.equal(presetsInCategory(t.category)[0].id, t.id, `${t.category} 카테고리=${t.id}`);
 }
-ok('신규 프리셋 3종: 정본에 존재하고 카테고리로 정확히 조회됨(고객지원·관리·번역)');
+ok('신규 프리셋 3종: 정본에 존재하고 카테고리로 정확히 조회됨(고객지원·제품관리·번역)');
 
 for (const t of newTeams) {
   const preset = getPreset(t.id);
