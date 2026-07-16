@@ -1,5 +1,7 @@
 # SoDam-Agent
 
+[![CI](https://github.com/sodam-ai/SoDam-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/sodam-ai/SoDam-Agent/actions/workflows/ci.yml)
+
 [한국어](./README.md) | **English** · [Beginner Guide (GUIDE)](./GUIDE.en.md)
 
 > A **beginner-friendly** tool that adds **role-based AI teammate teams** (planner, developer, reviewer, …) to Claude Code with **a single plugin install** — and lets you **create, train, and manage your own agents even after installing**.

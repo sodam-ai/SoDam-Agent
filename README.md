@@ -1,5 +1,7 @@
 # SoDam-Agent
 
+[![CI](https://github.com/sodam-ai/SoDam-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/sodam-ai/SoDam-Agent/actions/workflows/ci.yml)
+
 **한국어** | [English](./README.en.md) · [왕초보 가이드(GUIDE)](./GUIDE.md)
 
 > Claude Code에 **역할별 AI 직원 팀**(기획자·개발자·검토자 등)을 **플러그인 한 번 설치**로 붙이고,
