@@ -189,7 +189,10 @@ right there</strong>.</p>
 <li><strong>2026-07-16</strong>: Added the customer-support,
 PM/product-management, and localization teams — 10 teams complete.
 Hardened core backup/rollback files to write atomically (a mid-install
-crash can no longer leave a half-written file behind).</li>
+crash can no longer leave a half-written file behind). Security: found
+and blocked an attack where a shared team file could hide extra
+permissions in the description field (frontmatter injection), so the
+install preview always matches what actually gets installed.</li>
 <li><strong>2026-07-13</strong>: Reconfirmed all 7 teams in a completely
 separate, brand-new Claude Code session (reproducibility verified — not
 a fluke). Found and fixed a bug where the import feature's

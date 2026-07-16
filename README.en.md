@@ -46,7 +46,7 @@
 <details open>
 <summary>📋 <b>Recent major changes</b> (as of 2026-07-16 — click to collapse)</summary>
 
-- **2026-07-16**: Added the customer-support, PM/product-management, and localization teams — 10 teams complete. Hardened the core backup/rollback files to write atomically (tmp→rename), so a mid-write crash can no longer leave a half-written record behind. Added a GitHub Actions CI workflow that runs tests and a security audit on every push/PR (status shown live via the badge at the top of this README).
+- **2026-07-16**: Added the customer-support, PM/product-management, and localization teams — 10 teams complete. Hardened the core backup/rollback files to write atomically (tmp→rename), so a mid-write crash can no longer leave a half-written record behind. Added a GitHub Actions CI workflow that runs tests and a security audit on every push/PR (status shown live via the badge at the top of this README). **[Security] Found and blocked a "frontmatter injection" attack** where a shared team file could smuggle an agent permission line (e.g. `tools: Bash`) by putting a newline in a role's description/model value (reproduced, fixed, 2 regression tests added — the install preview now always matches what actually gets installed).
 - **2026-07-15**: Added Phase 1 of the community sharing directory (optional) — register and browse teams via a `community/index.json` catalog and GitHub Pull Requests, with no server or accounts. See [§17](#17-community-sharing-directory-optional).
 - **2026-07-13**: Reconfirmed all 7 teams in a completely separate, brand-new Claude Code session (reproducibility verified — not a fluke). Found and fixed a bug where the import feature's dangerous-command detector missed `.exe`-suffixed/uppercase commands (e.g. `cmd.exe`). Ran a follow-up OWASP-informed security review (secrets, randomness, error exposure, dependencies all checked) and re-confirmed safety with a live CLI run against a synthetic malicious file.
 - **2026-07-12**: Completed live verification — installed and called all 7 teams in a real Claude Code session, confirmed working (not a mockup; meets `01_PRD.md` success criterion #1). Fixed 3 bugs in `install`/`export`/`list` around empty-string input handling. Confirmed `/reload-plugins` applies new plugins without a full restart and updated Step 5 accordingly. Corrected stale team-count wording (5→7, 6→8) across the docs. Ran a security review (OWASP-informed) and pre-registered `.env` in `.gitignore`.
@@ -449,6 +449,15 @@ User input
 - API keys, passwords, and tokens are **never stored in files.**
 - Tool (MCP) configs and agent creation use only the key **name** (environment variable name).
 - Store actual key values in **OS environment variables** (e.g., Windows System Environment Variables).
+
+### Imported team-file safety (untrusted input by default)
+When you `import` a team file (`*.agentroster.json`) made by someone else, these checks run before install:
+- **Schema validation**: only the defined format/fields are allowed (unknown fields / format mismatch abort the install).
+- **Size limit**: files over 256KB are rejected (flood/corruption guard).
+- **Path-traversal block**: role/team names allow only lowercase letters, digits, and hyphens (no `../`).
+- **Dangerous-command warning**: if a tool (MCP) command is a shell/interpreter like `bash`/`python`, a warning is shown.
+- **Frontmatter-injection block**: a description/model value with a newline (used to smuggle a permission line) is rejected (hardened 2026-07-16).
+- **Install preview + confirm**: you see what will be written where, and imported files never skip confirmation even with `--yes`.
 
 ### Self-protection hook
 - A Claude Code hook blocks **accidental overwrites** of files inside `.claude-plugin/` folders.

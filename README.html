@@ -253,7 +253,11 @@ href="./GUIDE.md">왕초보 가이드(GUIDE)</a></p>
 번역/로컬라이제이션팀 추가 — 팀 10종 완성. 백업/되돌리기 핵심 파일의
 쓰기 방식을 원자적(tmp→rename)으로 강화(중간에 꺼져도 반쯤 써진 파일이
 안 남음). GitHub Actions로 push/PR마다 테스트·보안감사를 자동 실행하는
-CI 추가(README 상단 배지로 실시간 확인 가능).</li>
+CI 추가(README 상단 배지로 실시간 확인 가능). <strong>[보안] 남이 준 팀
+파일의 설명(description)·모델(model) 값에 줄바꿈을 넣어 에이전트 권한
+줄(예: <code>tools: Bash</code>)을 몰래 심는 "frontmatter 주입" 공격을
+발견·차단</strong>(실제 재현 후 수정, 회귀 테스트 2종 추가 — 설치
+미리보기와 실제 설치 내용이 어긋나지 않도록 보장).</li>
 <li><strong>2026-07-15</strong>: 커뮤니티 공유 디렉터리(선택 기능) 1단계
 추가 — 서버·계정 없이 <code>community/index.json</code> 카탈로그 +
 GitHub Pull Request로 팀을 등록·둘러보는 방식. 상세는 <a
@@ -1251,6 +1255,26 @@ CLI"·"Google"은 Google의, "Cursor"는 Cursor(Anysphere)의,
 이름)만</strong> 사용합니다.</li>
 <li>실제 키 값은 <strong>OS 환경변수</strong>(예: Windows 시스템
 환경변수)에 저장하세요.</li>
+</ul>
+<h3 id="가져온-팀-파일-안전-검증-신뢰-못-할-입력-전제">가져온 팀 파일
+안전 검증 (신뢰 못 할 입력 전제)</h3>
+<p>남이 만든 팀 파일(<code>*.agentroster.json</code>)을
+<code>import</code>할 때, 설치 전에 다음을 자동으로 검사합니다:</p>
+<ul>
+<li><strong>스키마 검증</strong>: 정해진 형식·필드만 허용(알 수 없는
+필드·형식 불일치는 설치 중단).</li>
+<li><strong>크기 제한</strong>: 256KB 초과 파일은 거부(폭주·손상
+방지).</li>
+<li><strong>경로 조작 차단</strong>: 역할·팀 이름은 소문자·숫자·하이픈만
+허용(<code>../</code> 같은 경로 조작 불가).</li>
+<li><strong>위험 명령 경고</strong>: 도구(MCP) 명령이
+<code>bash</code>·<code>python</code> 같은 셸/인터프리터면 경고
+표시.</li>
+<li><strong>frontmatter 주입 차단</strong>:
+설명(description)·모델(model) 값에 줄바꿈을 넣어 권한 줄을 몰래 심는
+공격을 거부(2026-07-16 강화).</li>
+<li><strong>설치 미리보기 확인</strong>: 무엇이 어디에 써질지 보여주고,
+가져온 파일은 <code>--yes</code>로도 확인을 건너뛰지 않습니다.</li>
 </ul>
 <h3 id="자기보호-안전장치-self-protection-hook">자기보호 안전장치
 (Self-Protection Hook)</h3>

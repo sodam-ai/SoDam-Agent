@@ -8,7 +8,7 @@
 <details open>
 <summary>📋 <b>Update summary</b> (as of 2026-07-16 — click to collapse)</summary>
 
-- **2026-07-16**: Added the customer-support, PM/product-management, and localization teams — 10 teams complete. Hardened core backup/rollback files to write atomically (a mid-install crash can no longer leave a half-written file behind).
+- **2026-07-16**: Added the customer-support, PM/product-management, and localization teams — 10 teams complete. Hardened core backup/rollback files to write atomically (a mid-install crash can no longer leave a half-written file behind). Security: found and blocked an attack where a shared team file could hide extra permissions in the description field (frontmatter injection), so the install preview always matches what actually gets installed.
 - **2026-07-13**: Reconfirmed all 7 teams in a completely separate, brand-new Claude Code session (reproducibility verified — not a fluke). Found and fixed a bug where the import feature's dangerous-command detector missed `.exe`-suffixed/uppercase commands. Ran a follow-up security review and re-confirmed safety via a live CLI run.
 - **2026-07-12**: Confirmed all 7 teams install and respond correctly in a real Claude Code session (not a mockup). Found that `/reload-plugins` applies new plugins without a full restart, updated Step 5 accordingly. Fixed 3 minor bugs, ran a security review.
 - **2026-07-11**: Added the security-audit team and devops team — 7 teams complete. Added Gemini CLI and Cursor role translation (beta).

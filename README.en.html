@@ -260,7 +260,12 @@ Hardened the core backup/rollback files to write atomically
 (tmp→rename), so a mid-write crash can no longer leave a half-written
 record behind. Added a GitHub Actions CI workflow that runs tests and a
 security audit on every push/PR (status shown live via the badge at the
-top of this README).</li>
+top of this README). <strong>[Security] Found and blocked a "frontmatter
+injection" attack</strong> where a shared team file could smuggle an
+agent permission line (e.g. <code>tools: Bash</code>) by putting a
+newline in a role's description/model value (reproduced, fixed, 2
+regression tests added — the install preview now always matches what
+actually gets installed).</li>
 <li><strong>2026-07-15</strong>: Added Phase 1 of the community sharing
 directory (optional) — register and browse teams via a
 <code>community/index.json</code> catalog and GitHub Pull Requests, with
@@ -1254,6 +1259,28 @@ files.</strong></li>
 <strong>name</strong> (environment variable name).</li>
 <li>Store actual key values in <strong>OS environment variables</strong>
 (e.g., Windows System Environment Variables).</li>
+</ul>
+<h3 id="imported-team-file-safety-untrusted-input-by-default">Imported
+team-file safety (untrusted input by default)</h3>
+<p>When you <code>import</code> a team file
+(<code>*.agentroster.json</code>) made by someone else, these checks run
+before install:</p>
+<ul>
+<li><strong>Schema validation</strong>: only the defined format/fields
+are allowed (unknown fields / format mismatch abort the install).</li>
+<li><strong>Size limit</strong>: files over 256KB are rejected
+(flood/corruption guard).</li>
+<li><strong>Path-traversal block</strong>: role/team names allow only
+lowercase letters, digits, and hyphens (no <code>../</code>).</li>
+<li><strong>Dangerous-command warning</strong>: if a tool (MCP) command
+is a shell/interpreter like <code>bash</code>/<code>python</code>, a
+warning is shown.</li>
+<li><strong>Frontmatter-injection block</strong>: a description/model
+value with a newline (used to smuggle a permission line) is rejected
+(hardened 2026-07-16).</li>
+<li><strong>Install preview + confirm</strong>: you see what will be
+written where, and imported files never skip confirmation even with
+<code>--yes</code>.</li>
 </ul>
 <h3 id="self-protection-hook">Self-protection hook</h3>
 <ul>
