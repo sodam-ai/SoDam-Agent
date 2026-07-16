@@ -6,8 +6,9 @@
 > Jargon is kept to a minimum, and any term is explained **in one line, right there**.
 
 <details open>
-<summary>📋 <b>Update summary</b> (as of 2026-07-13 — click to collapse)</summary>
+<summary>📋 <b>Update summary</b> (as of 2026-07-16 — click to collapse)</summary>
 
+- **2026-07-16**: Added the customer-support, PM/product-management, and localization teams — 10 teams complete. Hardened core backup/rollback files to write atomically (a mid-install crash can no longer leave a half-written file behind).
 - **2026-07-13**: Reconfirmed all 7 teams in a completely separate, brand-new Claude Code session (reproducibility verified — not a fluke). Found and fixed a bug where the import feature's dangerous-command detector missed `.exe`-suffixed/uppercase commands. Ran a follow-up security review and re-confirmed safety via a live CLI run.
 - **2026-07-12**: Confirmed all 7 teams install and respond correctly in a real Claude Code session (not a mockup). Found that `/reload-plugins` applies new plugins without a full restart, updated Step 5 accordingly. Fixed 3 minor bugs, ran a security review.
 - **2026-07-11**: Added the security-audit team and devops team — 7 teams complete. Added Gemini CLI and Cursor role translation (beta).
@@ -37,7 +38,7 @@ See the update summary in [README](./README.en.md) or the [GitHub commit log](ht
 
 > 📛 **Naming note**: the product is named **SoDam-Agent**. But the `@sodamagent-marketplace` after a team name in install commands is the *store's internal id* — the letters differ, but **type it as-is** (it's normal).
 
-> 📋 **What does this version do? (as of 2026-07-11)**: You can install all 7 teams (web app · docs · research · marketing · data · security audit · devops) + the agent-management tool + Codex/Gemini CLI/Cursor role translation (beta). For the full change history, see the "Current version status" note at the top of [README.en.md](./README.en.md).
+> 📋 **What does this version do? (as of 2026-07-16)**: You can install all 10 teams (web app · docs · research · marketing · data · security audit · devops · customer support · PM/product · localization) + the agent-management tool + Codex/Gemini CLI/Cursor role translation (beta). For the full change history, see the "Current version status" note at the top of [README.en.md](./README.en.md).
 
 ---
 
@@ -76,6 +77,9 @@ See the update summary in [README](./README.en.md) or the [GitHub commit log](ht
 - Data team: `/plugin install data-team@sodamagent-marketplace`
 - Security audit team: `/plugin install security-audit-team@sodamagent-marketplace`
 - DevOps/deployment team: `/plugin install devops-team@sodamagent-marketplace`
+- Customer support team: `/plugin install customer-support-team@sodamagent-marketplace`
+- PM/product management team: `/plugin install pm-team@sodamagent-marketplace`
+- Translation/localization team: `/plugin install localization-team@sodamagent-marketplace`
 
 ### Step 4 · (Optional) Install the management tool
 To **create and train your own agents**, also install:

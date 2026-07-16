@@ -212,8 +212,8 @@ status · update summary</a></li>
 required programs</a></li>
 <li><a href="#3-download--install">Download &amp; install</a></li>
 <li><a href="#4-quick-start-3-steps">Quick start (3 steps)</a></li>
-<li><a href="#5-what-you-can-install-7-teams--management-tool">What you
-can install (7 teams + management tool)</a></li>
+<li><a href="#5-what-you-can-install-10-teams--management-tool">What you
+can install (10 teams + management tool)</a></li>
 <li><a href="#6-how-to-use-it">How to use it</a></li>
 <li><a href="#7-manage-your-own-agents-after-install-sodam-agent">Manage
 your own agents after install (sodam-agent)</a></li>
@@ -245,14 +245,22 @@ in Cursor too (role translation · beta)</a></li>
 <hr />
 <h2 id="0-current-version-status--update-summary">0. Current version status · update summary</h2>
 
-<p><strong>Available now</strong>: 7 teams (web app · docs · research ·
-marketing · data · security audit · devops) + the agent-management tool
+<p><strong>Available now</strong>: 10 teams (web app · docs · research ·
+marketing · data · security audit · devops · customer support ·
+PM/product · localization) + the agent-management tool
 (<code>sodam-agent</code>) + Codex / Gemini CLI / Cursor role
 translation (beta)</p>
 <details open>
-<summary>📋 <b>Recent major changes</b> (as of 2026-07-15 — click to collapse)</summary>
+<summary>📋 <b>Recent major changes</b> (as of 2026-07-16 — click to collapse)</summary>
 
 <ul>
+<li><strong>2026-07-16</strong>: Added the customer-support,
+PM/product-management, and localization teams — 10 teams complete.
+Hardened the core backup/rollback files to write atomically
+(tmp→rename), so a mid-write crash can no longer leave a half-written
+record behind. Added a GitHub Actions CI workflow that runs tests and a
+security audit on every push/PR (status shown live via the badge at the
+top of this README).</li>
 <li><strong>2026-07-15</strong>: Added Phase 1 of the community sharing
 directory (optional) — register and browse teams via a
 <code>community/index.json</code> catalog and GitHub Pull Requests, with
@@ -447,8 +455,8 @@ create/train agents, install <code>sodam-agent</code> in step 4
 above.)</p>
 </blockquote>
 <hr />
-<h2 id="5-what-you-can-install-7-teams--management-tool">5. What you can
-install (7 teams + management tool)</h2>
+<h2 id="5-what-you-can-install-10-teams--management-tool">5. What you
+can install (10 teams + management tool)</h2>
 <p><strong>① Team plugins (bundles of AI teammates)</strong></p>
 <table>
 <thead>
@@ -504,6 +512,27 @@ analysis) · compliance-reviewer (compliance check)</td>
 <td>DevOps/Deployment Team</td>
 <td>deploy-engineer (deployment design) · cicd-manager (CI/CD setup) ·
 infra-troubleshooter (incident diagnosis)</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>customer-support-team</code></td>
+<td>Customer Support Team</td>
+<td>support-agent (inquiry response) · faq-writer (FAQ/manual writing) ·
+feedback-analyst (complaint analysis)</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>pm-team</code></td>
+<td>PM/Product Management Team</td>
+<td>requirements-analyst (requirements gathering) · roadmap-planner
+(schedule/priority) · meeting-scribe (meeting notes)</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>localization-team</code></td>
+<td>Translation/Localization Team</td>
+<td>translator (translation) · localization-specialist (localization) ·
+terminology-reviewer (terminology check)</td>
 <td>none</td>
 </tr>
 </tbody>
@@ -1270,6 +1299,9 @@ created in the same folder.</li>
 │   ├── data-team/       (same structure)
 │   ├── security-audit-team/  (same structure, no MCP)
 │   ├── devops-team/          (same structure, no MCP)
+│   ├── customer-support-team/  (same structure, no MCP)
+│   ├── pm-team/                (same structure, no MCP)
+│   ├── localization-team/      (same structure, no MCP)
 │   └── sodam-agent/
 │       └── commands/
 │           ├── new-agent.md           ← slash command (1 command)

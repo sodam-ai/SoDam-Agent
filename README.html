@@ -210,8 +210,8 @@ href="./GUIDE.md">왕초보 가이드(GUIDE)</a></p>
 프로그램</a></li>
 <li><a href="#3-다운로드--설치-방법">다운로드 · 설치 방법</a></li>
 <li><a href="#4-빠른-시작-3단계">빠른 시작 (3단계)</a></li>
-<li><a href="#5-설치할-수-있는-것-팀-7종--관리-도구">설치할 수 있는 것
-(팀 7종 + 관리 도구)</a></li>
+<li><a href="#5-설치할-수-있는-것-팀-10종--관리-도구">설치할 수 있는 것
+(팀 10종 + 관리 도구)</a></li>
 <li><a href="#6-사용--작동-방법">사용 · 작동 방법</a></li>
 <li><a href="#7-설치-후-내-직원-직접-관리하기-sodam-agent">설치 후 내
 직원 직접 관리하기 (sodam-agent)</a></li>
@@ -241,13 +241,19 @@ href="./GUIDE.md">왕초보 가이드(GUIDE)</a></p>
 <h2 id="0-현재-버전-상태--업데이트-요약">0. 현재 버전 상태 · 업데이트 요약</h2>
 
 <p><strong>지금 설치할 수 있는 것</strong>: 팀
-7종(웹앱·문서·리서치·마케팅·데이터·보안 감사·DevOps) + 직원 관리
+10종(웹앱·문서·리서치·마케팅·데이터·보안
+감사·DevOps·고객지원·PM/제품관리·번역) + 직원 관리
 도구(<code>sodam-agent</code>) + Codex/Gemini CLI/Cursor 역할
 번역(베타)</p>
 <details open>
-<summary>📋 <b>최근 주요 변경</b> (2026-07-15 기준 — 누르면 접기)</summary>
+<summary>📋 <b>최근 주요 변경</b> (2026-07-16 기준 — 누르면 접기)</summary>
 
 <ul>
+<li><strong>2026-07-16</strong>: 고객지원팀 · PM/제품관리팀 ·
+번역/로컬라이제이션팀 추가 — 팀 10종 완성. 백업/되돌리기 핵심 파일의
+쓰기 방식을 원자적(tmp→rename)으로 강화(중간에 꺼져도 반쯤 써진 파일이
+안 남음). GitHub Actions로 push/PR마다 테스트·보안감사를 자동 실행하는
+CI 추가(README 상단 배지로 실시간 확인 가능).</li>
 <li><strong>2026-07-15</strong>: 커뮤니티 공유 디렉터리(선택 기능) 1단계
 추가 — 서버·계정 없이 <code>community/index.json</code> 카탈로그 +
 GitHub Pull Request로 팀을 등록·둘러보는 방식. 상세는 <a
@@ -431,8 +437,8 @@ B — 내 컴퓨터 폴더로 써 보기 (클로드 안에서 · 검은창 불�
 쓰려면 4번에서 <code>sodam-agent</code>도 설치)</p>
 </blockquote>
 <hr />
-<h2 id="5-설치할-수-있는-것-팀-7종--관리-도구">5. 설치할 수 있는 것 (팀
-7종 + 관리 도구)</h2>
+<h2 id="5-설치할-수-있는-것-팀-10종--관리-도구">5. 설치할 수 있는 것 (팀
+10종 + 관리 도구)</h2>
 <p><strong>① 팀 플러그인 (AI 직원 묶음)</strong></p>
 <table>
 <thead>
@@ -489,6 +495,27 @@ compliance-reviewer(규정 준수 검토)</td>
 <td>DevOps/배포팀</td>
 <td>deploy-engineer(배포 설계) · cicd-manager(CI/CD 구성) ·
 infra-troubleshooter(장애 진단)</td>
+<td>없음</td>
+</tr>
+<tr>
+<td><code>customer-support-team</code></td>
+<td>고객지원팀</td>
+<td>support-agent(문의 응대) · faq-writer(매뉴얼 작성) ·
+feedback-analyst(불만 분석)</td>
+<td>없음</td>
+</tr>
+<tr>
+<td><code>pm-team</code></td>
+<td>PM/제품관리팀</td>
+<td>requirements-analyst(요구사항 정리) · roadmap-planner(일정·우선순위)
+· meeting-scribe(회의록 정리)</td>
+<td>없음</td>
+</tr>
+<tr>
+<td><code>localization-team</code></td>
+<td>번역/로컬라이제이션팀</td>
+<td>translator(번역) · localization-specialist(현지화) ·
+terminology-reviewer(용어 검수)</td>
 <td>없음</td>
 </tr>
 </tbody>
@@ -1270,6 +1297,9 @@ context7 MCP가 연결됩니다.</li>
 │   ├── data-team/  (같은 구조)
 │   ├── security-audit-team/  (같은 구조, MCP 없음)
 │   ├── devops-team/  (같은 구조, MCP 없음)
+│   ├── customer-support-team/  (같은 구조, MCP 없음)
+│   ├── pm-team/  (같은 구조, MCP 없음)
+│   ├── localization-team/  (같은 구조, MCP 없음)
 │   └── sodam-agent/
 │       └── commands/
 │           ├── new-agent.md          ← 슬래시 명령 (1개)

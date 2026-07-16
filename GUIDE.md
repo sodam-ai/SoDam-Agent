@@ -6,8 +6,9 @@
 > 어려운 말은 최대한 뺐고, 나오는 단어는 **그 자리에서 한 줄로** 풀이합니다.
 
 <details open>
-<summary>📋 <b>업데이트 요약</b> (2026-07-13 기준 — 접으려면 클릭)</summary>
+<summary>📋 <b>업데이트 요약</b> (2026-07-16 기준 — 접으려면 클릭)</summary>
 
+- **2026-07-16**: 고객지원팀·PM/제품관리팀·번역/로컬라이제이션팀 추가로 팀 10종 완성. 백업/되돌리기 핵심 파일을 원자적 쓰기로 강화(설치 중 강제종료돼도 반쯤 써진 파일이 안 남음).
 - **2026-07-13**: 완전히 별개의 새 Claude Code 세션에서 팀 7종 전부 재확인(재현성 검증 완료 — 우연이 아님). 가져오기(import) 기능의 위험 명령 탐지가 `.exe` 확장자·대문자 명령을 놓치던 버그 발견·수정. 보안 재점검 수행, 실제 CLI 실행으로 안전성 재확인.
 - **2026-07-12**: 실제 Claude Code에서 팀 7종 전부 설치·호출 성공 확인(목업 아님). `/reload-plugins`가 완전 재시작 없이도 바로 반영됨을 확인해 5단계에 반영. 사소한 버그 3건 수정, 보안 점검 수행.
 - **2026-07-11**: 보안 감사팀·DevOps/배포팀 추가로 팀 7종 완성. Gemini CLI·Cursor 역할 번역(베타) 추가.
@@ -37,7 +38,7 @@
 
 > 📛 **이름 안내**: 제품 이름은 **SoDam-Agent**예요. 그런데 설치할 때 팀 뒤에 붙는 `@sodamagent-marketplace`는 *가게의 내부 이름*이라 글자가 달라요. **그대로 입력**하면 됩니다(정상이에요).
 
-> 📋 **지금 버전으로 뭐가 되나요? (2026-07-11 기준)**: 팀 7종(웹앱·문서·리서치·마케팅·데이터·보안 감사·DevOps) + 직원 관리 도구 + Codex/Gemini CLI/Cursor 역할 번역(베타)까지 전부 설치 가능해요. 자세한 변경 이력은 [README.md](./README.md) 맨 위 "현재 버전 상태" 안내를 확인하세요.
+> 📋 **지금 버전으로 뭐가 되나요? (2026-07-16 기준)**: 팀 10종(웹앱·문서·리서치·마케팅·데이터·보안 감사·DevOps·고객지원·PM/제품관리·번역) + 직원 관리 도구 + Codex/Gemini CLI/Cursor 역할 번역(베타)까지 전부 설치 가능해요. 자세한 변경 이력은 [README.md](./README.md) 맨 위 "현재 버전 상태" 안내를 확인하세요.
 
 ---
 
@@ -76,6 +77,9 @@
 - 데이터 팀을 원하면: `/plugin install data-team@sodamagent-marketplace`
 - 보안 감사팀을 원하면: `/plugin install security-audit-team@sodamagent-marketplace`
 - DevOps/배포팀을 원하면: `/plugin install devops-team@sodamagent-marketplace`
+- 고객지원팀을 원하면: `/plugin install customer-support-team@sodamagent-marketplace`
+- PM/제품관리팀을 원하면: `/plugin install pm-team@sodamagent-marketplace`
+- 번역/로컬라이제이션팀을 원하면: `/plugin install localization-team@sodamagent-marketplace`
 
 ### 4단계 · (선택) 직원 관리 도구 설치
 새 직원을 **직접 만들고 가르치고** 싶다면 이것도 설치하세요:

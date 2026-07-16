@@ -20,7 +20,7 @@
 2. [Prerequisites & required programs](#2-prerequisites--required-programs)
 3. [Download & install](#3-download--install)
 4. [Quick start (3 steps)](#4-quick-start-3-steps)
-5. [What you can install (7 teams + management tool)](#5-what-you-can-install-7-teams--management-tool)
+5. [What you can install (10 teams + management tool)](#5-what-you-can-install-10-teams--management-tool)
 6. [How to use it](#6-how-to-use-it)
 7. [Manage your own agents after install (sodam-agent)](#7-manage-your-own-agents-after-install-sodam-agent)
 8. [Command reference](#8-command-reference)
@@ -41,11 +41,12 @@
 
 <h2 id="0-current-version-status--update-summary">0. Current version status · update summary</h2>
 
-**Available now**: 7 teams (web app · docs · research · marketing · data · security audit · devops) + the agent-management tool (`sodam-agent`) + Codex / Gemini CLI / Cursor role translation (beta)
+**Available now**: 10 teams (web app · docs · research · marketing · data · security audit · devops · customer support · PM/product · localization) + the agent-management tool (`sodam-agent`) + Codex / Gemini CLI / Cursor role translation (beta)
 
 <details open>
-<summary>📋 <b>Recent major changes</b> (as of 2026-07-15 — click to collapse)</summary>
+<summary>📋 <b>Recent major changes</b> (as of 2026-07-16 — click to collapse)</summary>
 
+- **2026-07-16**: Added the customer-support, PM/product-management, and localization teams — 10 teams complete. Hardened the core backup/rollback files to write atomically (tmp→rename), so a mid-write crash can no longer leave a half-written record behind. Added a GitHub Actions CI workflow that runs tests and a security audit on every push/PR (status shown live via the badge at the top of this README).
 - **2026-07-15**: Added Phase 1 of the community sharing directory (optional) — register and browse teams via a `community/index.json` catalog and GitHub Pull Requests, with no server or accounts. See [§17](#17-community-sharing-directory-optional).
 - **2026-07-13**: Reconfirmed all 7 teams in a completely separate, brand-new Claude Code session (reproducibility verified — not a fluke). Found and fixed a bug where the import feature's dangerous-command detector missed `.exe`-suffixed/uppercase commands (e.g. `cmd.exe`). Ran a follow-up OWASP-informed security review (secrets, randomness, error exposure, dependencies all checked) and re-confirmed safety with a live CLI run against a synthetic malicious file.
 - **2026-07-12**: Completed live verification — installed and called all 7 teams in a real Claude Code session, confirmed working (not a mockup; meets `01_PRD.md` success criterion #1). Fixed 3 bugs in `install`/`export`/`list` around empty-string input handling. Confirmed `/reload-plugins` applies new plugins without a full restart and updated Step 5 accordingly. Corrected stale team-count wording (5→7, 6→8) across the docs. Ran a security review (OWASP-informed) and pre-registered `.env` in `.gitignore`.
@@ -142,7 +143,7 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
 
 ---
 
-## 5. What you can install (7 teams + management tool)
+## 5. What you can install (10 teams + management tool)
 
 **① Team plugins (bundles of AI teammates)**
 
@@ -155,6 +156,9 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
 | `data-team` | Data Team | data-engineer (collect & clean) · data-analyst (analysis) · data-viz (visualization) | none |
 | `security-audit-team` | Security Audit Team | security-auditor (vulnerability scan) · vulnerability-analyst (risk analysis) · compliance-reviewer (compliance check) | none |
 | `devops-team` | DevOps/Deployment Team | deploy-engineer (deployment design) · cicd-manager (CI/CD setup) · infra-troubleshooter (incident diagnosis) | none |
+| `customer-support-team` | Customer Support Team | support-agent (inquiry response) · faq-writer (FAQ/manual writing) · feedback-analyst (complaint analysis) | none |
+| `pm-team` | PM/Product Management Team | requirements-analyst (requirements gathering) · roadmap-planner (schedule/priority) · meeting-scribe (meeting notes) | none |
+| `localization-team` | Translation/Localization Team | translator (translation) · localization-specialist (localization) · terminology-reviewer (terminology check) | none |
 
 > Each teammate gets **least-privilege tools** (e.g., the reviewer is read-only). Model is `inherit` (follows your default model).
 
@@ -484,6 +488,9 @@ sodam-ai/SoDam-Agent (GitHub)
 │   ├── data-team/       (same structure)
 │   ├── security-audit-team/  (same structure, no MCP)
 │   ├── devops-team/          (same structure, no MCP)
+│   ├── customer-support-team/  (same structure, no MCP)
+│   ├── pm-team/                (same structure, no MCP)
+│   ├── localization-team/      (same structure, no MCP)
 │   └── sodam-agent/
 │       └── commands/
 │           ├── new-agent.md           ← slash command (1 command)

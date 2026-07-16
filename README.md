@@ -21,7 +21,7 @@
 2. [사전 준비물 · 필요 프로그램](#2-사전-준비물--필요-프로그램)
 3. [다운로드 · 설치 방법](#3-다운로드--설치-방법)
 4. [빠른 시작 (3단계)](#4-빠른-시작-3단계)
-5. [설치할 수 있는 것 (팀 7종 + 관리 도구)](#5-설치할-수-있는-것-팀-7종--관리-도구)
+5. [설치할 수 있는 것 (팀 10종 + 관리 도구)](#5-설치할-수-있는-것-팀-10종--관리-도구)
 6. [사용 · 작동 방법](#6-사용--작동-방법)
 7. [설치 후 내 직원 직접 관리하기 (sodam-agent)](#7-설치-후-내-직원-직접-관리하기-sodam-agent)
 8. [명령어 모음](#8-명령어-모음)
@@ -42,11 +42,12 @@
 
 <h2 id="0-현재-버전-상태--업데이트-요약">0. 현재 버전 상태 · 업데이트 요약</h2>
 
-**지금 설치할 수 있는 것**: 팀 7종(웹앱·문서·리서치·마케팅·데이터·보안 감사·DevOps) + 직원 관리 도구(`sodam-agent`) + Codex/Gemini CLI/Cursor 역할 번역(베타)
+**지금 설치할 수 있는 것**: 팀 10종(웹앱·문서·리서치·마케팅·데이터·보안 감사·DevOps·고객지원·PM/제품관리·번역) + 직원 관리 도구(`sodam-agent`) + Codex/Gemini CLI/Cursor 역할 번역(베타)
 
 <details open>
-<summary>📋 <b>최근 주요 변경</b> (2026-07-15 기준 — 누르면 접기)</summary>
+<summary>📋 <b>최근 주요 변경</b> (2026-07-16 기준 — 누르면 접기)</summary>
 
+- **2026-07-16**: 고객지원팀 · PM/제품관리팀 · 번역/로컬라이제이션팀 추가 — 팀 10종 완성. 백업/되돌리기 핵심 파일의 쓰기 방식을 원자적(tmp→rename)으로 강화(중간에 꺼져도 반쯤 써진 파일이 안 남음). GitHub Actions로 push/PR마다 테스트·보안감사를 자동 실행하는 CI 추가(README 상단 배지로 실시간 확인 가능).
 - **2026-07-15**: 커뮤니티 공유 디렉터리(선택 기능) 1단계 추가 — 서버·계정 없이 `community/index.json` 카탈로그 + GitHub Pull Request로 팀을 등록·둘러보는 방식. 상세는 [§17](#17-커뮤니티-공유-디렉터리-선택-기능) 참고.
 - **2026-07-13**: 완전히 별개의 새 Claude Code 세션에서 팀 7종 전부 재확인(재현성 검증 완료 — 우연이 아님). 가져오기(import) 기능의 위험 명령 탐지가 `.exe` 확장자·대문자 명령(예: `cmd.exe`)을 놓치던 버그 발견·수정. OWASP 기준 보안 재점검(비밀정보·난수·에러노출·의존성 전수 확인) 및 합성 악성 파일로 실제 CLI 실행 검증(안전성 재확인).
 - **2026-07-12**: 라이브 인식 검증 완료 — 실제 Claude Code에서 팀 7종 전부 설치·호출 성공(목업 아님, `01_PRD.md` 1번 성공 기준 충족). `install`·`export`·`list` 명령의 빈 문자열 입력 처리 버그 3건 수정. `/reload-plugins`가 완전 재시작 없이도 새 팀을 즉시 반영함을 확인해 5단계 안내에 반영. 문서 전반의 팀 개수 표기(5→7종, 6→8종) 오류 정정. 보안 점검(OWASP 기준) 수행, `.env` 사전 방어 등록.
@@ -143,7 +144,7 @@ Claude Code 안에서 **명령 몇 줄**이면 끝납니다. 터미널·폴더 �
 
 ---
 
-## 5. 설치할 수 있는 것 (팀 7종 + 관리 도구)
+## 5. 설치할 수 있는 것 (팀 10종 + 관리 도구)
 
 **① 팀 플러그인 (AI 직원 묶음)**
 
@@ -156,6 +157,9 @@ Claude Code 안에서 **명령 몇 줄**이면 끝납니다. 터미널·폴더 �
 | `data-team` | 데이터팀 | data-engineer(수집·정제) · data-analyst(분석) · data-viz(시각화) | 없음 |
 | `security-audit-team` | 보안 감사팀 | security-auditor(취약점 점검) · vulnerability-analyst(위험도 분석) · compliance-reviewer(규정 준수 검토) | 없음 |
 | `devops-team` | DevOps/배포팀 | deploy-engineer(배포 설계) · cicd-manager(CI/CD 구성) · infra-troubleshooter(장애 진단) | 없음 |
+| `customer-support-team` | 고객지원팀 | support-agent(문의 응대) · faq-writer(매뉴얼 작성) · feedback-analyst(불만 분석) | 없음 |
+| `pm-team` | PM/제품관리팀 | requirements-analyst(요구사항 정리) · roadmap-planner(일정·우선순위) · meeting-scribe(회의록 정리) | 없음 |
+| `localization-team` | 번역/로컬라이제이션팀 | translator(번역) · localization-specialist(현지화) · terminology-reviewer(용어 검수) | 없음 |
 
 > 각 직원은 **최소한의 권한(tools)** 만 가집니다(예: 검토자는 읽기 전용). 모델은 `inherit`(사용자님이 쓰는 기본 모델을 따름).
 
@@ -492,6 +496,9 @@ sodam-ai/SoDam-Agent (GitHub)
 │   ├── data-team/  (같은 구조)
 │   ├── security-audit-team/  (같은 구조, MCP 없음)
 │   ├── devops-team/  (같은 구조, MCP 없음)
+│   ├── customer-support-team/  (같은 구조, MCP 없음)
+│   ├── pm-team/  (같은 구조, MCP 없음)
+│   ├── localization-team/  (같은 구조, MCP 없음)
 │   └── sodam-agent/
 │       └── commands/
 │           ├── new-agent.md          ← 슬래시 명령 (1개)

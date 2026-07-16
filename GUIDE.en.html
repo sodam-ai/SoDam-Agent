@@ -183,9 +183,13 @@ is kept to a minimum, and any term is explained <strong>in one line,
 right there</strong>.</p>
 </blockquote>
 <details open>
-<summary>📋 <b>Update summary</b> (as of 2026-07-13 — click to collapse)</summary>
+<summary>📋 <b>Update summary</b> (as of 2026-07-16 — click to collapse)</summary>
 
 <ul>
+<li><strong>2026-07-16</strong>: Added the customer-support,
+PM/product-management, and localization teams — 10 teams complete.
+Hardened core backup/rollback files to write atomically (a mid-install
+crash can no longer leave a half-written file behind).</li>
 <li><strong>2026-07-13</strong>: Reconfirmed all 7 teams in a completely
 separate, brand-new Claude Code session (reproducibility verified — not
 a fluke). Found and fixed a bug where the import feature's
@@ -251,11 +255,12 @@ commands is the <em>store's internal id</em> — the letters differ, but
 <strong>type it as-is</strong> (it's normal).</p>
 </blockquote>
 <blockquote>
-<p>📋 <strong>What does this version do? (as of 2026-07-11)</strong>:
-You can install all 7 teams (web app · docs · research · marketing ·
-data · security audit · devops) + the agent-management tool +
-Codex/Gemini CLI/Cursor role translation (beta). For the full change
-history, see the "Current version status" note at the top of <a
+<p>📋 <strong>What does this version do? (as of 2026-07-16)</strong>:
+You can install all 10 teams (web app · docs · research · marketing ·
+data · security audit · devops · customer support · PM/product ·
+localization) + the agent-management tool + Codex/Gemini CLI/Cursor role
+translation (beta). For the full change history, see the "Current
+version status" note at the top of <a
 href="./README.en.md">README.en.md</a>.</p>
 </blockquote>
 <hr />
@@ -310,6 +315,12 @@ again.</p>
 <code>/plugin install security-audit-team@sodamagent-marketplace</code></li>
 <li>DevOps/deployment team:
 <code>/plugin install devops-team@sodamagent-marketplace</code></li>
+<li>Customer support team:
+<code>/plugin install customer-support-team@sodamagent-marketplace</code></li>
+<li>PM/product management team:
+<code>/plugin install pm-team@sodamagent-marketplace</code></li>
+<li>Translation/localization team:
+<code>/plugin install localization-team@sodamagent-marketplace</code></li>
 </ul>
 <h3 id="step-4--optional-install-the-management-tool">Step 4 ·
 (Optional) Install the management tool</h3>
