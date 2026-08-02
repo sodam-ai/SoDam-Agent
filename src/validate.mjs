@@ -4,6 +4,10 @@
 // 소문자+숫자+하이픈, 1~50자, 시작/끝 하이픈 금지, 연속 하이픈 금지.
 const NAME_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
+// 화면 제어문자(ANSI 이스케이프·줄바꿈·캐리지리턴 등).
+// 허용 문자 범위는 넓게 두되(MCP 패키지명엔 @ / . 같은 문자가 정상적으로 들어감) 제어문자만 금지한다.
+const CONTROL_RE = /[\u0000-\u001F\u007F]/;
+
 export function isSafeName(name) {
   return typeof name === 'string' && name.length >= 1 && name.length <= 50 && NAME_RE.test(name);
 }
@@ -82,6 +86,22 @@ export function validatePreset(p) {
     if (spec.args && !Array.isArray(spec.args)) {
       throw new Error(`MCP "${tool.id}"의 args는 목록이어야 합니다.`);
     }
+    // 🔒 미리보기 위장 차단: command/args는 설치 직전 "설치될 실제 명령"으로 화면에 그대로
+    // 출력된다(install.mjs#printPlan). 여기에 터미널 제어문자(ANSI 이스케이프)가 섞이면 이미
+    // 출력한 줄을 지우고(예: CSI 2K) 커서를 앞으로 돌려(CR) 다른 문자열로 덮어쓸 수 있다.
+    // 그러면 사용자가 화면에서 본 명령과 .mcp.json에 실제로 써지는 명령이 달라진다 —
+    // 01_PRD §8 Must-Have 수용기준("사용자 미확인 상태로 실행형 명령이 설정에 안 써짐") 위반.
+    // ⚠️ 에러 메시지에 문제의 값을 그대로 되비추지 않는다 — 그 자체가 같은 위장 통로가 된다.
+    if (CONTROL_RE.test(spec.command)) {
+      throw new Error(`MCP "${tool.id}"의 실행 명령에 화면 제어문자가 들어 있습니다(설치 미리보기 위장 방지).`);
+    }
+    (spec.args || []).forEach((a, i) => {
+      if (typeof a !== 'string' || CONTROL_RE.test(a)) {
+        throw new Error(
+          `MCP "${tool.id}"의 ${i + 1}번째 실행 인자가 올바르지 않습니다(문자열만 허용 · 화면 제어문자 금지 — 설치 미리보기 위장 방지).`
+        );
+      }
+    });
   }
   return true;
 }
