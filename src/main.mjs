@@ -232,7 +232,7 @@ async function cmdInstallCodex(opts, preset) {
   line('\n' + color.bold('   ① 만들/덮을 파일:'));
   line(`      ${plan.agentsExists ? color.yellow('[기존 덮어씀·.bak 백업]') : color.green('[새로 만듦]')} AGENTS.md`);
   for (const s of plan.skills) line(`      ${color.green('[새로 만듦]')} .agents/skills/${s.role}/SKILL.md`);
-  line('\n' + color.bold('   ② Codex MCP (자동 수정 안 함 — 직접 추가):'));
+  line('\n' + color.bold('   ② Codex MCP') + color.gray('(=AI가 쓰는 외부 도구 연결)') + color.bold(' (자동 수정 안 함 — 직접 추가):'));
   if (plan.tomlSnippet) {
     line(color.gray('      ~/.codex/config.toml 에 아래를 직접 추가하세요:'));
     for (const ln of plan.tomlSnippet.split('\n')) line('      ' + color.cyan(ln));
@@ -294,9 +294,9 @@ async function cmdInstallGemini(opts, preset) {
   for (const r of plan.roles) {
     line(`      ${r.exists ? color.yellow('[기존 덮어씀·.bak 백업]') : color.green('[새로 만듦]')} .gemini/agents/${r.name}.md`);
   }
-  line('\n' + color.bold('   ② Gemini MCP (자동 수정 안 함 — 직접 추가):'));
+  line('\n' + color.bold('   ② Gemini MCP') + color.gray('(=AI가 쓰는 외부 도구 연결)') + color.bold(' (자동 수정 안 함 — 직접 추가):'));
   if (plan.mcpSnippet) {
-    line(color.gray('      원하는 역할 파일의 frontmatter에 아래를 직접 추가하세요:'));
+    line(color.gray('      원하는 역할 파일의 frontmatter(=파일 맨 위 설정 부분)에 아래를 직접 추가하세요:'));
     for (const ln of plan.mcpSnippet.split('\n')) line('      ' + color.cyan(ln));
   } else {
     line(color.gray('      (이 팀은 MCP가 없습니다.)'));
@@ -331,7 +331,7 @@ async function cmdInstallCursor(opts, preset) {
   line(color.yellow('   ⚠️ Cursor는 멀티에이전트가 아니라 "역할 번역"입니다 — 똑같은 팀이 아니에요(베타).'));
   line('\n' + color.bold('   ① 만들/덮을 파일:'));
   line(`      ${plan.agentsExists ? color.yellow('[기존 덮어씀·.bak 백업]') : color.green('[새로 만듦]')} AGENTS.md`);
-  line('\n' + color.bold('   ② 연결할 MCP (.cursor/mcp.json, 확인 후 자동 병합):'));
+  line('\n' + color.bold('   ② 연결할 MCP') + color.gray('(=AI가 쓰는 외부 도구 연결)') + color.bold(' (.cursor/mcp.json, 확인 후 자동 병합):'));
   const ids = Object.keys(plan.newServers);
   if (ids.length === 0) {
     const hasTools = (preset.tools || []).length > 0;

@@ -85,7 +85,7 @@ export function printPlan(plan) {
     );
   }
 
-  line('\n' + color.bold('   ② 연결할 MCP:'));
+  line('\n' + color.bold('   ② 연결할 MCP') + color.gray('(=AI가 쓰는 외부 도구 연결)') + color.bold(':'));
   if (isGlobal) {
     if (plan.manualMcp && plan.manualMcp.length) {
       line(color.gray('      전역은 안전을 위해 MCP를 자동 연결하지 않습니다. 필요하면 직접 추가하세요(선택):'));
