@@ -136,7 +136,7 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
 ## 4. Quick start (3 steps)
 
 1. In Claude Code: `/plugin marketplace add sodam-ai/SoDam-Agent` (once).
-2. `/plugin install web-app-team@sodamagent-marketplace` → **restart**.
+2. `/plugin install web-app-team@sodamagent-marketplace` → **restart**. (★ Not sure which team to pick? Start with this one — the most general-purpose.)
 3. Open `/agents` — if you see a name like **`web-app-team:reviewer`**, you're done → use it: `Have web-app-team:reviewer review this code`.
 
 > Expected time: **about 2–3 minutes.** (To also create/train agents, install `sodam-agent` in step 4 above.)
@@ -149,7 +149,7 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
 
 | Team (install name) | Name | AI teammates (roles) | Bundled tool (MCP) |
 |---|---|---|---|
-| `web-app-team` | Web App Build Team | planner · frontend-dev · backend-dev · reviewer | context7 (library-docs search) |
+| ★ `web-app-team` | Web App Build Team (recommended first pick) | planner · frontend-dev · backend-dev · reviewer | context7 (library-docs search) |
 | `docs-team` | Docs / Content Team | writer · editor · fact-checker | none |
 | `research-team` | Research Team | researcher · analyst · critic | context7 |
 | `marketing-team` | Marketing Team | copywriter (copy & content) · seo-analyst (SEO) · social-manager (social media) | none |

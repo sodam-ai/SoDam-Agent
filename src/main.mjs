@@ -147,10 +147,17 @@ function cmdList(opts = {}) {
   }
 }
 
+// 처음이면 뭘 고를지 몰라 압도되지 않도록, 가장 범용적인 팀 하나만 ★로 표시한다(01_PRD §3.5 골든패스).
+const RECOMMENDED_PRESET_ID = 'web-app-team';
+
 async function pickPreset(promptText) {
   const id = await ui.selectFromList(
     promptText,
-    PRESETS.map((p) => ({ label: `${p.name} (${p.id})`, value: p.id, hint: p.description }))
+    PRESETS.map((p) => ({
+      label: (p.id === RECOMMENDED_PRESET_ID ? '★ ' : '') + `${p.name} (${p.id})`,
+      value: p.id,
+      hint: p.id === RECOMMENDED_PRESET_ID ? `${p.description} — 처음이면 추천` : p.description,
+    }))
   );
   return getPreset(id);
 }

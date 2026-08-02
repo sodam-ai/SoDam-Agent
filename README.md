@@ -137,7 +137,7 @@ Claude Code 안에서 **명령 몇 줄**이면 끝납니다. 터미널·폴더 �
 ## 4. 빠른 시작 (3단계)
 
 1. Claude Code에서 `/plugin marketplace add sodam-ai/SoDam-Agent` (한 번만).
-2. `/plugin install web-app-team@sodamagent-marketplace` → **재시작**.
+2. `/plugin install web-app-team@sodamagent-marketplace` → **재시작**. (★ 처음이라 뭘 고를지 모르겠다면 이 팀 그대로 추천 — 가장 범용적)
 3. `/agents` 를 열어 **`web-app-team:reviewer`** 같은 이름이 보이면 성공 → 바로 `web-app-team:reviewer 서브에이전트로 이 코드 검토해줘` 처럼 사용.
 
 > 예상 소요: **약 2~3분.** (직원 만들기·가르치기까지 쓰려면 4번에서 `sodam-agent`도 설치)
@@ -150,7 +150,7 @@ Claude Code 안에서 **명령 몇 줄**이면 끝납니다. 터미널·폴더 �
 
 | 팀 (설치 이름) | 한국어 이름 | AI 직원(역할) | 함께 붙는 도구(MCP) |
 |---|---|---|---|
-| `web-app-team` | 웹앱 빌드팀 | planner(기획) · frontend-dev(화면) · backend-dev(서버) · reviewer(검토) | context7(라이브러리 문서 검색) |
+| ★ `web-app-team` | 웹앱 빌드팀(처음이면 추천) | planner(기획) · frontend-dev(화면) · backend-dev(서버) · reviewer(검토) | context7(라이브러리 문서 검색) |
 | `docs-team` | 문서/콘텐츠팀 | writer(초안) · editor(다듬기) · fact-checker(사실확인) | 없음 |
 | `research-team` | 리서치팀 | researcher(수집) · analyst(분석) · critic(반박검증) | context7 |
 | `marketing-team` | 마케팅팀 | copywriter(카피·콘텐츠) · seo-analyst(SEO 최적화) · social-manager(SNS 관리) | 없음 |
