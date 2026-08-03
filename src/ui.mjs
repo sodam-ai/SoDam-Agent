@@ -44,7 +44,27 @@ export function closeUI() {
 // 한 줄 입력 받기
 export async function ask(question, def = '') {
   const rl = getRL();
-  const a = await new Promise((res) => rl.question(question, res));
+  const a = await new Promise((res) => {
+    let done = false;
+    // 표준입력이 응답 없이 끝나면(파이프/자동화 EOF) readline이 'close'를 낸다.
+    // 이전엔 이 경우 question()의 콜백이 영영 안 불려 프로세스가 조용히 끝났다(함정#11).
+    // res('')로 흘려보내면 selectFromList/selectMultiple의 while(true) 검증 루프가
+    // 이미 죽은 rl에 다시 question()을 걸어 "취소되었습니다"를 무한 반복 출력하며
+    // 멈추는 새 버그가 생긴다(직접 재현 확인) — 그래서 여기서 바로 안전하게 종료한다.
+    const onClose = () => {
+      if (done) return;
+      done = true;
+      warn('입력이 더 들어오지 않아 작업을 취소합니다.');
+      process.exit(0);
+    };
+    rl.once('close', onClose);
+    rl.question(question, (answer) => {
+      if (done) return;
+      done = true;
+      rl.removeListener('close', onClose);
+      res(answer);
+    });
+  });
   return (a || '').trim() || def;
 }
 
