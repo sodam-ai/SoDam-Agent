@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/sodam-ai/SoDam-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/sodam-ai/SoDam-Agent/actions/workflows/ci.yml)
 
-[한국어](./README.md) | **English** · [Beginner Guide (GUIDE)](./GUIDE.en.md)
+[한국어](./README.md) | **English**
 
 > A **beginner-friendly** tool that adds **role-based AI teammate teams** (planner, developer, reviewer, …) to Claude Code with **a single plugin install** — and lets you **create, train, and manage your own agents even after installing**.
 > No hand-editing config files — **a few commands** inside Claude Code and you're set.
@@ -73,6 +73,12 @@ Claude Code lets you give tasks to an AI — usually you talk to **one AI**.
 - You **never** create files or edit config by hand. Just pick from menus/commands.
 
 > In one line: **"A tool that installs AI teammate teams into Claude Code, and lets you create and train your own."**
+
+> 💡 **3 unfamiliar words, explained** (so this works even if computers/AI are new to you)
+> - **Plugin**: a *part you snap into* a program. (SoDam-Agent is that part.)
+> - **Marketplace**: a *shop* where parts are collected. You register it here to pull parts from it.
+> - **Agent (subagent)**: one AI teammate.
+> - **Input box**: the text field at the bottom of the Claude Code screen (not a black terminal).
 
 ---
 
@@ -325,7 +331,7 @@ With `sodam-agent` installed, you can create and manage agents **inside Claude C
 | `/sodam-agent:training-agent` | **Train an agent** | Edits the agent's instructions to change its behavior. *(read "What is training?" below)* |
 | `/sodam-agent:save-agent` | **Save / reuse an agent** | Saves your agent globally (usable in every project) or backs it up. |
 | `/sodam-agent:pick-agent` | **Copy a team agent to yours** | Copies a team agent into your own agents. |
-| `/sodam-agent:remove-agent` | **Delete an agent** | Safely deletes your agent (`.bak` backup + "delete for sure?" confirm). |
+| `/sodam-agent:remove-agent` | **Delete an agent** | Safely deletes your agent (`.bak` backup + "delete for sure?" confirm). ⚠️ The list may also show agents you **actually use** — the first time, practice on a throwaway agent made with `new-agent` before deleting anything real. |
 
 ### 🎓 What is "training"? (an honest explanation)
 - Here, **training is NOT re-training the AI.** It edits the agent's **instructions (system prompt)** to change behavior. (e.g., "Reviewer, from now on focus on **security**.")
@@ -381,7 +387,7 @@ Add marketplace (once) → Install teams/tool (/plugin install) → Restart
   - `plugins/<team>/agents/<role>.md` — one AI teammate (description + instructions)
   - `plugins/<team>/.mcp.json` — the team's tool (MCP) config (web-app · research)
   - `plugins/sodam-agent/commands/*.md` — the 5 agent-management commands
-- **Docs**: `README.md` (KO) · `README.en.md` (EN, this file) · `GUIDE.md` (KO beginner) · `GUIDE.en.md` (EN) — all 4 also have an identical `.html` copy (same content) · `LICENSE` · `NOTICE` (No PDF copies are provided — md/html is sufficient and keeps maintenance overhead down)
+- **Docs**: `README.md` (KO) · `README.en.md` (EN, this file) — both also have an identical `.html` copy (same content) · `LICENSE` · `NOTICE` (No PDF copies are provided — md/html is sufficient and keeps maintenance overhead down. There is no separate "beginner guide" document — everything a first-time user needs is in this one README.)
 
 ---
 
@@ -595,4 +601,4 @@ This is an early stage, so no teams are registered yet.
 
 ---
 
-> 📘 Easier walkthrough: [Beginner Guide (GUIDE.en.md)](./GUIDE.en.md) · 🇰🇷 [한국어](./README.md) · [Security & Data Flow](#14-security--data-flow) · [FAQ](#16-faq-frequently-asked-questions)
+> 🇰🇷 [한국어](./README.md) · [Security & Data Flow](#14-security--data-flow) · [FAQ](#16-faq-frequently-asked-questions)

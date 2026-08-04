@@ -177,8 +177,7 @@
 href="https://github.com/sodam-ai/SoDam-Agent/actions/workflows/ci.yml"><img
 src="https://github.com/sodam-ai/SoDam-Agent/actions/workflows/ci.yml/badge.svg"
 alt="CI" /></a></p>
-<p><strong>한국어</strong> | <a href="./README.en.md">English</a> · <a
-href="./GUIDE.md">왕초보 가이드(GUIDE)</a></p>
+<p><strong>한국어</strong> | <a href="./README.en.md">English</a></p>
 <blockquote>
 <p>Claude Code에 <strong>역할별 AI 직원 팀</strong>(기획자·개발자·검토자
 등)을 <strong>플러그인 한 번 설치</strong>로 붙이고, <strong>설치한
@@ -322,6 +321,20 @@ href="https://github.com/sodam-ai/SoDam-Agent/commits/">GitHub 커밋
 <blockquote>
 <p>한 줄: <strong>"AI 직원 팀을 Claude Code에 클릭 몇 번으로 깔고,
 직원을 직접 만들고 가르치는 도구."</strong></p>
+</blockquote>
+<blockquote>
+<p>💡 <strong>낯선 낱말 3줄 정리</strong> (컴퓨터·AI가 처음이어도
+괜찮도록)</p>
+<ul>
+<li><strong>플러그인</strong>: 프로그램에 <em>끼워 쓰는 부품</em>입니다.
+(SoDam-Agent가 바로 이 부품입니다.)</li>
+<li><strong>마켓플레이스</strong>: 부품을 <em>모아 둔 가게</em>입니다.
+여기에 등록해야 부품을 꺼내 쓸 수 있습니다.</li>
+<li><strong>에이전트(서브에이전트)</strong>: AI 직원 한 명을 가리키는
+말입니다.</li>
+<li><strong>입력창</strong>: Claude Code 화면 아래쪽, 글자를 쳐 넣는
+칸입니다(검은 터미널과 다릅니다).</li>
+</ul>
 </blockquote>
 <hr />
 <h2 id="2-사전-준비물--필요-프로그램">2. 사전 준비물 · 필요
@@ -905,7 +918,9 @@ Claude Code 안에서</strong> 슬래시 명령으로 직원을 직접 만들고
 <td><code>/sodam-agent:remove-agent</code></td>
 <td><strong>직원 삭제</strong></td>
 <td>내 직원을 안전하게 지웁니다(<code>.bak</code> 백업 + "정말
-지울까요?" 확인).</td>
+지울까요?" 확인). ⚠️ 목록에 <strong>실제로 쓰는 직원</strong>도 함께
+보일 수 있으니, 처음 연습할 땐 <code>new-agent</code>로 <strong>버려도
+되는 직원</strong>을 만들어 그것부터 지워 보세요.</td>
 </tr>
 </tbody>
 </table>
@@ -1023,11 +1038,11 @@ Claude Code 안에서</strong> 슬래시 명령으로 직원을 직접 만들고
 5종</li>
 </ul></li>
 <li><strong>문서</strong>: <code>README.md</code>(한·이 문서) ·
-<code>README.en.md</code>(영) · <code>GUIDE.md</code>(한 왕초보) ·
-<code>GUIDE.en.md</code>(영) — 4개 모두 <code>.html</code> 동일 사본
+<code>README.en.md</code>(영) — 둘 다 <code>.html</code> 동일 사본
 있음(내용 완전 동일) · <code>LICENSE</code> · <code>NOTICE</code> (PDF
 사본은 제공하지 않습니다 — md/html로 충분하고 관리 부담을 줄이기 위한
-결정)</li>
+결정. 별도 "왕초보 가이드" 문서는 두지 않고, 이 README 하나에 처음 쓰는
+분도 볼 수 있게 전부 담았습니다.)</li>
 </ul>
 <hr />
 <h2 id="11-문제--오류-대처-증상--원인--해결">11. 문제 · 오류 대처 (증상
@@ -1480,8 +1495,7 @@ SoDam-Agent이 스키마 검증·위험 명령 경고를 자동으로 하지만,
 <p>현재는 초기 단계라 등록된 팀이 아직 없습니다.</p>
 <hr />
 <blockquote>
-<p>📘 더 쉬운 따라하기: <a href="./GUIDE.md">왕초보 가이드(GUIDE.md)</a>
-· 🇺🇸 <a href="./README.en.md">English</a> · <a
+<p>🇺🇸 <a href="./README.en.md">English</a> · <a
 href="#14-보안--데이터-흐름">보안·데이터 흐름</a> · <a
 href="#16-faq-자주-묻는-질문">FAQ</a></p>
 </blockquote>

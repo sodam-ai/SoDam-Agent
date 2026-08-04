@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/sodam-ai/SoDam-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/sodam-ai/SoDam-Agent/actions/workflows/ci.yml)
 
-**한국어** | [English](./README.en.md) · [왕초보 가이드(GUIDE)](./GUIDE.md)
+**한국어** | [English](./README.en.md)
 
 > Claude Code에 **역할별 AI 직원 팀**(기획자·개발자·검토자 등)을 **플러그인 한 번 설치**로 붙이고,
 > **설치한 뒤에도 내 직원을 직접 만들고·가르치고·관리**할 수 있는 **비개발자용** 도구입니다.
@@ -74,6 +74,12 @@ Claude Code는 AI에게 일을 시키는 도구입니다. 보통은 **AI 한 명
 - 직접 파일을 만들거나 설정을 편집할 필요가 **전혀 없습니다.** 메뉴·명령으로 고르면 끝.
 
 > 한 줄: **"AI 직원 팀을 Claude Code에 클릭 몇 번으로 깔고, 직원을 직접 만들고 가르치는 도구."**
+
+> 💡 **낯선 낱말 3줄 정리** (컴퓨터·AI가 처음이어도 괜찮도록)
+> - **플러그인**: 프로그램에 *끼워 쓰는 부품*입니다. (SoDam-Agent가 바로 이 부품입니다.)
+> - **마켓플레이스**: 부품을 *모아 둔 가게*입니다. 여기에 등록해야 부품을 꺼내 쓸 수 있습니다.
+> - **에이전트(서브에이전트)**: AI 직원 한 명을 가리키는 말입니다.
+> - **입력창**: Claude Code 화면 아래쪽, 글자를 쳐 넣는 칸입니다(검은 터미널과 다릅니다).
 
 ---
 
@@ -326,7 +332,7 @@ node bin/cli.mjs install web-app-team --target cursor --dir "C:\내\프로젝트
 | `/sodam-agent:training-agent` | **직원 가르치기(특훈)** | 직원의 지시서를 고쳐 행동을 바꿉니다. *(아래 "학습이란?" 꼭 읽기)* |
 | `/sodam-agent:save-agent` | **직원 저장·재사용** | 만든 직원을 **모든 프로젝트에서** 쓰도록 전역으로 저장하거나 백업합니다. |
 | `/sodam-agent:pick-agent` | **직원 골라오기** | 팀 직원을 본떠 **내 직원으로 복사**해 옵니다. |
-| `/sodam-agent:remove-agent` | **직원 삭제** | 내 직원을 안전하게 지웁니다(`.bak` 백업 + "정말 지울까요?" 확인). |
+| `/sodam-agent:remove-agent` | **직원 삭제** | 내 직원을 안전하게 지웁니다(`.bak` 백업 + "정말 지울까요?" 확인). ⚠️ 목록에 **실제로 쓰는 직원**도 함께 보일 수 있으니, 처음 연습할 땐 `new-agent`로 **버려도 되는 직원**을 만들어 그것부터 지워 보세요. |
 
 ### 🎓 "학습/가르치기"란? (정직한 설명)
 - 여기서 말하는 **학습은 AI를 다시 훈련시키는 게 아닙니다.** 직원의 **지시서(시스템 프롬프트)를 고쳐** 행동을 바꾸는 것입니다. (예: "검토자야, 앞으로 **보안 위주로** 봐줘")
@@ -382,7 +388,7 @@ node bin/cli.mjs install web-app-team --target cursor --dir "C:\내\프로젝트
   - `plugins/<팀>/agents/<역할>.md` — AI 직원 한 명(설명+지시문)
   - `plugins/<팀>/.mcp.json` — 그 팀이 쓰는 도구(MCP) 설정 (web-app·research)
   - `plugins/sodam-agent/commands/*.md` — 직원 관리 명령 5종
-- **문서**: `README.md`(한·이 문서) · `README.en.md`(영) · `GUIDE.md`(한 왕초보) · `GUIDE.en.md`(영) — 4개 모두 `.html` 동일 사본 있음(내용 완전 동일) · `LICENSE` · `NOTICE` (PDF 사본은 제공하지 않습니다 — md/html로 충분하고 관리 부담을 줄이기 위한 결정)
+- **문서**: `README.md`(한·이 문서) · `README.en.md`(영) — 둘 다 `.html` 동일 사본 있음(내용 완전 동일) · `LICENSE` · `NOTICE` (PDF 사본은 제공하지 않습니다 — md/html로 충분하고 관리 부담을 줄이기 위한 결정. 별도 "왕초보 가이드" 문서는 두지 않고, 이 README 하나에 처음 쓰는 분도 볼 수 있게 전부 담았습니다.)
 
 ---
 
@@ -604,4 +610,4 @@ sodam-ai/SoDam-Agent (GitHub)
 
 ---
 
-> 📘 더 쉬운 따라하기: [왕초보 가이드(GUIDE.md)](./GUIDE.md) · 🇺🇸 [English](./README.en.md) · [보안·데이터 흐름](#14-보안--데이터-흐름) · [FAQ](#16-faq-자주-묻는-질문)
+> 🇺🇸 [English](./README.en.md) · [보안·데이터 흐름](#14-보안--데이터-흐름) · [FAQ](#16-faq-자주-묻는-질문)
