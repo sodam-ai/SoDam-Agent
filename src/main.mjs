@@ -277,7 +277,7 @@ function printAfterInstall(backup, target, sampleRole = 'reviewer') {
     line(color.gray('      (탐색기에서 이 폴더 → 주소창에 cmd 입력 → 검은 창에 claude 입력)'));
   }
   line(`   2) ${color.red('이전 대화가 그대로 보이면 "이어하기"라 안 보입니다!')} 텅 빈 새 창이어야 해요.`);
-  line(`   3) 새 창에서 ${color.bold('/agents')} 또는 ${color.bold(`"${sampleRole} 에이전트 불러줘"`)} 로 확인.`);
+  line(`   3) 새 창 입력창에 ${color.bold('@')} 를 입력해 자동완성에 ${color.bold(sampleRole)} 가 뜨는지 확인(또는 ${color.bold(`"${sampleRole} 에이전트 불러줘"`)} 로 확인).`);
   line('');
   line(color.gray(`   언제든 "sodam-agent verify${isGlobal ? ' --global' : ''}" 로 설치 상태와 확인법을 다시 볼 수 있어요.`));
   line('');
@@ -396,7 +396,7 @@ function cmdVerify(opts) {
     line(color.gray('      (탐색기에서 이 폴더 → 주소창에 cmd → claude)'));
   }
   line(`   2) ${color.red('이전 대화가 보이면 "이어하기"라 새 직원이 안 보입니다.')} 텅 빈 새 창이어야 함.`);
-  line(`   3) 새 창에서 ${color.bold('/agents')} 또는 ${color.bold(`"${info.agents[0].name} 에이전트 불러줘"`)} 로 위 이름이 보이는지 확인.`);
+  line(`   3) 새 창 입력창에 ${color.bold('@')} 를 입력해 자동완성에 위 이름이 뜨는지 확인(또는 ${color.bold(`"${info.agents[0].name} 에이전트 불러줘"`)} 로 확인).`);
   line('');
 }
 
