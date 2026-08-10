@@ -323,18 +323,89 @@ href="https://github.com/sodam-ai/SoDam-Agent/commits/">GitHub 커밋
 직원을 직접 만들고 가르치는 도구."</strong></p>
 </blockquote>
 <blockquote>
-<p>💡 <strong>낯선 낱말 3줄 정리</strong> (컴퓨터·AI가 처음이어도
-괜찮도록)</p>
-<ul>
-<li><strong>플러그인</strong>: 프로그램에 <em>끼워 쓰는 부품</em>입니다.
-(SoDam-Agent가 바로 이 부품입니다.)</li>
-<li><strong>마켓플레이스</strong>: 부품을 <em>모아 둔 가게</em>입니다.
-여기에 등록해야 부품을 꺼내 쓸 수 있습니다.</li>
-<li><strong>에이전트(서브에이전트)</strong>: AI 직원 한 명을 가리키는
-말입니다.</li>
-<li><strong>입력창</strong>: Claude Code 화면 아래쪽, 글자를 쳐 넣는
-칸입니다(검은 터미널과 다릅니다).</li>
-</ul>
+<p>💡 <strong>컴퓨터·스마트폰·AI가 정말 처음이신가요? 여기부터
+읽어보세요.</strong></p>
+<p>이 문서는 여러분이 <strong>Claude Code라는 프로그램을 이미 열 수 있는
+상태</strong>라고 가정합니다. (Claude Code 자체를 컴퓨터에 설치하는
+방법은 이 문서가 다루는 범위가 아니며, <a
+href="https://claude.com/claude-code">공식 사이트</a>에 별도로
+안내되어 있습니다 — 그건 이미 되어 있다고 보고, 그 다음부터를 이
+문서가 설명합니다.) 그 다음부터 필요한 낱말은 이게 전부입니다 — 급하지
+않게 천천히 읽어보세요.</p>
+<table>
+<thead>
+<tr>
+<th>낱말</th>
+<th>쉬운 뜻</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>클릭(click)</strong></td>
+<td>마우스 버튼을 한 번 눌렀다 떼는 동작. 스마트폰이면 손가락으로
+화면을 한 번 톡 누르는 "탭"과 같은 동작입니다.</td>
+</tr>
+<tr>
+<td><strong>입력창</strong></td>
+<td>글자를 타이핑해서 넣는 네모난 칸. Claude Code 화면 아래쪽에
+있습니다(아래에서 설명하는 "터미널"과는 다릅니다).</td>
+</tr>
+<tr>
+<td><strong>복사 / 붙여넣기</strong></td>
+<td>글자를 그대로 옮기는 것. 옮기고 싶은 글자를 마우스로 드래그해
+파랗게 선택한 뒤 키보드에서 <code>Ctrl</code>키를 누른 채로
+<code>C</code>(복사) → 붙일 자리를 클릭하고 <code>Ctrl</code>을 누른
+채로 <code>V</code>(붙여넣기).</td>
+</tr>
+<tr>
+<td><strong>폴더(folder)</strong></td>
+<td>컴퓨터 안에서 파일을 담아두는 "서랍"이나 "상자" 같은 것.</td>
+</tr>
+<tr>
+<td><strong>파일(file)</strong></td>
+<td>문서·사진처럼 컴퓨터에 저장된 하나하나의 항목.</td>
+</tr>
+<tr>
+<td><strong>다운로드(download)</strong></td>
+<td>인터넷에 있는 것을 내 컴퓨터로 가져와 저장하는 것.</td>
+</tr>
+<tr>
+<td><strong>프로그램(앱)</strong></td>
+<td>컴퓨터·스마트폰에 설치해서 실행하는 도구. Claude Code도 이런
+프로그램의 하나입니다.</td>
+</tr>
+<tr>
+<td><strong>터미널(=검은 창, 명령창)</strong></td>
+<td><strong>이 문서에서 추천하는 방법(방법 A)은 터미널이 전혀 필요
+없습니다</strong> — Claude Code 안의 "입력창"만 쓰면 됩니다. 터미널은
+아래 Codex·Gemini CLI·Cursor 같은 <strong>선택 기능</strong>에서만
+예외적으로 등장합니다.</td>
+</tr>
+<tr>
+<td><strong>플러그인</strong></td>
+<td>프로그램에 <em>끼워서 기능을 추가하는 부품</em>입니다.
+(SoDam-Agent가 바로 이 부품입니다.)</td>
+</tr>
+<tr>
+<td><strong>마켓플레이스</strong></td>
+<td>플러그인을 <em>모아 둔 가게</em>입니다. 여기에 등록해야 플러그인을
+꺼내 쓸 수 있습니다.</td>
+</tr>
+<tr>
+<td><strong>에이전트(서브에이전트)</strong></td>
+<td>AI 직원 한 명을 가리키는 말입니다.</td>
+</tr>
+<tr>
+<td><strong>AI(인공지능) · 챗봇</strong></td>
+<td>사람이 글자로 질문하면, 사람처럼 글자로 답해주는 프로그램입니다.
+Claude Code는 "Claude"라는 AI와 대화하는 프로그램입니다.</td>
+</tr>
+</tbody>
+</table>
+<p>이 낱말들의 뜻만 알면 아래부터는 순서대로 따라 하기만 하면 됩니다.
+중간에 막히면 언제든 <a
+href="#11-문제--오류-대처-증상--원인--해결">§11 문제·오류 대처</a>에서
+같은 증상을 찾아보세요.</p>
 </blockquote>
 <hr />
 <h2 id="2-사전-준비물--필요-프로그램">2. 사전 준비물 · 필요
@@ -402,8 +473,8 @@ href="https://nodejs.org">nodejs.org</a>에서 <strong>LTS</strong>
 <li><strong>먼저 이 명령부터 입력</strong>: <code>/reload-plugins</code>
 — 완전히 껐다 켜지 않아도 이 명령 한 줄로 바로 반영됩니다(실제 확인됨,
 2026-07-12).</li>
-<li>⚠️ <strong>가장 흔한 막힘 지점</strong>: 설치 직후엔
-<code>/agents</code>·<code>/sodam-agent:</code>가 <strong>안 보일 수
+<li>⚠️ <strong>가장 흔한 막힘 지점</strong>: 설치 직후엔 입력창에
+<code>@</code>·<code>/sodam-agent:</code>를 입력해도 자동완성에 <strong>안 보일 수
 있습니다.</strong> 플러그인은 <strong>켤 때(또는 재로드할 때) 한 번
 로드</strong>되기 때문입니다. <code>/reload-plugins</code>로도 안
 보이면, Claude Code를 <strong>완전히 껐다 켜기</strong>(재시작)로
@@ -443,7 +514,7 @@ B — 내 컴퓨터 폴더로 써 보기 (클로드 안에서 · 검은창 불�
 번만).</li>
 <li><code>/plugin install web-app-team@sodamagent-marketplace</code> →
 <strong>재시작</strong>. (★ 처음이라 뭘 고를지 모르겠다면 이 팀 그대로 추천 — 가장 범용적)</li>
-<li><code>/agents</code> 를 열어
+<li>입력창에 <code>@web-app-team:</code> 을 입력해 자동완성으로
 <strong><code>web-app-team:reviewer</code></strong> 같은 이름이 보이면
 성공 → 바로
 <code>web-app-team:reviewer 서브에이전트로 이 코드 검토해줘</code> 처럼
@@ -551,8 +622,8 @@ href="#7-설치-후-내-직원-직접-관리하기-sodam-agent">7번</a> 참고.
 <p>설치하면 AI 직원들이 <strong><code>팀이름:역할</code></strong> 형태로
 등록됩니다 (예: <code>web-app-team:reviewer</code>).</p>
 <ul>
-<li><strong>확인</strong>: <code>/agents</code> 입력 → 목록(특히 Library
-탭)에서 <code>web-app-team:reviewer</code> 등이 보이는지 확인.
+<li><strong>확인</strong>: 입력창에 <code>@web-app-team:</code> 처럼 입력 → 자동완성
+목록에서 <code>web-app-team:reviewer</code> 등이 보이는지 확인.
 <ul>
 <li>이름에 <code>팀:</code> 이 붙어 있어, 다른 데서 온 비슷한 이름과
 <strong>확실히 구분</strong>됩니다.</li>
@@ -876,8 +947,9 @@ Node.js 설치 확인 후 Cursor 재시작</td>
 직접 관리하기 (sodam-agent)</h2>
 <p><code>sodam-agent</code> 도구를 설치하면, <strong>검은 터미널 없이
 Claude Code 안에서</strong> 슬래시 명령으로 직원을 직접 만들고 관리할 수
-있습니다. (Claude Code 기본 <code>/agents</code>의 "Create"가
-비개발자에겐 찾기 어려워, <strong>명령 한 줄</strong>로 대체한 것.)</p>
+있습니다. (Claude Code 최신 버전은 <code>/agents</code>에 직원을 직접 만드는
+화면조차 없어 파일을 손으로 고치라고 안내합니다 — 그 대신 <strong>명령 한 줄</strong>로
+쉽게 만들 수 있게 한 것.)</p>
 <blockquote>
 <p>명령은 <code>/sodam-agent:</code> 까지 입력하면 아래 5개가 추려져
 보입니다. (안 보이면 → <strong>재시작</strong>)</p>
@@ -979,8 +1051,8 @@ Claude Code 안에서</strong> 슬래시 명령으로 직원을 직접 만들고
 <td>플러그인 관리 화면(설치 목록·제거·켜고 끄기)</td>
 </tr>
 <tr>
-<td><code>/agents</code></td>
-<td>설치된 AI 직원 목록 보기·관리</td>
+<td><code>@&lt;이름&gt;</code> (입력창에 직접 입력)</td>
+<td>설치된 AI 직원 자동완성으로 확인·호출 (최신 Claude Code는 <code>/agents</code>가 목록을 보여주지 않음)</td>
 </tr>
 <tr>
 <td><code>/sodam-agent:new-agent</code></td>
@@ -1012,7 +1084,7 @@ Claude Code 안에서</strong> 슬래시 명령으로 직원을 직접 만들고
 <hr />
 <h2 id="9-워크플로우-한눈에">9. 워크플로우 (한눈에)</h2>
 <pre><code>마켓플레이스 등록(1회) → 팀·도구 설치(/plugin install) → 재시작
-   → /agents로 확인(팀:역할)
+   → @팀이름: 자동완성으로 확인(팀:역할)
    → 직원 부르기(자연어/@)
    → (원하면) /sodam-agent:new-agent 로 새 직원 만들기 → training-agent 로 가르치기
    → 필요 없으면 /sodam-agent:remove-agent 또는 /plugin 에서 제거</code></pre>
@@ -1057,7 +1129,7 @@ Claude Code 안에서</strong> 슬래시 명령으로 직원을 직접 만들고
 </thead>
 <tbody>
 <tr>
-<td>설치했는데 <code>/agents</code>·<code>/sodam-agent:</code>에
+<td>설치했는데 <code>@</code>·<code>/sodam-agent:</code>를 입력해도 자동완성에
 <strong>아무것도 안 보임</strong></td>
 <td><strong>새로 불러오기(reload)를 안 함</strong> (플러그인은 켤
 때·재로드 시 로드)</td>
@@ -1091,7 +1163,7 @@ code.claude.com)</td>
 권장</td>
 </tr>
 <tr>
-<td>마켓은 등록됐는데 <code>/agents</code>에 직원이
+<td>마켓은 등록됐는데 <code>@팀이름:</code>을 입력해도 자동완성에 직원이
 <strong>0명</strong></td>
 <td><code>marketplace add</code>만 하고 <strong><code>install</code>을
 안 함</strong></td>
@@ -1210,6 +1282,15 @@ macOS·Linux에서도 Claude Code가 있으면 <code>/plugin</code> 명령은
 <hr />
 <h2 id="13-라이선스--저작권--상업적-사용-중요">13. 라이선스 · 저작권 ·
 상업적 사용 (중요)</h2>
+<blockquote>
+<p>⚠️ <strong>먼저 읽어주세요 — 법률 자문이 아닙니다.</strong> 이
+섹션은 이해를 돕기 위한 요약일 뿐, <strong>변호사·법무 전문가의
+자문을 대신하지 않습니다.</strong> 사업·판매·고객사 납품 등
+<strong>상업적 목적</strong>으로 쓰려는 경우, 아래 내용을 참고
+정보로만 삼고 <strong>반드시 전문가 검토</strong>를 받으세요. 이
+도구는 <strong>"있는 그대로(AS IS)" 제공되며, 어떠한 형태의 보증도
+하지 않습니다.</strong></p>
+</blockquote>
 <ul>
 <li><strong>라이선스: Apache License 2.0.</strong> 상업적
 사용·수정·복제·재배포가 <strong>허용</strong>됩니다.
@@ -1220,6 +1301,11 @@ macOS·Linux에서도 Claude Code가 있으면 <code>/plugin</code> 명령은
 <strong>보증 없음(AS IS)</strong>. 전문은 <a
 href="./LICENSE"><code>LICENSE</code></a>·<a
 href="./NOTICE"><code>NOTICE</code></a>.</li>
+<li><strong>책임 제한(쉬운 설명)</strong>: Apache-2.0 §8에 따라, 이
+도구를 쓰다가 발생한 손해에 대해 저작자·기여자는 <strong>법이
+허용하는 한도 내에서 책임지지 않습니다.</strong> 정확한 법적 문구는
+<a href="./LICENSE"><code>LICENSE</code></a> 원문이 기준입니다(이
+README의 설명이 아님).</li>
 </ul></li>
 <li><strong>저작권</strong>: © 2026 SoDam AI Studio.</li>
 <li><strong>상표</strong>: "Claude Code"·"Claude"·"Anthropic"은
@@ -1234,7 +1320,7 @@ CLI"·"Google"은 Google의, "Cursor"는 Cursor(Anysphere)의,
 동일·유사 명칭과의 충돌 가능성은 사용자가 별도 확인하세요.</li>
 <li><strong>상업적 사용 범위</strong>: Apache-2.0에 따라
 <strong>수정·복제·포크·재배포·판매·서비스 운영·교육 자료·회사/고객사
-납품</strong>이 대부분 허용됩니다. 단 <strong>아래는 사용자
+납품</strong>이 대부분 허용됩니다. 단 <strong>아래는 전부 사용자
 책임</strong>입니다.</li>
 <li><strong>사용자 책임(반드시 별도 확인)</strong>: 설치하는
 <strong>MCP(예: context7/Upstash)·외부 API의 요금제·이용약관·모델 사용
@@ -1244,10 +1330,23 @@ CLI"·"Google"은 Google의, "Cursor"는 Cursor(Anysphere)의,
 <code>sodam-agent</code>가 만드는 직원 템플릿은 <strong>SoDam-Agent 자체
 큐레이션</strong>입니다(타인 저작물 미차용). 다만 일부 문구는 <strong>AI
 생성</strong>일 수 있고, AI 생성물의 저작권 지위는 관할·시점에 따라
-유동적입니다. 상업적 최종 사용 전 <strong>① 저작권 귀속 ② 출처 ③ 상업적
-이용 가능 여부 ④ 유사 저작물 침해 가능성</strong>을 <strong>사용자가
-직접 확인</strong>하세요. (본 문서는 법률 자문이 아니며, 확실치 않으면
-전문가 검토를 권장합니다.)</li>
+유동적입니다.</li>
+</ul>
+<p><strong>✅ 상업적으로 쓰기 전 최종 체크리스트</strong> (전부
+사용자가 직접 확인할 항목 — SoDam-Agent가 대신 보증하지 않습니다)</p>
+<ul class="task-list">
+<li><input type="checkbox" disabled="" /> <code>LICENSE</code>·<code>NOTICE</code>
+원문을 읽고 조건(고지 유지·변경 표시·상표 미부여)을 이해했다.</li>
+<li><input type="checkbox" disabled="" /> 연결하는 MCP(context7/Upstash
+등)·외부 API의 요금제·이용약관을 해당 서비스 사이트에서 직접
+확인했다.</li>
+<li><input type="checkbox" disabled="" /> AI 생성 콘텐츠(프리셋 문구
+등)의 저작권 귀속·출처·유사 저작물 침해 가능성을 확인했다(관할·시점에
+따라 다름).</li>
+<li><input type="checkbox" disabled="" /> "SoDam-Agent"라는 이름이 내가
+속한 지역·업종에서 상표 충돌이 없는지 확인했다.</li>
+<li><input type="checkbox" disabled="" /> 확신이 서지 않는 항목이
+있다면 <strong>법률 전문가에게 검토</strong>를 요청했다.</li>
 </ul>
 <hr />
 <h2 id="14-보안--데이터-흐름">14. 보안 · 데이터 흐름</h2>
@@ -1366,7 +1465,7 @@ context7 MCP가 연결됩니다.</li>
 
 3. Claude Code 재시작
    → 캐시에서 에이전트 지시문(.md) 로드
-   → /agents 에 &quot;팀:역할&quot; 형태로 등록
+   → &quot;팀:역할&quot; 형태로 스코프 등록(@ 자동완성에서 확인 가능)
 
 4. 사용자가 에이전트 호출
    → Claude Code가 해당 에이전트 지시문을 서브에이전트로 실행</code></pre>
