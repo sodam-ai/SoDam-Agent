@@ -23,6 +23,19 @@ export function runDoctor(target) {
       .toString()
       .trim();
     success(`Claude Code 감지됨 (${out})`);
+
+    // 2-1) 플러그인(/plugin) 기능 지원 여부 — 버전 숫자를 추측해서 비교하지 않고
+    // 실제 능력(claude plugin --help 성공 여부)을 직접 확인한다(README "구버전" 실패 사례 대응).
+    try {
+      execFileSync('claude', ['plugin', '--help'], {
+        timeout: 5000,
+        stdio: ['ignore', 'pipe', 'ignore'],
+        shell: process.platform === 'win32',
+      });
+      success('플러그인(/plugin) 기능 지원됨 — 마켓플레이스 설치 방식을 쓸 수 있습니다');
+    } catch {
+      warn('이 Claude Code는 플러그인(/plugin) 기능을 지원하지 않는 것 같습니다. 최신 버전으로 업데이트하세요(문서: code.claude.com).');
+    }
   } catch {
     info('Claude Code를 자동 감지하지 못했습니다(설치 안 됐거나 PATH에 없음). 설치는 진행할 수 있으며, 에이전트는 Claude Code에서 사용합니다.');
   }

@@ -341,17 +341,92 @@ pick from menus/commands.</li>
 Claude Code, and lets you create and train your own."</strong></p>
 </blockquote>
 <blockquote>
-<p>💡 <strong>3 unfamiliar words, explained</strong> (so this works even
-if computers/AI are new to you)</p>
-<ul>
-<li><strong>Plugin</strong>: a <em>part you snap into</em> a program.
-(SoDam-Agent is that part.)</li>
-<li><strong>Marketplace</strong>: a <em>shop</em> where parts are
-collected. You register it here to pull parts from it.</li>
-<li><strong>Agent (subagent)</strong>: one AI teammate.</li>
-<li><strong>Input box</strong>: the text field at the bottom of the
-Claude Code screen (not a black terminal).</li>
-</ul>
+<p>💡 <strong>Brand new to computers, smartphones, or AI? Start
+here.</strong></p>
+<p>This document assumes you can already <strong>open a program called
+Claude Code</strong>. (Installing Claude Code itself on your computer is
+outside the scope of this document — that's covered separately on the
+<a href="https://claude.com/claude-code">official site</a>. We assume
+that part is already done, and this document picks up from there.) Here
+are the only words you'll need after that — take your time.</p>
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Plain-language meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Click</strong></td>
+<td>Pressing and releasing a mouse button once. On a phone, this is the
+same as a "tap" — touching the screen once with your finger.</td>
+</tr>
+<tr>
+<td><strong>Input box</strong></td>
+<td>The rectangular field where you type text. It's at the bottom of
+the Claude Code screen (different from the "terminal" described
+below).</td>
+</tr>
+<tr>
+<td><strong>Copy / paste</strong></td>
+<td>Moving text without retyping it. Drag your mouse over the text you
+want (it turns blue/highlighted), then hold <code>Ctrl</code> and press
+<code>C</code> (copy) → click where you want it → hold <code>Ctrl</code>
+and press <code>V</code> (paste).</td>
+</tr>
+<tr>
+<td><strong>Folder</strong></td>
+<td>Like a "drawer" or "box" inside your computer that holds files.</td>
+</tr>
+<tr>
+<td><strong>File</strong></td>
+<td>A single saved item on your computer, like a document or a
+photo.</td>
+</tr>
+<tr>
+<td><strong>Download</strong></td>
+<td>Bringing something from the internet onto your own computer and
+saving it.</td>
+</tr>
+<tr>
+<td><strong>Program (app)</strong></td>
+<td>A tool you install and run on a computer or phone. Claude Code is
+one of these.</td>
+</tr>
+<tr>
+<td><strong>Terminal (a.k.a. black window, command prompt)</strong></td>
+<td><strong>The method this document recommends (Method A) needs no
+terminal at all</strong> — just the Claude Code "input box." A terminal
+only shows up in the optional Codex/Gemini CLI/Cursor sections
+below.</td>
+</tr>
+<tr>
+<td><strong>Plugin</strong></td>
+<td>A <em>part you snap into</em> a program to add a feature.
+(SoDam-Agent is that part.)</td>
+</tr>
+<tr>
+<td><strong>Marketplace</strong></td>
+<td>A <em>shop</em> where plugins are collected. You register it here
+to pull plugins from it.</td>
+</tr>
+<tr>
+<td><strong>Agent (subagent)</strong></td>
+<td>One AI teammate.</td>
+</tr>
+<tr>
+<td><strong>AI · chatbot</strong></td>
+<td>A program that answers you in text, the way a person would, when
+you type a question. Claude Code is a program for talking with an AI
+called "Claude."</td>
+</tr>
+</tbody>
+</table>
+<p>Once you know these words, everything below is just following the
+steps in order. If you get stuck, check <a
+href="#11-troubleshooting-symptom--cause--fix">§11
+Troubleshooting</a> for the same symptom.</p>
 </blockquote>
 <hr />
 <h2 id="2-prerequisites--required-programs">2. Prerequisites &amp;
@@ -421,9 +496,9 @@ create &amp; train your own agents:
 <li><strong>Try this first</strong>: <code>/reload-plugins</code> — no
 full quit/reopen needed, this alone applies it immediately (confirmed by
 real testing, 2026-07-12).</li>
-<li>⚠️ <strong>The most common gotcha</strong>: right after install,
-<code>/agents</code>·<code>/sodam-agent:</code> may <strong>not
-appear</strong> — plugins are <strong>loaded at startup or
+<li>⚠️ <strong>The most common gotcha</strong>: right after install, typing
+<code>@</code>·<code>/sodam-agent:</code> may <strong>not show anything
+in the autocomplete</strong> — plugins are <strong>loaded at startup or
 reload</strong>. If <code>/reload-plugins</code> doesn't help, fall back
 to <strong>fully quitting and reopening Claude Code</strong>.</li>
 </ul></li>
@@ -444,8 +519,8 @@ GitHub and unzip).</li>
 <li>In the Claude Code <strong>input box</strong> (⚠️ <strong>no
 quotes</strong>, prefer a space-free path):
 <pre><code>/plugin marketplace add C:\downloaded-folder\SoDam-Agent</code></pre></li>
-<li>Then install teams/tool (skip this and <code>/agents</code> will be
-empty):
+<li>Then install teams/tool (skip this and the <code>@</code> autocomplete
+will be empty):
 <pre><code>/plugin install web-app-team@sodamagent-marketplace
 /plugin install sodam-agent@sodamagent-marketplace</code></pre></li>
 <li><strong>Restart</strong> to apply.</li>
@@ -462,7 +537,8 @@ also works (repeat <code>--plugin-dir</code> for multiple teams).</p>
 <code>/plugin marketplace add sodam-ai/SoDam-Agent</code> (once).</li>
 <li><code>/plugin install web-app-team@sodamagent-marketplace</code> →
 <strong>restart</strong>. (★ Not sure which team to pick? Start with this one — the most general-purpose.)</li>
-<li>Open <code>/agents</code> — if you see a name like
+<li>Type <code>@web-app-team:</code> in the input box — if the autocomplete
+shows a name like
 <strong><code>web-app-team:reviewer</code></strong>, you're done → use
 it: <code>Have web-app-team:reviewer review this code</code>.</li>
 </ol>
@@ -570,8 +646,8 @@ href="#7-manage-your-own-agents-after-install-sodam-agent">section
 <strong><code>team:role</code></strong> (e.g.,
 <code>web-app-team:reviewer</code>).</p>
 <ul>
-<li><strong>Verify</strong>: type <code>/agents</code> → in the list
-(Library tab) check that <code>web-app-team:reviewer</code> etc. appear.
+<li><strong>Verify</strong>: type <code>@web-app-team:</code> in the input →
+check the autocomplete list for <code>web-app-team:reviewer</code> etc.
 <ul>
 <li>The <code>team:</code> prefix makes them
 <strong>unambiguous</strong> versus similarly named agents from
@@ -898,8 +974,9 @@ may vary by tool/version).</p>
 your own agents after install (sodam-agent)</h2>
 <p>With <code>sodam-agent</code> installed, you can create and manage
 agents <strong>inside Claude Code with slash commands</strong> — no
-terminal. (Claude Code's native <code>/agents</code> "Create" is hard
-for beginners to find, so this replaces it with <strong>one
+terminal. (Recent Claude Code versions don't even have a "Create" screen
+in <code>/agents</code> anymore — it just tells you to edit files by
+hand. This replaces that with <strong>one easy
 command</strong>.)</p>
 <blockquote>
 <p>Type <code>/sodam-agent:</code> to narrow to the 5 commands below.
@@ -1004,8 +1081,8 @@ box</strong> (not a black terminal).</p>
 <td>Plugin manager (installed list · uninstall · enable/disable)</td>
 </tr>
 <tr>
-<td><code>/agents</code></td>
-<td>View/manage installed AI teammates</td>
+<td><code>@&lt;name&gt;</code> (type directly in the input)</td>
+<td>Verify/call an installed AI teammate via autocomplete (recent Claude Code versions no longer show a list via <code>/agents</code>)</td>
 </tr>
 <tr>
 <td><code>/sodam-agent:new-agent</code></td>
@@ -1037,7 +1114,7 @@ restart</strong> (try this first after step 5)</td>
 <hr />
 <h2 id="9-workflow-at-a-glance">9. Workflow at a glance</h2>
 <pre><code>Add marketplace (once) → Install teams/tool (/plugin install) → Restart
-   → Verify with /agents (team:role)
+   → Verify by typing @team-name: (autocomplete shows team:role)
    → Call a teammate (natural language / @)
    → (optional) /sodam-agent:new-agent to create → training-agent to teach
    → Remove via /sodam-agent:remove-agent or /plugin when done</code></pre>
@@ -1084,8 +1161,8 @@ README.)</li>
 </thead>
 <tbody>
 <tr>
-<td>Installed but <code>/agents</code>·<code>/sodam-agent:</code> show
-<strong>nothing</strong></td>
+<td>Installed but typing <code>@</code>·<code>/sodam-agent:</code> shows
+<strong>nothing</strong> in autocomplete</td>
 <td><strong>Didn't reload</strong> (plugins load at startup/reload)</td>
 <td>Try <code>/reload-plugins</code> first. Still missing? <strong>Quit
 and reopen Claude Code</strong></td>
@@ -1119,7 +1196,7 @@ code.claude.com)</td>
 folder</td>
 </tr>
 <tr>
-<td>Marketplace added but <code>/agents</code> shows <strong>0
+<td>Marketplace added but <code>@team-name:</code> autocomplete shows <strong>0
 teammates</strong></td>
 <td>You ran <code>marketplace add</code> but <strong>not
 <code>install</code></strong></td>
@@ -1209,6 +1286,15 @@ tools (MCP) / APIs</strong> you install — yourself.</li>
 <hr />
 <h2 id="13-license--copyright--commercial-use-important">13. License ·
 Copyright · Commercial use (important)</h2>
+<blockquote>
+<p>⚠️ <strong>Read this first — this is not legal advice.</strong> This
+section is a plain-language summary only; it does <strong>not replace
+advice from a lawyer or legal professional.</strong> If you intend to
+use this for a <strong>commercial purpose</strong> (business, sales,
+client delivery, etc.), treat everything below as reference information
+only and <strong>get a professional review.</strong> This tool is
+provided <strong>"AS IS," with no warranty of any kind.</strong></p>
+</blockquote>
 <ul>
 <li><strong>License: Apache License 2.0.</strong> Commercial use,
 modification, copying, and redistribution are <strong>allowed</strong>.
@@ -1219,6 +1305,11 @@ modification, copying, and redistribution are <strong>allowed</strong>.
 <strong>no warranty (AS IS)</strong>. Full text: <a
 href="./LICENSE"><code>LICENSE</code></a> · <a
 href="./NOTICE"><code>NOTICE</code></a>.</li>
+<li><strong>Limitation of liability (plain-language)</strong>: Under
+Apache-2.0 §8, the authors and contributors are <strong>not liable, to
+the extent permitted by law</strong>, for damages arising from use of
+this tool. The <a href="./LICENSE"><code>LICENSE</code></a> text itself
+is authoritative — not this summary.</li>
 </ul></li>
 <li><strong>Copyright</strong>: © 2026 SoDam AI Studio.</li>
 <li><strong>Trademarks</strong>: "Claude Code"·"Claude"·"Anthropic" are
@@ -1236,7 +1327,7 @@ yourself.</li>
 <li><strong>Commercial scope</strong>: under Apache-2.0,
 <strong>modification, copying, forking, redistribution, selling, running
 as a service, training material, and client delivery</strong> are mostly
-allowed. But <strong>the following is your responsibility.</strong></li>
+allowed. But <strong>everything below is your responsibility.</strong></li>
 <li><strong>Your responsibility (must verify separately)</strong>: the
 <strong>pricing, terms of service, model-use policy, and data-handling
 policy of the MCPs (e.g., context7/Upstash) and external APIs</strong>
@@ -1247,10 +1338,27 @@ instructions and the templates <code>sodam-agent</code> creates are
 <strong>SoDam-Agent's own curation</strong> (no third-party works
 bundled). However, some text may be <strong>AI-generated</strong>, and
 the copyright status of AI-generated content varies by jurisdiction and
-over time. Before any commercial final use, <strong>verify for yourself:
-① copyright ownership ② provenance/source ③ commercial-use eligibility ④
-possible infringement of similar existing works.</strong> (This document
-is not legal advice; consult a professional if unsure.)</li>
+over time.</li>
+</ul>
+<p><strong>✅ Final checklist before commercial use</strong> (all items
+are yours to verify — SoDam-Agent does not guarantee any of them for
+you)</p>
+<ul class="task-list">
+<li><input type="checkbox" disabled="" /> I've read
+<code>LICENSE</code>/<code>NOTICE</code> and understand the conditions
+(keep notices, state changes, no trademark grant).</li>
+<li><input type="checkbox" disabled="" /> I've verified the
+pricing/terms of any connected MCP (context7/Upstash, etc.) and
+external API directly on that service's own site.</li>
+<li><input type="checkbox" disabled="" /> I've checked the copyright
+ownership, provenance, and possible infringement risk of AI-generated
+content (preset wording, etc.) — this varies by jurisdiction and over
+time.</li>
+<li><input type="checkbox" disabled="" /> I've checked that the name
+"SoDam-Agent" doesn't conflict with an existing trademark in my
+region/industry.</li>
+<li><input type="checkbox" disabled="" /> For anything I'm unsure
+about, I've had it reviewed by a <strong>legal professional</strong>.</li>
 </ul>
 <hr />
 <h2 id="14-security--data-flow">14. Security &amp; data flow</h2>
@@ -1372,7 +1480,7 @@ created in the same folder.</li>
 
 3. Restart Claude Code
    → Loads agent instruction files (.md) from cache
-   → Registers as &quot;team:role&quot; in /agents
+   → Registered under the scoped name &quot;team:role&quot; (shows in @ autocomplete)
 
 4. User calls an agent
    → Claude Code runs that agent&#39;s instruction file as a subagent</code></pre>

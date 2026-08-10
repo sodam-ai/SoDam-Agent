@@ -15,6 +15,7 @@ import { agentsMd, skillMd, codexConfigToml, buildCodexPlan, applyCodexPlan } fr
 import { geminiAgentMd, geminiMcpSnippet, buildGeminiPlan, applyGeminiPlan } from '../src/writers/gemini.mjs';
 import { cursorAgentsMd, buildCursorPlan, applyCursorPlan } from '../src/writers/cursor.mjs';
 import { presetsInCategory, groupPresetsByCategory } from '../src/main.mjs';
+import { runDoctor } from '../src/doctor.mjs';
 
 let pass = 0;
 const ok = (m) => {
@@ -492,6 +493,12 @@ for (const t of newTeams) {
   }
 }
 ok('신규 프리셋 3종: 실제 설치 시 전부 .claude/agents/*.md가 빠짐없이 생성됨(목업 아님)');
+
+// 23) doctor: 플러그인(/plugin) 지원 여부 체크가 추가돼도 doctor 전체가 안 죽는지(claude 유무와 무관하게)
+const doctorTarget = path.join(root, 'doctor-check');
+fs.mkdirSync(doctorTarget, { recursive: true });
+assert.doesNotThrow(() => runDoctor(resolveTarget(doctorTarget)), 'doctor가 버전 체크 추가 후에도 예외 없이 끝까지 실행됨');
+ok('doctor: 플러그인(/plugin) 지원 여부 체크 추가 후에도 전체 진단이 예외 없이 끝까지 실행됨');
 
 console.log(`\n🎉 모든 검증 통과: ${pass}건`);
 fs.rmSync(root, { recursive: true, force: true });

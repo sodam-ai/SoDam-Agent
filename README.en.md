@@ -74,11 +74,25 @@ Claude Code lets you give tasks to an AI — usually you talk to **one AI**.
 
 > In one line: **"A tool that installs AI teammate teams into Claude Code, and lets you create and train your own."**
 
-> 💡 **3 unfamiliar words, explained** (so this works even if computers/AI are new to you)
-> - **Plugin**: a *part you snap into* a program. (SoDam-Agent is that part.)
-> - **Marketplace**: a *shop* where parts are collected. You register it here to pull parts from it.
-> - **Agent (subagent)**: one AI teammate.
-> - **Input box**: the text field at the bottom of the Claude Code screen (not a black terminal).
+> 💡 **Brand new to computers, smartphones, or AI? Start here.**
+> This document assumes you can already **open a program called Claude Code**. (Installing Claude Code itself on your computer is outside the scope of this document — that's covered separately on the [official site](https://claude.com/claude-code). We assume that part is already done, and this document picks up from there.) Here are the only words you'll need after that — take your time.
+>
+> | Word | Plain-language meaning |
+> |---|---|
+> | **Click** | Pressing and releasing a mouse button once. On a phone, this is the same as a "tap" — touching the screen once with your finger. |
+> | **Input box** | The rectangular field where you type text. It's at the bottom of the Claude Code screen (different from the "terminal" described below). |
+> | **Copy / paste** | Moving text without retyping it. Drag your mouse over the text you want (it turns blue/highlighted), then hold `Ctrl` and press `C` (copy) → click where you want it → hold `Ctrl` and press `V` (paste). |
+> | **Folder** | Like a "drawer" or "box" inside your computer that holds files. |
+> | **File** | A single saved item on your computer, like a document or a photo. |
+> | **Download** | Bringing something from the internet onto your own computer and saving it. |
+> | **Program (app)** | A tool you install and run on a computer or phone. Claude Code is one of these. |
+> | **Terminal (a.k.a. black window, command prompt)** | A black screen where you type commands as text. **The method this document recommends (Method A) needs no terminal at all** — just the Claude Code "input box." A terminal only shows up in the optional Codex/Gemini CLI/Cursor sections below. |
+> | **Plugin** | A *part you snap into* a program to add a feature. (SoDam-Agent is that part.) |
+> | **Marketplace** | A *shop* where plugins are collected. You register it here to pull plugins from it. |
+> | **Agent (subagent)** | One AI teammate. |
+> | **AI · chatbot** | A program that answers you in text, the way a person would, when you type a question. Claude Code is a program for talking with an AI called "Claude." |
+>
+> Once you know these words, everything below is just following the steps in order. If you get stuck, check [§11 Troubleshooting](#11-troubleshooting-symptom--cause--fix) for the same symptom.
 
 ---
 
@@ -118,7 +132,7 @@ There are two methods. **For most people, Method A (marketplace)** is all you ne
    ```
 5. **Load what you just installed.**
    - **Try this first**: `/reload-plugins` — no full quit/reopen needed, this alone applies it immediately (confirmed by real testing, 2026-07-12).
-   - ⚠️ **The most common gotcha**: right after install, `/agents`·`/sodam-agent:` may **not appear** — plugins are **loaded at startup or reload**. If `/reload-plugins` doesn't help, fall back to **fully quitting and reopening Claude Code**.
+   - ⚠️ **The most common gotcha**: right after install, typing `@`·`/sodam-agent:` may **not show anything in the autocomplete** — plugins are **loaded at startup or reload**. If `/reload-plugins` doesn't help, fall back to **fully quitting and reopening Claude Code**.
 
 > 💡 `@sodamagent-marketplace` is the marketplace's internal id — type it as-is (it's fine that it differs from the product name SoDam-Agent).
 
@@ -129,7 +143,7 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
    ```
    /plugin marketplace add C:\downloaded-folder\SoDam-Agent
    ```
-3. Then install teams/tool (skip this and `/agents` will be empty):
+3. Then install teams/tool (skip this and the `@` autocomplete will be empty):
    ```
    /plugin install web-app-team@sodamagent-marketplace
    /plugin install sodam-agent@sodamagent-marketplace
@@ -143,7 +157,7 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
 
 1. In Claude Code: `/plugin marketplace add sodam-ai/SoDam-Agent` (once).
 2. `/plugin install web-app-team@sodamagent-marketplace` → **restart**. (★ Not sure which team to pick? Start with this one — the most general-purpose.)
-3. Open `/agents` — if you see a name like **`web-app-team:reviewer`**, you're done → use it: `Have web-app-team:reviewer review this code`.
+3. Type `@web-app-team:` in the input box — if the autocomplete shows a name like **`web-app-team:reviewer`**, you're done → use it: `Have web-app-team:reviewer review this code`.
 
 > Expected time: **about 2–3 minutes.** (To also create/train agents, install `sodam-agent` in step 4 above.)
 
@@ -176,11 +190,11 @@ Instead of the online marketplace, you can **register a downloaded folder as a "
 
 After installing, teammates are registered as **`team:role`** (e.g., `web-app-team:reviewer`).
 
-- **Verify**: type `/agents` → in the list (Library tab) check that `web-app-team:reviewer` etc. appear.
+- **Verify**: type `@web-app-team:` in the input → check the autocomplete list for `web-app-team:reviewer` etc.
   - The `team:` prefix makes them **unambiguous** versus similarly named agents from elsewhere.
 - **How to call one (pick whichever is easiest):**
   1. Natural language: `Ask web-app-team:reviewer to review this code`
-  2. Explicit (@-mention): type `@` in the input → pick from the list.
+  2. Explicit (@-mention): type `@` in the input → pick from the autocomplete list.
   3. Automatic: Claude may delegate to the right teammate based on the task.
 - **Tools (MCP)**: installing `web-app-team`·`research-team` **also connects the context7 (doc search) tool** automatically (no extra setup).
 
@@ -321,7 +335,7 @@ node bin/cli.mjs install web-app-team --target cursor --dir "C:\my\project\folde
 
 ## 7. Manage your own agents after install (sodam-agent)
 
-With `sodam-agent` installed, you can create and manage agents **inside Claude Code with slash commands** — no terminal. (Claude Code's native `/agents` "Create" is hard for beginners to find, so this replaces it with **one command**.)
+With `sodam-agent` installed, you can create and manage agents **inside Claude Code with slash commands** — no terminal. (Recent Claude Code versions don't even have a "Create" screen in `/agents` anymore — it just tells you to edit files by hand. This replaces that with **one easy command**.)
 
 > Type `/sodam-agent:` to narrow to the 5 commands below. (Don't see them? → **restart**.)
 
@@ -355,7 +369,7 @@ With `sodam-agent` installed, you can create and manage agents **inside Claude C
 | `/plugin install web-app-team@sodamagent-marketplace` | Install the web app team (swap the team name for others) |
 | `/plugin install sodam-agent@sodamagent-marketplace` | Install the agent-management tool |
 | `/plugin` | Plugin manager (installed list · uninstall · enable/disable) |
-| `/agents` | View/manage installed AI teammates |
+| `@<name>` (type directly in the input) | Verify/call an installed AI teammate via autocomplete (recent Claude Code versions no longer show a list via `/agents`) |
 | `/sodam-agent:new-agent` | Create a new agent |
 | `/sodam-agent:training-agent` | Train an agent |
 | `/sodam-agent:save-agent` | Save / reuse an agent |
@@ -369,7 +383,7 @@ With `sodam-agent` installed, you can create and manage agents **inside Claude C
 
 ```
 Add marketplace (once) → Install teams/tool (/plugin install) → Restart
-   → Verify with /agents (team:role)
+   → Verify by typing @team-name: (autocomplete shows team:role)
    → Call a teammate (natural language / @)
    → (optional) /sodam-agent:new-agent to create → training-agent to teach
    → Remove via /sodam-agent:remove-agent or /plugin when done
@@ -395,12 +409,12 @@ Add marketplace (once) → Install teams/tool (/plugin install) → Restart
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| Installed but `/agents`·`/sodam-agent:` show **nothing** | **Didn't reload** (plugins load at startup/reload) | Try `/reload-plugins` first. Still missing? **Quit and reopen Claude Code** |
+| Installed but typing `@`·`/sodam-agent:` shows **nothing** in autocomplete | **Didn't reload** (plugins load at startup/reload) | Try `/reload-plugins` first. Still missing? **Quit and reopen Claude Code** |
 | `/sodam-agent` shows **unrelated stuff** (team-agents, etc.) | `sodam-agent` not installed or no restart | `/plugin install sodam-agent@sodamagent-marketplace` → **restart**. Type `/sodam-agent:` with the colon |
 | `marketplace add` says `Marketplace file not found` | The repo's **default branch has no marketplace file** | The publisher must set the **default branch to the marketplace branch** (done for this repo). Retry shortly |
 | No `/plugin` command | Old Claude Code | **Update Claude Code** to the latest (docs: code.claude.com) |
 | Pasting a path gives `Invalid ... format` | The path **includes quotes (")** | **Remove the quotes** — path only. Prefer a space-free folder |
-| Marketplace added but `/agents` shows **0 teammates** | You ran `marketplace add` but **not `install`** | Run `/plugin install <team>@sodamagent-marketplace` **separately** (adding ≠ installing) |
+| Marketplace added but `@team-name:` autocomplete shows **0 teammates** | You ran `marketplace add` but **not `install`** | Run `/plugin install <team>@sodamagent-marketplace` **separately** (adding ≠ installing) |
 | macOS · Linux install? | Supported scope | SoDam-Agent is developed and verified **Windows-first**. On macOS/Linux, the `/plugin` commands work the same if Claude Code is installed, but path/environment differences may cause edge cases. Report issues at [GitHub Issues](https://github.com/sodam-ai/SoDam-Agent/issues). |
 | Trained a team agent but it reverts | You **edited a team agent directly** (overwritten on update) | Use `/sodam-agent:pick-agent` to make a **copy**, then train the copy |
 | Names like `web-app-team:` look confusing | — | That's expected. The **`team:role`** naming makes *your* installs unambiguous |
@@ -425,13 +439,23 @@ Add marketplace (once) → Install teams/tool (/plugin install) → Restart
 
 ## 13. License · Copyright · Commercial use (important)
 
+> ⚠️ **Read this first — this is not legal advice.** This section is a plain-language summary only; it does **not replace advice from a lawyer or legal professional.** If you intend to use this for a **commercial purpose** (business, sales, client delivery, etc.), treat everything below as reference information only and **get a professional review.** This tool is provided **"AS IS," with no warranty of any kind.**
+
 - **License: Apache License 2.0.** Commercial use, modification, copying, and redistribution are **allowed**.
   - Conditions: keep `LICENSE`/copyright notices, **state changes**, **preserve `NOTICE`**, **no trademark grant**, **no warranty (AS IS)**. Full text: [`LICENSE`](./LICENSE) · [`NOTICE`](./NOTICE).
+  - **Limitation of liability (plain-language)**: Under Apache-2.0 §8, the authors and contributors are **not liable, to the extent permitted by law**, for damages arising from use of this tool. The [`LICENSE`](./LICENSE) text itself is authoritative — not this summary.
 - **Copyright**: © 2026 SoDam AI Studio.
 - **Trademarks**: "Claude Code"·"Claude"·"Anthropic" are trademarks of Anthropic, PBC; "Codex"·"OpenAI" are trademarks of OpenAI; "Gemini"·"Gemini CLI"·"Google" are trademarks of Google; "Cursor" is a trademark of Cursor (Anysphere); "Context7"·"Upstash" are trademarks of their respective owners. **Any other product/service name mentioned in this document is also a trademark of its respective owner.** **SoDam-Agent is unofficial and not affiliated with, sponsored by, or endorsed by any of them.** Trademarks are used **nominatively** only (no logos). Also, whether the name **"SoDam-Agent"** itself is registrable as a trademark is undetermined — check for conflicts with same/similar names yourself.
-- **Commercial scope**: under Apache-2.0, **modification, copying, forking, redistribution, selling, running as a service, training material, and client delivery** are mostly allowed. But **the following is your responsibility.**
+- **Commercial scope**: under Apache-2.0, **modification, copying, forking, redistribution, selling, running as a service, training material, and client delivery** are mostly allowed. But **everything below is your responsibility.**
 - **Your responsibility (must verify separately)**: the **pricing, terms of service, model-use policy, and data-handling policy of the MCPs (e.g., context7/Upstash) and external APIs** you install are **not guaranteed by SoDam-Agent** — verify them yourself before commercial use.
-- **Preset / generated-content origin**: team agent instructions and the templates `sodam-agent` creates are **SoDam-Agent's own curation** (no third-party works bundled). However, some text may be **AI-generated**, and the copyright status of AI-generated content varies by jurisdiction and over time. Before any commercial final use, **verify for yourself: ① copyright ownership ② provenance/source ③ commercial-use eligibility ④ possible infringement of similar existing works.** (This document is not legal advice; consult a professional if unsure.)
+- **Preset / generated-content origin**: team agent instructions and the templates `sodam-agent` creates are **SoDam-Agent's own curation** (no third-party works bundled). However, some text may be **AI-generated**, and the copyright status of AI-generated content varies by jurisdiction and over time.
+
+**✅ Final checklist before commercial use** (all items are yours to verify — SoDam-Agent does not guarantee any of them for you)
+- [ ] I've read `LICENSE`/`NOTICE` and understand the conditions (keep notices, state changes, no trademark grant).
+- [ ] I've verified the pricing/terms of any connected MCP (context7/Upstash, etc.) and external API directly on that service's own site.
+- [ ] I've checked the copyright ownership, provenance, and possible infringement risk of AI-generated content (preset wording, etc.) — this varies by jurisdiction and over time.
+- [ ] I've checked that the name "SoDam-Agent" doesn't conflict with an existing trademark in my region/industry.
+- [ ] For anything I'm unsure about, I've had it reviewed by a **legal professional**.
 
 ---
 
@@ -533,7 +557,7 @@ sodam-ai/SoDam-Agent (GitHub)
 
 3. Restart Claude Code
    → Loads agent instruction files (.md) from cache
-   → Registers as "team:role" in /agents
+   → Registered under the scoped name "team:role" (shows in @ autocomplete)
 
 4. User calls an agent
    → Claude Code runs that agent's instruction file as a subagent
