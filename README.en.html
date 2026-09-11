@@ -250,9 +250,25 @@ PM/product · localization) + the agent-management tool
 (<code>sodam-agent</code>) + Codex / Gemini CLI / Cursor role
 translation (beta)</p>
 <details open>
-<summary>📋 <b>Recent major changes</b> (as of 2026-07-16 — click to collapse)</summary>
+<summary>📋 <b>Recent major changes</b> (as of 2026-09-11 — click to collapse)</summary>
 
 <ul>
+<li><strong>2026-09-11</strong>: Documented that a "connection failed"
+warning from context7 (an optional tool) while offline or behind a
+corporate network is harmless. Added a regression test that keeps
+external dependencies at zero — a lightweight license-safety guard
+(<code>01_PRD.md §9</code>).</li>
+<li><strong>2026-08-10</strong>: The pre-install diagnostic
+(<code>/doctor</code>) now detects an old Claude Code version that
+doesn't support plugins before you install. Replaced the now-broken
+<code>/agents</code> guidance with <code>@</code>-autocomplete across
+the install-complete message, all 4 agent-management commands, and all
+4 README files. Added a complete-beginner glossary to the README and
+strengthened the legal section.</li>
+<li><strong>2026-08-04</strong>: Consolidated the separate beginner
+guide (4 GUIDE files) into the README — no content lost, less
+duplicate upkeep. Synced NOTICE's trademark list with the README
+(added Gemini, Cursor, Context7).</li>
 <li><strong>2026-07-16</strong>: Added the customer-support,
 PM/product-management, and localization teams — 10 teams complete.
 Hardened the core backup/rollback files to write atomically

@@ -245,9 +245,23 @@ alt="CI" /></a></p>
 도구(<code>sodam-agent</code>) + Codex/Gemini CLI/Cursor 역할
 번역(베타)</p>
 <details open>
-<summary>📋 <b>최근 주요 변경</b> (2026-07-16 기준 — 누르면 접기)</summary>
+<summary>📋 <b>최근 주요 변경</b> (2026-09-11 기준 — 누르면 접기)</summary>
 
 <ul>
+<li><strong>2026-09-11</strong>: context7(선택 도구)이 오프라인·사내망
+차단 중에 보여줄 수 있는 "연결 실패" 경고가 무해하다는 안내를
+문제해결 표에 추가. 외부 패키지 의존성이 계속 0개로 유지되는지
+자동 확인하는 회귀 테스트 추가(라이선스 안전장치,
+<code>01_PRD.md §9</code>).</li>
+<li><strong>2026-08-10</strong>: 설치 전 진단(<code>/doctor</code>)이
+플러그인 기능을 지원 안 하는 Claude Code 구버전을 미리 감지하도록
+개선. 최신 Claude Code에서 무력화된 <code>/agents</code> 안내를
+<code>@</code> 자동완성 방식으로 전면 교체(설치 완료 안내·직원 관리
+명령 4종·README 4개 문서 전부). README에 완전 왕초보용 용어표를
+추가하고 법률 고지를 강화.</li>
+<li><strong>2026-08-04</strong>: 별도로 있던 왕초보 가이드(GUIDE)
+문서 4개를 README 하나로 통합(내용 손실 없음, 중복 관리 부담 축소).
+NOTICE의 상표 목록을 README와 동기화(Gemini·Cursor·Context7 추가).</li>
 <li><strong>2026-07-16</strong>: 고객지원팀 · PM/제품관리팀 ·
 번역/로컬라이제이션팀 추가 — 팀 10종 완성. 백업/되돌리기 핵심 파일의
 쓰기 방식을 원자적(tmp→rename)으로 강화(중간에 꺼져도 반쯤 써진 파일이
