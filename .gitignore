@@ -22,6 +22,7 @@ CHECKPOINT_ARCHIVE.md
 .active-agents
 .active-agents.lock
 .active-agents.tmp
+.failure-tracker.jsonl
 
 # docs/ 산출물(PDF·HTML)은 빌드 결과물 — 저장소에 올리지 않음(2026-07-06 최종 결정)
 docs/*.pdf
