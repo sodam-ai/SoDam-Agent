@@ -420,6 +420,7 @@ Add marketplace (once) → Install teams/tool (/plugin install) → Restart
 | Names like `web-app-team:` look confusing | — | That's expected. The **`team:role`** naming makes *your* installs unambiguous |
 | context7 (doc search) errors | No Node.js / network blocked | Install **LTS** from [nodejs.org](https://nodejs.org) / try another network |
 | `/doctor` shows a `context7 ... skipped` warning | Multiple teams bundle the same tool (context7); only one gets loaded | **This is normal** — the duplicate tool is deduped to one active copy, no functional impact |
+| context7 shows a "failed to connect" warning (even while offline / behind a corporate network) | context7 is optional but always attempts to connect (a known minor issue) | **Safe to ignore** — core functionality is unaffected, and it reconnects automatically once you're back online |
 | Install fails behind corporate proxy/firewall | Network blocked | Try another network / ask admin to unblock |
 | (Method B) Windows "blocked this app" | SmartScreen / antivirus | Right-click the file → Properties → "Unblock" / add AV exception |
 | MCP asks for an API key | Some tools need a key | Get a key from the provider → store it in an **OS environment variable** (never in files) |
