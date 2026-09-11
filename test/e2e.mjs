@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import { fileURLToPath } from 'node:url';
 import { resolveTarget } from '../src/paths.mjs';
 import { PRESETS, getPreset, getRoleLibrary } from '../src/presets.mjs';
 import { buildPlan, applyPlan, verifyInfo } from '../src/install.mjs';
@@ -499,6 +500,17 @@ const doctorTarget = path.join(root, 'doctor-check');
 fs.mkdirSync(doctorTarget, { recursive: true });
 assert.doesNotThrow(() => runDoctor(resolveTarget(doctorTarget)), 'doctor가 버전 체크 추가 후에도 예외 없이 끝까지 실행됨');
 ok('doctor: 플러그인(/plugin) 지원 여부 체크 추가 후에도 전체 진단이 예외 없이 끝까지 실행됨');
+
+// 24) 의존성 라이선스 안전장치(01_PRD.md §9 Could Have): package.json에 외부 dependencies가 없어야 한다.
+//     새 패키지를 추가하는 대신, "지금 0개"라는 사실 자체를 회귀 테스트로 고정해 GPL/AGPL 혼입을 원천 차단한다.
+const pkgPath = fileURLToPath(new URL('../package.json', import.meta.url));
+const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+assert.equal(
+  !pkg.dependencies || Object.keys(pkg.dependencies).length === 0,
+  true,
+  '외부 dependencies가 추가되면 라이선스 호환성(GPL/AGPL 혼입 금지, 01_PRD §9)을 재검토해야 함'
+);
+ok('의존성 안전장치: package.json에 외부 dependencies 0개 유지(GPL/AGPL 혼입 회귀 테스트)');
 
 console.log(`\n🎉 모든 검증 통과: ${pass}건`);
 fs.rmSync(root, { recursive: true, force: true });
